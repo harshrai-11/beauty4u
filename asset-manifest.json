@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/beauty4u/static/css/main.dcbedd70.css",
+    "main.js": "/beauty4u/static/js/main.2ffed091.js",
+    "static/js/787.28cb0dcd.chunk.js": "/beauty4u/static/js/787.28cb0dcd.chunk.js",
+    "index.html": "/beauty4u/index.html",
+    "main.dcbedd70.css.map": "/beauty4u/static/css/main.dcbedd70.css.map",
+    "main.2ffed091.js.map": "/beauty4u/static/js/main.2ffed091.js.map",
+    "787.28cb0dcd.chunk.js.map": "/beauty4u/static/js/787.28cb0dcd.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.dcbedd70.css",
+    "static/js/main.2ffed091.js"
+  ]
+}
