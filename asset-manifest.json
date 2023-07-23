@@ -1,18 +1,18 @@
 {
   "files": {
     "main.css": "/beauty4u/static/css/main.dcbedd70.css",
-    "main.js": "/beauty4u/static/js/main.47bf5cad.js",
+    "main.js": "/beauty4u/static/js/main.b4b0447b.js",
     "static/js/787.28cb0dcd.chunk.js": "/beauty4u/static/js/787.28cb0dcd.chunk.js",
     "static/media/gender.webp": "/beauty4u/static/media/gender.ee293997bfe7265de3e7.webp",
     "static/media/ageRange.jpeg": "/beauty4u/static/media/ageRange.943ffbcf18dee88d7406.jpeg",
     "static/media/city.jpeg": "/beauty4u/static/media/city.f4adf0b45fec6fee4888.jpeg",
     "index.html": "/beauty4u/index.html",
     "main.dcbedd70.css.map": "/beauty4u/static/css/main.dcbedd70.css.map",
-    "main.47bf5cad.js.map": "/beauty4u/static/js/main.47bf5cad.js.map",
+    "main.b4b0447b.js.map": "/beauty4u/static/js/main.b4b0447b.js.map",
     "787.28cb0dcd.chunk.js.map": "/beauty4u/static/js/787.28cb0dcd.chunk.js.map"
   },
   "entrypoints": [
     "static/css/main.dcbedd70.css",
-    "static/js/main.47bf5cad.js"
+    "static/js/main.b4b0447b.js"
   ]
 }
