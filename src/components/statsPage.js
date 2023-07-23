@@ -370,7 +370,7 @@ const StatsPage = () => {
         <Dialog open={open} onClose={handleClose}>
             <DialogTitle>{popupTitle}</DialogTitle>
             <DialogContent>
-                <SimpleBarChart data={popupData} xKey="name" yKey="pv" height={500} fontFillColor={"#000"} />
+                <SimpleBarChart data={popupData} xKey="name" yKey="pv" height={500} fontFillColor={"#000"} showXAxis fontSize={10} />
             </DialogContent>
             <DialogActions>
                 <Button onClick={handleClose} color="primary">
