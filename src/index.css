@@ -92,19 +92,28 @@ code {
   padding: 20px;
 }
 
+.stats-page-layout {
+  padding: 30px;
+}
 .stats-section {
-  padding: 40px;
   display: flex;
+  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px;
+  border-radius: 10px;
 }
 .stats-section-header {
   display: flex;
   justify-content: space-between;
-  padding: 10px;
+  padding: 20px 40px 10px 40px;
   color: white;
   height: 40px;
   align-items: center;
+  cursor: pointer;
 }
 
+.divider {
+  border-bottom: 1px solid white;
+    margin-bottom: 20px;
+}
 .stats-section-header .active {
   color: #7cd985;
   font-weight: bold;
@@ -112,20 +121,22 @@ code {
 
 .left-div {
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px !important;
-  padding: 40px;
   width: 30%;
 }
 .stats-select {
   display: flex;
   gap: 20px;
+  padding-left: 40px;
+  padding-right: 40px;
+  justify-content: space-evenly;
 }
 
-.stats-observation {
+.left-div .stats-observation {
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px !important;
   margin-top: 20px;
   background-color: #1d222e;
 }
-.stats-observation-details {
+.left-div .stats-observation-details {
   display: flex;
   justify-content: space-evenly;
 }
@@ -146,11 +157,29 @@ code {
   border: 1px solid #7cd985;
   border-radius: 5px;
 }
-.right-div {
-  box-shadow: rgba(255, 255, 255, 0.5) -3px -3px 6px 1px !important;
-  padding: 40px;
-  width: 30%;
+.right-div { 
+  width: 70%;
 }
+
+.right-div .stats-observation {
+  padding: 20px;
+}
+.right-div .stats-observation-details {
+  display: flex;
+  justify-content: space-between;
+}
+.social-media-username {
+  font-size: 12px;
+  justify-content: left;
+    display: flex;
+    color: lightslategrey;
+}
+
+.stats-boost-profile {
+  display: flex;
+    gap: 20px;
+}
+
 .right-div .stats-section-header img {
   height: 40px;
   width: 40px;
@@ -163,4 +192,28 @@ code {
 
 .stats-select-class {
   background-color: #495569;
+}
+
+.info-charts {
+  padding: 20px;
+}
+.top-countries-cities-div, .top-gender-age-div {
+  display: flex;
+  padding: 20px;
+  gap: 100px;
+}
+
+.top-countries {
+  display: flex;
+  flex-direction: column;
+}
+
+.info-section-card {
+  background: none;
+  box-shadow: none;
+}
+
+.info-charts img {
+  height: 180px;
+  width: 350px;
 }
