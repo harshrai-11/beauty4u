@@ -16,7 +16,7 @@ export const calculateGenderDataTotal = (obj) => {
     let femaleCount = 0;
     let maleCount = 0;
     let undefinedCount = 0;
-    Object.keys(obj).map(val => {
+    Object.keys(obj).forEach(val => {
         if (val.includes("F.")) {
             femaleCount = femaleCount + obj[val];
         } else if (val.includes("M.")) {

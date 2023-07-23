@@ -99,13 +99,13 @@ const StatsPage = () => {
             let countryData = [];
             const countryDataRes = apiResponse.data.filter(val => val.name === 'audience_country')[0];
             const countryDataValues = countryDataRes.values[0].value;
-            Object.keys(countryDataValues).map(val => {
+            Object.keys(countryDataValues).forEach(val => {
                 countryData.push({ name: countryCodesWithNames[val], pv: countryDataValues[val] })
             })
             setCountryData(countryData);
             const CountryDataTop3 = pickHighest(countryDataValues, 3)
             let barGraphCountryData = [];
-            Object.keys(CountryDataTop3).map(val => {
+            Object.keys(CountryDataTop3).forEach(val => {
                 barGraphCountryData.push({ name: countryCodesWithNames[val], pv: CountryDataTop3[val] })
             });
             console.log(countryData, barGraphCountryData)
@@ -116,14 +116,14 @@ const StatsPage = () => {
             let cityData = [];
             const cityDatRes = apiResponse.data.filter(val => val.name === 'audience_city')[0];
             const cityDataValues = cityDatRes.values[0].value;
-            Object.keys(cityDataValues).map(val => {
+            Object.keys(cityDataValues).forEach(val => {
                 cityData.push({ name: val, pv: cityDataValues[val] })
             })
             console.log('cityy', cityData)
             setCityData(cityData);
             const cityDataTop3 = pickHighest(cityDataValues, 3)
             let barGraphCityData = [];
-            Object.keys(cityDataTop3).map(val => {
+            Object.keys(cityDataTop3).forEach(val => {
                 barGraphCityData.push({ name: val, pv: cityDataTop3[val] })
             });
             setBarGraphCityData(barGraphCityData);
@@ -132,13 +132,13 @@ const StatsPage = () => {
             let ageData = [];
             const ageDataRes = apiResponse.data.filter(val => val.name === 'audience_gender_age')[0];
             const ageDataValues = ageDataRes.values[0].value;
-            Object.keys(ageDataValues).map(val => {
+            Object.keys(ageDataValues).forEach(val => {
                 ageData.push({ name: val, pv: ageDataValues[val] })
             })
             setAgeData(ageData);
             const ageDataTop3 = pickHighest(ageDataValues, 3)
             let barGraphAgeData = [];
-            Object.keys(ageDataTop3).map(val => {
+            Object.keys(ageDataTop3).forEach(val => {
                 barGraphAgeData.push({ name: val, pv: ageDataTop3[val] })
             });
             setBarGraphAgeData(barGraphAgeData);
@@ -146,7 +146,7 @@ const StatsPage = () => {
             // Gender
             let barGraphGenderData = [];
             const genderTop3 = calculateGenderDataTotal(ageDataValues);
-            Object.keys(genderTop3).map(val => {
+            Object.keys(genderTop3).forEach(val => {
                 barGraphGenderData.push({ name: val, pv: genderTop3[val] })
             });
             setBarGraphGenderData(barGraphGenderData)
