@@ -2,7 +2,6 @@
 import * as React from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import Box from '@mui/material/Box';
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
@@ -13,7 +12,7 @@ import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { BarChart, Bar, XAxis, Tooltip, Legend, AreaChart, Area } from 'recharts';
 import { useEffect, useState } from 'react';
 import { CITY_GENDER_API } from '../routes';
-import { pickHighest, countryCodesWithNames, calculateGenderDataTotal, mockResponse } from '../helper';
+import { pickHighest, countryCodesWithNames, calculateGenderDataTotal, mockResponse, mockResponseReach } from '../helper';
 import { SimpleBarChart } from './barChart';
 import axios from 'axios';
 
@@ -81,6 +80,8 @@ const StatsPage = () => {
     const [popupData, setPopupData] = useState(undefined);
 
     const [barGraphGenderData, setBarGraphGenderData] = useState([]);
+    const [reachApiResponse, setReachApiResponse] = useState(undefined);
+    const [barGraphReachApi, setBarGraphReachApi] = useState([]);
 
     useEffect(() => {
 
@@ -99,6 +100,9 @@ const StatsPage = () => {
             console.log('ERROR', err);
             setApiResponse(mockResponse)
         })
+
+        setReachApiResponse(mockResponseReach);
+
     }, []);
 
     useEffect(() => {
@@ -161,6 +165,14 @@ const StatsPage = () => {
 
     }, [apiResponse])
 
+    useEffect(() => {
+        if (reachApiResponse) {
+            const reachData = reachApiResponse.data.filter(val => val.name === 'reach')[0];
+            let barGraphReachData = [{ uv: reachData.values[0].value, pv: reachData.values[1].value }];
+            setBarGraphReachApi(barGraphReachData);
+        }
+    }, [reachApiResponse])
+
     const handleClose = () => {
         setOpen(false);
     };
@@ -202,39 +214,28 @@ const StatsPage = () => {
                 </div>
                 <div className='divider'></div>
                 <div className='stats-select'>
-                    <Box sx={{ minWidth: 200 }}>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Last 7 days</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Last 7 days"
-                                className='stats-select-class'
-                            >
-                                <MenuItem value={10}>Last 7 days</MenuItem>
-                                <MenuItem value={20}>Last 30 days</MenuItem>
-                                <MenuItem value={30}>Last 60 days</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
-                    <Box sx={{ minWidth: 200 }}>
-                        <FormControl fullWidth>
-                            <InputLabel id="demo-simple-select-label">Female</InputLabel>
-                            <Select
-                                labelId="demo-simple-select-label"
-                                id="demo-simple-select"
-                                label="Gender"
-                                className='stats-select-class'
-                            >
-                                <MenuItem value={10}>Female</MenuItem>
-                                <MenuItem value={20}>Male</MenuItem>
-                                <MenuItem value={30}>Others</MenuItem>
-                            </Select>
-                        </FormControl>
-                    </Box>
+                    <Card style={{ backgroundColor: '#353d50', color: '#fff' }}>
+                        <CardContent>
+                            <FormControl fullWidth>
+                                <InputLabel id="demo-simple-select-label" style={{ color: '#fff' }}>Last 1 day</InputLabel>
+                                <Select
+                                    labelId="demo-simple-select-label"
+                                    id="demo-simple-select"
+                                    label="Last 7 days"
+                                    className='stats-select-class'
+                                >
+                                    <MenuItem value={10}>Last 1 day</MenuItem>
+                                    <MenuItem value={10}>Last 7 days</MenuItem>
+                                    <MenuItem value={20}>Last 30 days</MenuItem>
+                                    <MenuItem value={30}>Last 60 days</MenuItem>
+                                </Select>
+                            </FormControl>
+                        </CardContent>
+                    </Card>
+
                 </div>
                 <div className='stats-observation'>
-                    <Card style={{ backgroundColor: '#273047' }}>
+                    <Card style={{ backgroundColor: '#1d222e', boxShadow: 'rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px' }}>
                         <CardContent>
                             <Typography align='left' sx={{ fontSize: 14 }} color="white" gutterBottom>
                                 OBSERVATION
@@ -261,9 +262,9 @@ const StatsPage = () => {
                         <Typography align='left' style={{ paddingLeft: '10px', fontWeight: 'bold' }} sx={{ fontSize: 16 }} color="white" gap={5}>
                             6345  <span style={{ fontWeight: 'normal', color: '#7cd985' }}>+45%</span>                               </Typography>
                         <BarChart
-                            width={400}
+                            width={300}
                             height={300}
-                            data={data}
+                            data={barGraphReachApi}
                             margin={{
                                 top: 5,
                                 right: 30,
@@ -273,8 +274,8 @@ const StatsPage = () => {
                         >
                             <Tooltip />
                             <Legend />
-                            <Bar label="Followers" name='Followers' dataKey="pv" fill="#8884d8" />
-                            <Bar label="Non Followers" name='Non Followers' dataKey="uv" fill="#82ca9d" />
+                            <Bar label="Non Followers" name='Non Followers' dataKey="pv" fill="#956fe6" />
+                            <Bar label="Followers" name='Followers' dataKey="uv" fill="#f4b25a" />
                         </BarChart>
                     </Card>
 
@@ -316,7 +317,7 @@ const StatsPage = () => {
 
                 <div className='right-div-chart'>
                     <AreaChart
-                        width={450}
+                        width={1000}
                         height={400}
                         data={data}
                         margin={{
@@ -328,8 +329,8 @@ const StatsPage = () => {
                     >
                         <XAxis dataKey="name" />
                         <Tooltip />
-                        <Area type="monotone" dataKey="uv" stackId="1" stroke="#8884d8" fill="#8884d8" />
-                        <Area type="monotone" dataKey="pv" stackId="1" stroke="#82ca9d" fill="#82ca9d" />
+                        <Area type="monotone" dataKey="uv" stackId="1" stroke="#956fe6" fill="#956fe6" />
+                        <Area type="monotone" dataKey="pv" stackId="1" stroke="#f4b25a" fill="#f4b25a" />
                     </AreaChart>
 
                     <div className='divider' style={{ borderBottomColor: '#454e5e', padding: '10px', marginLeft: '10px', marginRight: '10px' }}></div>
@@ -361,7 +362,7 @@ const StatsPage = () => {
                             <div className='top-cities'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
                                 <img src={genderImg} alt=''></img>
-                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"}/>
+                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
 
                             </div>
                         </div>

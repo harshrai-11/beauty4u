@@ -124,21 +124,20 @@ code {
   width: 30%;
 }
 .stats-select {
-  display: flex;
-  gap: 20px;
-  padding-left: 40px;
-  padding-right: 40px;
-  justify-content: space-evenly;
+  display: block;
+  padding-left: 20px;
+  padding-right: 20px;
 }
 
 .left-div .stats-observation {
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px !important;
+  padding-left: 20px;
+  padding-right: 20px;
   margin-top: 20px;
-  background-color: #1d222e;
 }
 .left-div .stats-observation-details {
   display: flex;
   justify-content: space-evenly;
+  background-color: #1d222e;
 }
 .stats-observation-details .icon {
   background-color: #925bc2;
@@ -156,6 +155,8 @@ code {
   margin-top: 20px;
   border: 1px solid #7cd985;
   border-radius: 5px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 .right-div { 
   width: 70%;
@@ -188,10 +189,6 @@ code {
 .right-div .stats-section-header {
   justify-content: flex-start;
   gap: 20px
-}
-
-.stats-select-class {
-  background-color: #495569;
 }
 
 .info-charts {

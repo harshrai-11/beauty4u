@@ -229,3 +229,63 @@ export const mockResponse = {
         }
     ]
 }
+
+export const mockResponseReach = {
+    "data": [
+        {
+            "name": "impressions",
+            "period": "day",
+            "values": [
+                {
+                    "value": 16394,
+                    "end_time": "2023-07-22T07:00:00+0000"
+                },
+                {
+                    "value": 982,
+                    "end_time": "2023-07-23T07:00:00+0000"
+                }
+            ],
+            "title": "Impressions",
+            "description": "Total number of times the Business Account's media objects have been viewed",
+            "id": "17841404972239663/insights/impressions/day"
+        },
+        {
+            "name": "reach",
+            "period": "day",
+            "values": [
+                {
+                    "value": 7332,
+                    "end_time": "2023-07-22T07:00:00+0000"
+                },
+                {
+                    "value": 475,
+                    "end_time": "2023-07-23T07:00:00+0000"
+                }
+            ],
+            "title": "Reach",
+            "description": "Total number of times the Business Account's media objects have been uniquely viewed",
+            "id": "17841404972239663/insights/reach/day"
+        },
+        {
+            "name": "profile_views",
+            "period": "day",
+            "values": [
+                {
+                    "value": 598,
+                    "end_time": "2023-07-22T07:00:00+0000"
+                },
+                {
+                    "value": 47,
+                    "end_time": "2023-07-23T07:00:00+0000"
+                }
+            ],
+            "title": "Profile Views",
+            "description": "Total number of users who have viewed the Business Account's profile within the specified period",
+            "id": "17841404972239663/insights/profile_views/day"
+        }
+    ],
+    "paging": {
+        "previous": "https://graph.facebook.com/v17.0/17841404972239663/insights?access_token=EAALiy21QNrYBACVsA60ZCjuq1DKMubXMoOVB7AcUOQoa6QscZBl396tCbH68GkeDTUv869YJVY6ibH4uYqEZAE4949Xdxwd9lqBAO4yq760d6ZAbXQZAj3XKOJNd1dSRlXzZArUAIct11tnzxZCLev6dvRYNe8O2hIvbmNsiuRHtHGqiZADUcq7P&metric=impressions%2Creach%2Cprofile_views&period=day&since=1689773397&until=1689946197",
+        "next": "https://graph.facebook.com/v17.0/17841404972239663/insights?access_token=EAALiy21QNrYBACVsA60ZCjuq1DKMubXMoOVB7AcUOQoa6QscZBl396tCbH68GkeDTUv869YJVY6ibH4uYqEZAE4949Xdxwd9lqBAO4yq760d6ZAbXQZAj3XKOJNd1dSRlXzZArUAIct11tnzxZCLev6dvRYNe8O2hIvbmNsiuRHtHGqiZADUcq7P&metric=impressions%2Creach%2Cprofile_views&period=day&since=1690118999&until=1690291799"
+    }
+}
