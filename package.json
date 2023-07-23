@@ -2,7 +2,6 @@
   "name": "my-app",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://AkankshaGarg22.github.io/beauty4u",
   "dependencies": {
     "@babel/plugin-proposal-private-property-in-object": "^7.21.0",
     "@emotion/react": "^11.11.1",
