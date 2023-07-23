@@ -17,6 +17,11 @@ import { pickHighest, countryCodesWithNames, calculateGenderDataTotal } from '..
 import { SimpleBarChart } from './barChart';
 import axios from 'axios';
 
+import countriesImg from './images/countries.jpeg';
+import ageRangeImg from './images/ageRange.jpeg';
+import cityImg from './images/city.jpeg';
+import genderImg from './images/gender.webp';
+
 const data = [
     {
         name: 'Page A',
@@ -329,13 +334,13 @@ const StatsPage = () => {
                         <div className='top-countries-cities-div'>
                             <div className='top-countries'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Countries</Typography>
-                                <img src='/countries.jpeg' alt='countries'></img>
+                                <img src={countriesImg} alt='countries'></img>
                                 <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
                                 <Button onClick={() => showEntireGraph('country')}>See More</Button>
                             </div>
                             <div className='top-cities'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
-                                <img src='/city.jpeg' alt=''></img>
+                                <img src={cityImg} alt=''></img>
                                 <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
                                 <Button onClick={() => showEntireGraph('city')}>See More</Button>
 
@@ -345,14 +350,14 @@ const StatsPage = () => {
                         <div className='top-gender-age-div'>
                             <div className='top-countries'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
-                                <img src='/ageRange.jpeg' alt=''></img>
+                                <img src={ageRangeImg} alt=''></img>
                                 <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
                                 <Button onClick={() => showEntireGraph('age')}>See More</Button>
 
                             </div>
                             <div className='top-cities'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
-                                <img src='/gender.webp' alt=''></img>
+                                <img src={genderImg} alt=''></img>
                                 <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"}/>
 
                             </div>
