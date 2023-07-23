@@ -14,6 +14,7 @@ pages:
     - npm run build
     - rm -rf public
     - mv build public
+    - npm start
   artifacts:
     paths:
       - public
