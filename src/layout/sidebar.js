@@ -43,7 +43,7 @@ return (
         >
           <List className='sidebar-list'>
             {sideBarList.map((value, index) => {
-                 return <div className='sidebar-list-item' onClick={() => routeChange(value.path)}>
+                 return <div className='sidebar-list-item' onClick={() => routeChange(value.path)} key={index}>
                     {value.icon}
                     {value.label}
                 </div>})

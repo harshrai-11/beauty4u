@@ -12,7 +12,6 @@ export const pickHighest = (obj, num = 1) => {
 };
 
 export const calculateGenderDataTotal = (obj) => {
-    console.log(obj);
     let femaleCount = 0;
     let maleCount = 0;
     let undefinedCount = 0;

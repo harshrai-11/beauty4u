@@ -108,7 +108,6 @@ const StatsPage = () => {
             Object.keys(CountryDataTop3).forEach(val => {
                 barGraphCountryData.push({ name: countryCodesWithNames[val], pv: CountryDataTop3[val] })
             });
-            console.log(countryData, barGraphCountryData)
 
             setBarGraphCountryData(barGraphCountryData);
 
@@ -119,7 +118,6 @@ const StatsPage = () => {
             Object.keys(cityDataValues).forEach(val => {
                 cityData.push({ name: val, pv: cityDataValues[val] })
             })
-            console.log('cityy', cityData)
             setCityData(cityData);
             const cityDataTop3 = pickHighest(cityDataValues, 3)
             let barGraphCityData = [];
@@ -365,7 +363,6 @@ const StatsPage = () => {
 
         </div>
         <Dialog open={open} onClose={handleClose}>
-            {console.log('popuppppp', popupTitle, popupData)}
             <DialogTitle>{popupTitle}</DialogTitle>
             <DialogContent>
                 <SimpleBarChart data={popupData} xKey="name" yKey="pv" height={500} fontFillColor={"#000"} />
