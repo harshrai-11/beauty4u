@@ -13,7 +13,7 @@ import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { BarChart, Bar, XAxis, Tooltip, Legend, AreaChart, Area } from 'recharts';
 import { useEffect, useState } from 'react';
 import { CITY_GENDER_API } from '../routes';
-import { pickHighest, countryCodesWithNames, calculateGenderDataTotal } from '../helper';
+import { pickHighest, countryCodesWithNames, calculateGenderDataTotal, mockResponse } from '../helper';
 import { SimpleBarChart } from './barChart';
 import axios from 'axios';
 
@@ -95,6 +95,9 @@ const StatsPage = () => {
                 const apiResponse = ageCityGenderResponse.data.data
                 setApiResponse(apiResponse)
             }
+        }).catch(err => {
+            console.log('ERROR', err);
+            setApiResponse(mockResponse)
         })
     }, []);
 

@@ -75,7 +75,7 @@ export const countryCodesWithNames = {
     "ZA": "South Africa"
 }
 
-export const apiResponse = {
+export const mockResponse = {
     "data": {
         "data": [
             {
