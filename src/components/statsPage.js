@@ -11,7 +11,7 @@ import Card from '@mui/material/Card';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { BarChart, Bar, XAxis, Tooltip, Legend, AreaChart, Area } from 'recharts';
 import { useEffect, useState } from 'react';
-import { CITY_GENDER_API } from '../routes';
+import { CITY_GENDER_API, INSIGHTS } from '../routes';
 import { pickHighest, countryCodesWithNames, calculateGenderDataTotal, mockResponse, mockResponseReach } from '../helper';
 import { SimpleBarChart } from './barChart';
 import axios from 'axios';
@@ -101,8 +101,21 @@ const StatsPage = () => {
             setApiResponse(mockResponse)
         })
 
-        setReachApiResponse(mockResponseReach);
-
+        axios(INSIGHTS, {
+            method: 'GET',
+            headers: {
+                "Access-Control-Allow-Origin": "*",
+                "Content-Type": "application/json"
+            },
+        }).then(insightResponse => {
+            if (insightResponse.data.data) {
+                const apiResponse = insightResponse.data.data
+                setReachApiResponse(apiResponse)
+            }
+        }).catch(err => {
+            console.log('ERROR', err);
+            setApiResponse(mockResponseReach)
+        })
     }, []);
 
     useEffect(() => {
@@ -128,13 +141,13 @@ const StatsPage = () => {
             const cityDatRes = apiResponse.data.filter(val => val.name === 'audience_city')[0];
             const cityDataValues = cityDatRes.values[0].value;
             Object.keys(cityDataValues).forEach(val => {
-                cityData.push({ name: val, pv: cityDataValues[val] })
+                cityData.push({ name: val.split(',')[0], pv: cityDataValues[val] })
             })
             setCityData(cityData);
             const cityDataTop3 = pickHighest(cityDataValues, 3)
             let barGraphCityData = [];
             Object.keys(cityDataTop3).forEach(val => {
-                barGraphCityData.push({ name: val, pv: cityDataTop3[val] })
+                barGraphCityData.push({ name: val.split(',')[0], pv: cityDataTop3[val] })
             });
             setBarGraphCityData(barGraphCityData);
 
