@@ -16,3 +16,20 @@ export const dateFilter = [{
     value: 60
 }
 ]
+
+export const cardBarGraphData = [{
+    value: 1,
+    label: "ACCOUNTS REACHED",
+    legendLabel1: "Followers",
+    legendLabel2: "Non Followers"
+}, {
+    value: 2,
+    label: "ACCOUNTS ENGAGED",
+    legendLabel1: "Followers",
+    legendLabel2: "Non Followers"
+}, {
+    value: 3,
+    label: "ACCOUNTS FOLLOWED",
+    legendLabel1: "Followers",
+    legendLabel2: "Non Followers"
+}]

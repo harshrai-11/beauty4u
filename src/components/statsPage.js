@@ -2,69 +2,56 @@
 import * as React from 'react';
 import Breadcrumbs from '@mui/material/Breadcrumbs';
 import Link from '@mui/material/Link';
-import InputLabel from '@mui/material/InputLabel';
-import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
-import Select from '@mui/material/Select';
-import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, NativeSelect, OutlinedInput, Typography } from '@mui/material';
+import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, NativeSelect, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
-import { BarChart, Bar, XAxis, Tooltip, Legend, AreaChart, Area } from 'recharts';
+import { XAxis, Tooltip, AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { useEffect, useState } from 'react';
 import { CITY_GENDER_API, INSIGHTS } from '../routes';
 import { pickHighest, countryCodesWithNames, calculateGenderDataTotal, mockResponse, mockResponseReach } from '../helper';
-import { SimpleBarChart } from './barChart';
+import { SimpleBarChart } from './charts/barChart';
 import axios from 'axios';
 
 import countriesImg from './images/countries.jpeg';
 import ageRangeImg from './images/ageRange.jpeg';
 import cityImg from './images/city.jpeg';
 import genderImg from './images/gender.webp';
-import { dateFilter, statsHeader } from '../utils.js/constant';
+import { cardBarGraphData, dateFilter, statsHeader } from '../utils.js/constant';
+import { CardGraph } from './charts/card-graph';
+import { getWeekDatesFromNDaysAgo } from '../utils.js/helper';
 
 const data = [
     {
         name: 'Page A',
-        uv: 4000,
+        uv: 2000,
         pv: 2400,
         amt: 2400,
     },
     {
         name: 'Page B',
         uv: 3000,
-        pv: 1398,
+        pv: 3000,
         amt: 2210,
     },
     {
         name: 'Page C',
-        uv: 2000,
-        pv: 9800,
+        uv: 4000,
+        pv: 3000,
         amt: 2290,
     },
     {
         name: 'Page D',
-        uv: 2780,
+        uv: 5000,
         pv: 3908,
         amt: 2000,
     },
     {
         name: 'Page E',
-        uv: 1890,
-        pv: 4800,
+        uv: 7000,
+        pv: 500,
         amt: 2181,
-    },
-    {
-        name: 'Page F',
-        uv: 2390,
-        pv: 3800,
-        amt: 2500,
-    },
-    {
-        name: 'Page G',
-        uv: 3490,
-        pv: 4300,
-        amt: 2100,
-    },
+    }
 ];
 
 const StatsPage = () => {
@@ -86,6 +73,7 @@ const StatsPage = () => {
 
     const [activeHeaderOption, setActiveHeaderOption] = useState('Profile Insights');
     const [dateRangeFilterValue, setDateRangeFilterValue] = useState(7);
+    const [currentActiveChart, setCurrentActiveChart] = useState(1);
 
     useEffect(() => {
 
@@ -248,10 +236,10 @@ const StatsPage = () => {
                                 className='select-input'
                                 onChange={(e) => handleOptionChange(e)}
                             >
-                                {dateFilter.map(({labelFirst, labelSecond, value}, index) => {
+                                {dateFilter.map(({ labelFirst, labelSecond, value }, index) => {
                                     return <option className='select-input-option' value={value} key={index}>{labelFirst}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{labelSecond}</option>
                                 })
-                            }
+                                }
                             </NativeSelect>
                         </FormControl>
                     </div>
@@ -265,7 +253,7 @@ const StatsPage = () => {
                             <div className='stats-observation-details'>
                                 <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
                                 <div className='details-text'>
-                                    <span> You have reached<span style={{color: '#6EE6B8'}}> +70% </span> more than usual days</span>  
+                                    <span> You have reached<span style={{ color: '#6EE6B8' }}> +70% </span> more than usual days</span>
                                     <Typography align='left' sx={{ fontSize: 10, marginTop: '5px' }} color="#A3ADBD" gap={5}>
                                         {`SINCE LAST ${dateRangeFilterValue} DAYS`}
                                     </Typography>
@@ -274,124 +262,118 @@ const StatsPage = () => {
                             </div>
                             <div className='stats-observation-value'>
                                 <div className='info'>
-                                    <span><span style={{color: '#6EE6B8'}}>+33%</span> from Ads</span>
+                                    <span><span style={{ color: '#6EE6B8' }}>+33%</span> from Ads</span>
                                 </div>
                                 <div className='info'>
-                                    <span><span style={{color: '#6EE6B8'}}>$450</span> on Ad Spend</span>
+                                    <span><span style={{ color: '#6EE6B8' }}>$450</span> on Ad Spend</span>
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
                 </div>
                 <div className="left-div-chart">
-                    <Card style={{ backgroundColor: '#273047' }}>
-                        <Typography style={{ paddingLeft: '10px' }} align='left' sx={{ fontSize: 12 }} color="white" gap={5}>
-                            ACCOUNTS REACHED                                    </Typography>
-                        <Typography align='left' style={{ paddingLeft: '10px', fontWeight: 'bold' }} sx={{ fontSize: 16 }} color="white" gap={5}>
-                            6345  <span style={{ fontWeight: 'normal', color: '#7cd985' }}>+45%</span>                               </Typography>
-                        <BarChart
-                            width={300}
-                            height={300}
-                            data={barGraphReachApi}
-                            margin={{
-                                top: 5,
-                                right: 30,
-                                left: 20,
-                                bottom: 5,
-                            }}
-                        >
-                            <Tooltip />
-                            <Legend />
-                            <Bar label="Non Followers" name='Non Followers' dataKey="pv" fill="#956fe6" />
-                            <Bar label="Followers" name='Followers' dataKey="uv" fill="#f4b25a" />
-                        </BarChart>
-                    </Card>
-
+                    {
+                        cardBarGraphData.map((data, index) => {
+                            return <CardGraph key={index} graphData={barGraphReachApi} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph>
+                        })
+                    }
                 </div>
             </div>
             <div className='right-div' style={{ backgroundColor: '#22293A' }}>
                 <div className='stats-section-header'>
                     <img src='https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces' alt=''></img>
                     <div>
-                        <span>Dr. Mendeta Videos</span>
+                        <span style={{ fontSize: '16px', fontWeight: '600' }}>Dr. Mendeta Videos</span>
                         <div className='social-media-username'>@drmendetavideos</div>
                     </div>
                 </div>
 
                 <div className='stats-observation'>
                     <Card className='stats-observation-card'>
-                        <CardContent>
+                        <CardContent className='stats-observation-card-content'>
                             <div className='stats-observation-details'>
                                 <div className='stats-boost-profile'>
                                     <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
                                     <div className='details-text'>
-                                        <Typography align='left' sx={{ fontSize: 18 }} color="white" gap={5}>
+                                        <Typography align='left' sx={{ fontSize: 16, fontWeight: '600' }} color="white" gap={5}>
                                             33% from Ads
                                         </Typography>
-                                        <Typography align='left' sx={{ fontSize: 12 }} color="#5e6775" gap={5}>
-                                            March 13-March 19
+                                        <Typography align='left' sx={{ fontSize: 12 }} color="#A3ADBD" gap={5}>
+                                            {getWeekDatesFromNDaysAgo(dateRangeFilterValue)}
                                         </Typography>
                                     </div>
                                 </div>
 
                                 <div className='top-buttons'>
-                                    <Button style={{ backgroundColor: '#7cd985', color: 'black', fontWeight: 'bold', display: 'flex' }} variant="contained">Boost Profile</Button>
+                                    <Button className='boost-profile-button' variant="contained">Boost Profile</Button>
                                 </div>
                             </div>
                         </CardContent>
                     </Card>
                 </div>
 
-                <div className='right-div-chart'>
-                    <AreaChart
-                        width={1000}
-                        height={400}
-                        data={data}
-                        margin={{
-                            top: 10,
-                            right: 30,
-                            left: 0,
-                            bottom: 0,
-                        }}
-                    >
-                        <XAxis dataKey="name" />
-                        <Tooltip />
-                        <Area type="monotone" dataKey="uv" stackId="1" stroke="#956fe6" fill="#956fe6" />
-                        <Area type="monotone" dataKey="pv" stackId="1" stroke="#f4b25a" fill="#f4b25a" />
-                    </AreaChart>
+                <div className=''>
+                    <div className='right-div-chart'>
+                        <ResponsiveContainer height={400}>
+                            <AreaChart
+                                height={400}
+                                data={data}
+                                margin={{
+                                    top: 10,
+                                    right: 30,
+                                    left: 0,
+                                    bottom: 0,
+                                }}
+                            >
+                                <XAxis dataKey="name" />
+                                <Tooltip />
+                                <Area type="monotone" dataKey="uv" stackId="1" stroke="#956fe6" fill="#956fe6" />
+                                <Area type="monotone" dataKey="pv" stackId="1" stroke="#f4b25a" fill="#f4b25a" />
+                            </AreaChart>
+                        </ResponsiveContainer>
+                    </div>
 
-                    <div className='divider' style={{ borderBottomColor: '#454e5e', padding: '10px', marginLeft: '10px', marginRight: '10px' }}></div>
+
+                    <div className='divider' style={{ borderBottomColor: '#363D50', padding: '10px', marginLeft: '10px', marginRight: '10px' }}></div>
                     <div className='info-charts'>
                         <div className='top-countries-cities-div'>
-                            <div className='top-countries'>
-                                <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Countries</Typography>
-                                <img src={countriesImg} alt='countries'></img>
-                                <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
-                                <Button onClick={() => showEntireGraph('country')}>See More</Button>
-                            </div>
-                            <div className='top-cities'>
-                                <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
-                                <img src={cityImg} alt=''></img>
-                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
-                                <Button onClick={() => showEntireGraph('city')}>See More</Button>
+                            <Card className='top-countries'>
+                                <CardContent className='top-data-content'>
+                                    <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Countries</Typography>
+                                    <img src={countriesImg} alt='countries'></img>
+                                    <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                    <Button onClick={() => showEntireGraph('country')}>See More</Button>
+                                </CardContent>
+                            </Card>
 
-                            </div>
+                            <Card className='top-cities'>
+                                <CardContent className='top-data-content'>
+                                    <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
+                                    <img src={cityImg} alt=''></img>
+                                    <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                    <Button onClick={() => showEntireGraph('city')}>See More</Button>
+                                </CardContent>
+                            </Card>
                         </div>
-                        <div className='divider'></div>
+                        <div className='divider' style={{ borderBottomColor: '#363D50' }}></div>
                         <div className='top-gender-age-div'>
-                            <div className='top-countries'>
-                                <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
-                                <img src={ageRangeImg} alt=''></img>
-                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
-                                <Button onClick={() => showEntireGraph('age')}>See More</Button>
+                            <Card className='top-countries'>
+                                <CardContent className='top-data-content'>
+                                    <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
+                                    <img src={ageRangeImg} alt=''></img>
+                                    <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                    <Button onClick={() => showEntireGraph('age')}>See More</Button>
+                                </CardContent>
 
-                            </div>
-                            <div className='top-cities'>
-                                <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
-                                <img src={genderImg} alt=''></img>
-                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                            </Card>
+                            <Card className='top-cities'>
+                                <CardContent className='top-data-content'>
+                                    <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
+                                    <img src={genderImg} alt=''></img>
+                                    <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                </CardContent>
 
-                            </div>
+                            </Card>
                         </div>
                     </div>
                 </div>

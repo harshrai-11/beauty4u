@@ -100,8 +100,9 @@ code {
 
 .stats-section {
   display: flex;
-  box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px;
+  /* box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px; */
   border-radius: 10px;
+  justify-content: space-between;
 }
 
 .stats-section-header {
@@ -219,19 +220,52 @@ code {
 
 .left-div-chart {
   margin-top: 20px;
-  border: 1px solid #7cd985;
   border-radius: 5px;
   margin-left: 20px;
   margin-right: 20px;
+  padding-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.active-card {
+  border: 1px solid #7cd985;
+  background-color: #363D50 !important;
+}
+
+.left-div-chart-card {
+  padding: 15px;
+  background: linear-gradient(180deg, #202737 0%, #12172A 100%);
+  box-shadow: none;
+  padding-bottom: 35px;
+}
+
+.bar-chart {
+  margin: auto !important;
+}
+
+.recharts-default-legend {
+  display: flex;
+    justify-content: space-evenly;
+}
+
+.chart-text {
+  display: flex;
+  justify-content: space-between;
+}
+
+.right-arrow-icon {
+  color: #fff;
 }
 
 .right-div {
   width: 70%;
 }
 
-
 .right-div .stats-observation-card {
   background: #363D50;
+  height: 65px;
 }
 .right-div .stats-observation-details {
   display: flex;
@@ -242,7 +276,7 @@ code {
   font-size: 12px;
   justify-content: left;
   display: flex;
-  color: lightslategrey;
+  color: #69707D;
 }
 
 .stats-boost-profile {
@@ -251,14 +285,30 @@ code {
 }
 
 .right-div .stats-section-header img {
-  height: 40px;
-  width: 40px;
+  height: 35px;
+  width: 35px;
   border-radius: 100px;
 }
 
+.stats-observation-card-content {
+  padding: 10px !important;
+}
 .right-div .stats-section-header {
   justify-content: flex-start;
   gap: 20px
+}
+
+.top-buttons {
+  display: flex;
+  justify-content: center;
+  height: 40px;
+}
+
+.boost-profile-button {
+  background: linear-gradient(180deg, #6EE6B8 0%, #429272 100%);
+  color: #20293A !important;
+  font-weight: 600 !important;
+  font-size: 12px !important
 }
 
 .info-charts {
@@ -269,12 +319,12 @@ code {
 .top-gender-age-div {
   display: flex;
   padding: 20px;
-  gap: 100px;
+  justify-content: space-between;
 }
 
-.top-countries {
-  display: flex;
-  flex-direction: column;
+.top-countries, .top-cities {
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 .info-section-card {
