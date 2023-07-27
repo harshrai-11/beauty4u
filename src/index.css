@@ -12,6 +12,7 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
 .header-title {
   display: flex;
   align-items: center;
@@ -29,11 +30,12 @@ code {
 .sidebar-root .MuiPaper-root {
   background-color: #273047;
 }
+
 .sidebar-list {
   padding-top: 100px !important;
   display: flex;
-    flex-direction: column;
-    gap: 30px;
+  flex-direction: column;
+  gap: 30px;
 }
 
 .sidebar-list-item {
@@ -72,8 +74,8 @@ code {
 
 .card-image {
   border-radius: 100px;
-    height: 50px !important;
-    width: 50px;
+  height: 50px !important;
+  width: 50px;
 }
 
 .content-row {
@@ -95,60 +97,124 @@ code {
 .stats-page-layout {
   padding: 30px;
 }
+
 .stats-section {
   display: flex;
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px;
   border-radius: 10px;
 }
+
 .stats-section-header {
   display: flex;
   justify-content: space-between;
-  padding: 20px 40px 10px 40px;
+  padding: 20px 40px 5px 40px;
   color: white;
   height: 40px;
   align-items: center;
   cursor: pointer;
+  border-bottom: 1px solid #363D50;
+  margin-bottom: 10px;
 }
 
 .divider {
   border-bottom: 1px solid white;
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
-.stats-section-header .active {
+
+.header-option {
+  padding-top: 13px;
+  padding-bottom: 15px;
+}
+
+.active {
   color: #7cd985;
   font-weight: bold;
+  border-bottom: 2px solid #7cd985;
 }
 
 .left-div {
   box-shadow: rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px !important;
   width: 30%;
 }
+
 .stats-select {
   display: block;
   padding-left: 20px;
   padding-right: 20px;
 }
 
-.left-div .stats-observation {
-  padding-left: 20px;
-  padding-right: 20px;
+.stats-select-div {
+  background-color: rgb(54, 61, 80);
+  color: rgb(255, 255, 255);
+  height: 50px;
+  border-radius: 10px;
+}
+
+.select-input {
+  margin-top: -14px;
+  color: #fff !important;
+}
+
+.select-input::before {
+  border: none !important;
+}
+
+.css-1g12qau-MuiSvgIcon-root-MuiNativeSelect-icon {
+  color: #fff !important;
+}
+
+.select-input-option, #uncontrolled-native {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.stats-observation {
+  margin-left: 20px;
+  margin-right: 20px;
   margin-top: 20px;
+  background: linear-gradient(180deg, #202737 0%, #12172A 100%);
+  border-radius: 10px;
 }
-.left-div .stats-observation-details {
+
+.stats-observation-card {
+  background: linear-gradient(180deg, #202737 0%, #12172A 100%);
+}
+
+.stats-observation-details {
   display: flex;
-  justify-content: space-evenly;
-  background-color: #1d222e;
+  justify-content: space-around;
 }
+
 .stats-observation-details .icon {
   background-color: #925bc2;
   border-radius: 100px;
   width: 20px;
   height: 20px;
   padding: 10px;
+  color: #fff;
 }
+
 .stats-observation-details .details-text {
   display: flex;
   flex-direction: column;
+  color: #fff;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.stats-observation-value {
+  display: flex;
+    justify-content: space-around;
+    margin-top: 10px;
+    font-size: 13px;
+    color: white;
+    font-weight: 600;
+}
+
+.stats-observation-value .info {
+  background: #363D50;
+  padding: 10px;
+  border-radius: 43px;
 }
 
 .left-div-chart {
@@ -158,27 +224,30 @@ code {
   margin-left: 20px;
   margin-right: 20px;
 }
-.right-div { 
+
+.right-div {
   width: 70%;
 }
 
-.right-div .stats-observation {
-  padding: 20px;
+
+.right-div .stats-observation-card {
+  background: #363D50;
 }
 .right-div .stats-observation-details {
   display: flex;
   justify-content: space-between;
 }
+
 .social-media-username {
   font-size: 12px;
   justify-content: left;
-    display: flex;
-    color: lightslategrey;
+  display: flex;
+  color: lightslategrey;
 }
 
 .stats-boost-profile {
   display: flex;
-    gap: 20px;
+  gap: 20px;
 }
 
 .right-div .stats-section-header img {
@@ -186,6 +255,7 @@ code {
   width: 40px;
   border-radius: 100px;
 }
+
 .right-div .stats-section-header {
   justify-content: flex-start;
   gap: 20px
@@ -194,7 +264,9 @@ code {
 .info-charts {
   padding: 20px;
 }
-.top-countries-cities-div, .top-gender-age-div {
+
+.top-countries-cities-div,
+.top-gender-age-div {
   display: flex;
   padding: 20px;
   gap: 100px;

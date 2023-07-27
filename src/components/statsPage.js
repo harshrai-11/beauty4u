@@ -6,7 +6,7 @@ import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
-import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Typography } from '@mui/material';
+import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, NativeSelect, OutlinedInput, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { BarChart, Bar, XAxis, Tooltip, Legend, AreaChart, Area } from 'recharts';
@@ -20,6 +20,7 @@ import countriesImg from './images/countries.jpeg';
 import ageRangeImg from './images/ageRange.jpeg';
 import cityImg from './images/city.jpeg';
 import genderImg from './images/gender.webp';
+import { dateFilter, statsHeader } from '../utils.js/constant';
 
 const data = [
     {
@@ -82,6 +83,9 @@ const StatsPage = () => {
     const [barGraphGenderData, setBarGraphGenderData] = useState([]);
     const [reachApiResponse, setReachApiResponse] = useState(undefined);
     const [barGraphReachApi, setBarGraphReachApi] = useState([]);
+
+    const [activeHeaderOption, setActiveHeaderOption] = useState('Profile Insights');
+    const [dateRangeFilterValue, setDateRangeFilterValue] = useState(7);
 
     useEffect(() => {
 
@@ -204,6 +208,14 @@ const StatsPage = () => {
     }
 
 
+    const handleTabChange = (e) => {
+        setActiveHeaderOption(e.target.textContent)
+    }
+
+    const handleOptionChange = (e) => {
+        setDateRangeFilterValue(e.target.value);
+    }
+
     return (<div className='stats-page-layout'>
         <Breadcrumbs aria-label="breadcrumb">
             <Link underline="hover" color="lightgrey" href="/">
@@ -218,52 +230,55 @@ const StatsPage = () => {
             </Link>
         </Breadcrumbs>
         <div className='stats-section'>
-            <div className='left-div' style={{ backgroundColor: '#273047' }}>
+            <div className='left-div' style={{ backgroundColor: '#22293A' }}>
                 <div className='stats-section-header'>
-                    <span>Post Insights</span>
-                    <span>View DMs</span>
-                    <span className='active'>Profile Insights</span>
-
+                    {statsHeader.map((val, index) => {
+                        return <span key={index} className={`header-option ${activeHeaderOption === val ? 'active' : ''}`} onClick={(e) => handleTabChange(e)}>{val}</span>
+                    })}
                 </div>
-                <div className='divider'></div>
                 <div className='stats-select'>
-                    <Card style={{ backgroundColor: '#353d50', color: '#fff' }}>
-                        <CardContent>
-                            <FormControl fullWidth>
-                                <InputLabel id="demo-simple-select-label" style={{ color: '#fff' }}>Last 1 day</InputLabel>
-                                <Select
-                                    labelId="demo-simple-select-label"
-                                    id="demo-simple-select"
-                                    label="Last 7 days"
-                                    className='stats-select-class'
-                                >
-                                    <MenuItem value={10}>Last 1 day</MenuItem>
-                                    <MenuItem value={10}>Last 7 days</MenuItem>
-                                    <MenuItem value={20}>Last 30 days</MenuItem>
-                                    <MenuItem value={30}>Last 60 days</MenuItem>
-                                </Select>
-                            </FormControl>
-                        </CardContent>
-                    </Card>
-
+                    <div className='stats-select-div'>
+                        <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
+                            <NativeSelect
+                                defaultValue={7}
+                                inputProps={{
+                                    name: 'date',
+                                    id: 'uncontrolled-native',
+                                }}
+                                className='select-input'
+                                onChange={(e) => handleOptionChange(e)}
+                            >
+                                {dateFilter.map(({labelFirst, labelSecond, value}, index) => {
+                                    return <option className='select-input-option' value={value} key={index}>{labelFirst}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{labelSecond}</option>
+                                })
+                            }
+                            </NativeSelect>
+                        </FormControl>
+                    </div>
                 </div>
                 <div className='stats-observation'>
-                    <Card style={{ backgroundColor: '#1d222e', boxShadow: 'rgb(204, 219, 232) 3px 3px 6px 0px inset, rgba(255, 255, 255, 0.5) -3px -3px 6px 1px' }}>
+                    <Card className='stats-observation-card'>
                         <CardContent>
-                            <Typography align='left' sx={{ fontSize: 14 }} color="white" gutterBottom>
+                            <Typography align='left' sx={{ fontSize: 12, fontWeight: '600', marginBottom: '20px' }} color="white" gutterBottom>
                                 OBSERVATION
                             </Typography>
                             <div className='stats-observation-details'>
                                 <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
                                 <div className='details-text'>
-                                    <Typography align='left' sx={{ fontSize: 14 }} color="white" gap={5}>
-                                        You have reached 70% more than usual days
-                                    </Typography>
-                                    <Typography align='left' sx={{ fontSize: 10 }} color="white" gap={5}>
-                                        SINCE LAST 7 DAYS
+                                    <span> You have reached<span style={{color: '#6EE6B8'}}> +70% </span> more than usual days</span>  
+                                    <Typography align='left' sx={{ fontSize: 10, marginTop: '5px' }} color="#A3ADBD" gap={5}>
+                                        {`SINCE LAST ${dateRangeFilterValue} DAYS`}
                                     </Typography>
                                 </div>
 
+                            </div>
+                            <div className='stats-observation-value'>
+                                <div className='info'>
+                                    <span><span style={{color: '#6EE6B8'}}>+33%</span> from Ads</span>
+                                </div>
+                                <div className='info'>
+                                    <span><span style={{color: '#6EE6B8'}}>$450</span> on Ad Spend</span>
+                                </div>
                             </div>
                         </CardContent>
                     </Card>
@@ -294,7 +309,7 @@ const StatsPage = () => {
 
                 </div>
             </div>
-            <div className='right-div' style={{ backgroundColor: '#273047' }}>
+            <div className='right-div' style={{ backgroundColor: '#22293A' }}>
                 <div className='stats-section-header'>
                     <img src='https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces' alt=''></img>
                     <div>
@@ -302,10 +317,9 @@ const StatsPage = () => {
                         <div className='social-media-username'>@drmendetavideos</div>
                     </div>
                 </div>
-                <div className='divider'></div>
 
                 <div className='stats-observation'>
-                    <Card style={{ backgroundColor: '#353d50' }}>
+                    <Card className='stats-observation-card'>
                         <CardContent>
                             <div className='stats-observation-details'>
                                 <div className='stats-boost-profile'>
