@@ -12,7 +12,7 @@ import {
 
 export const SimpleBarChart = ({ data, yKey, xKey, height, fontFillColor, showXAxis=false, fontSize=14 }) => {
     return (
-        <ResponsiveContainer height={height} debounce={1} >
+        <ResponsiveContainer width={400} height={height} debounce={1} >
             <BarChart layout="vertical" data={data}>
                 {showXAxis && <CartesianGrid opacity={0.5} />}
                 <XAxis hide type="number" />
