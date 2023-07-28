@@ -40,6 +40,10 @@ export default function CardPage() {
         setActiveHeaderOption(e.target.textContent)
     }
 
+    const goToStatsPage = () => {
+        window.location.href = '/stats'
+    }
+
     const leftDivChildren = () => {
         return <div className='card-page-layout'>
 
@@ -99,7 +103,7 @@ export default function CardPage() {
                                 </Typography>
                             </CardContent>
                             <CardActions className='card-action'>
-                                <Button className='user-card-action-button' variant='contained' size="medium" style={{backgroundColor: '#bbaf97'}}>REVOKE</Button>
+                                <Button className='user-card-action-button' variant='contained' size="medium" style={{backgroundColor: '#bbaf97'}} onClick={() => goToStatsPage()}>STATS</Button>
                                 <Button className='user-card-action-button' variant='contained' size="medium" style={{backgroundColor: '#c5ae4e'}}>VIEW DMS</Button>
                             </CardActions>
                         </Card>
