@@ -134,6 +134,10 @@ code {
   gap: 20px
 }
 
+.navigation-1 {
+  justify-content: space-evenly;
+};
+
 .divider {
   border-bottom: 1px solid white;
   margin-bottom: 20px;
