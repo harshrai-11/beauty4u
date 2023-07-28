@@ -4,6 +4,7 @@ import SideBar from './layout/sidebar';
 import CardPage from './components/cardPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import StatsPage from './components/statsPage';
+import InstagramInsightsPage from './components/instagramInsightsPage';
 
 function App() {
   return (
@@ -21,6 +22,8 @@ function App() {
               <Route path="/" Component={CardPage}>
               </Route>
               <Route path="/stats" Component={StatsPage}>
+              </Route>
+              <Route path="/insta-insights" Component={InstagramInsightsPage}>
               </Route>
               </Routes>
           </BrowserRouter>

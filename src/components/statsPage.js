@@ -1,7 +1,5 @@
 
 import * as React from 'react';
-import Breadcrumbs from '@mui/material/Breadcrumbs';
-import Link from '@mui/material/Link';
 import FormControl from '@mui/material/FormControl';
 import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, NativeSelect, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
@@ -9,7 +7,7 @@ import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { XAxis, Tooltip, AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { useEffect, useState } from 'react';
 import { CITY_GENDER_API, INSIGHTS } from '../routes';
-import { pickHighest, countryCodesWithNames, calculateGenderDataTotal, mockResponse, mockResponseReach } from '../helper';
+import { pickHighest, countryCodesWithNames, calculateGenderDataTotal } from '../helper';
 import { SimpleBarChart } from './charts/barChart';
 import axios from 'axios';
 
@@ -20,6 +18,7 @@ import genderImg from './images/gender.webp';
 import { cardBarGraphData, dateFilter, statsHeader } from '../utils.js/constant';
 import { CardGraph } from './charts/card-graph';
 import { getWeekDatesFromNDaysAgo } from '../utils.js/helper';
+import { AppLayout } from '../layout/app-layout';
 
 const data = [
     {
@@ -90,7 +89,6 @@ const StatsPage = () => {
             }
         }).catch(err => {
             console.log('ERROR', err);
-            setApiResponse(mockResponse)
         })
 
         axios(INSIGHTS, {
@@ -106,7 +104,6 @@ const StatsPage = () => {
             }
         }).catch(err => {
             console.log('ERROR', err);
-            setApiResponse(mockResponseReach)
         })
     }, []);
 
@@ -204,195 +201,174 @@ const StatsPage = () => {
         setDateRangeFilterValue(e.target.value);
     }
 
-    return (<div className='stats-page-layout'>
-        <Breadcrumbs aria-label="breadcrumb">
-            <Link underline="hover" color="lightgrey" href="/">
-                Home
-            </Link>
-            <Link
-                underline="hover"
-                color="white"
-                href="/"
-            >
-                Instagram
-            </Link>
-        </Breadcrumbs>
-        <div className='stats-section'>
-            <div className='left-div' style={{ backgroundColor: '#22293A' }}>
-                <div className='stats-section-header'>
-                    {statsHeader.map((val, index) => {
-                        return <span key={index} className={`header-option ${activeHeaderOption === val ? 'active' : ''}`} onClick={(e) => handleTabChange(e)}>{val}</span>
-                    })}
-                </div>
-                <div className='stats-select'>
-                    <div className='stats-select-div'>
-                        <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
-                            <NativeSelect
-                                defaultValue={7}
-                                inputProps={{
-                                    name: 'date',
-                                    id: 'uncontrolled-native',
-                                }}
-                                className='select-input'
-                                onChange={(e) => handleOptionChange(e)}
-                            >
-                                {dateFilter.map(({ labelFirst, labelSecond, value }, index) => {
-                                    return <option className='select-input-option' value={value} key={index}>{labelFirst}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{labelSecond}</option>
-                                })
-                                }
-                            </NativeSelect>
-                        </FormControl>
-                    </div>
-                </div>
-                <div className='stats-observation'>
-                    <Card className='stats-observation-card'>
-                        <CardContent>
-                            <Typography align='left' sx={{ fontSize: 12, fontWeight: '600', marginBottom: '20px' }} color="white" gutterBottom>
-                                OBSERVATION
-                            </Typography>
-                            <div className='stats-observation-details'>
+    const leftDivChildren = () => {
+        return <><div className='stats-select'>
+            <div className='stats-select-div'>
+                <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
+                    <NativeSelect
+                        defaultValue={7}
+                        inputProps={{
+                            name: 'date',
+                            id: 'uncontrolled-native',
+                        }}
+                        className='select-input'
+                        onChange={(e) => handleOptionChange(e)}
+                    >
+                        {dateFilter.map(({ labelFirst, labelSecond, value }, index) => {
+                            return <option className='select-input-option' value={value} key={index}>{labelFirst}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{labelSecond}</option>
+                        })
+                        }
+                    </NativeSelect>
+                </FormControl>
+            </div>
+        </div>
+            <div className='stats-observation'>
+                <Card className='stats-observation-card'>
+                    <CardContent>
+                        <Typography align='left' sx={{ fontSize: 12, fontWeight: '600', marginBottom: '20px' }} color="white" gutterBottom>
+                            OBSERVATION
+                        </Typography>
+                        <div className='stats-observation-details'>
+                            <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
+                            <div className='details-text'>
+                                <span> You have reached<span style={{ color: '#6EE6B8' }}> +70% </span> more than usual days</span>
+                                <Typography align='left' sx={{ fontSize: 10, marginTop: '5px' }} color="#A3ADBD" gap={5}>
+                                    {`SINCE LAST ${dateRangeFilterValue} DAYS`}
+                                </Typography>
+                            </div>
+
+                        </div>
+                        <div className='stats-observation-value'>
+                            <div className='info'>
+                                <span><span style={{ color: '#6EE6B8' }}>+33%</span> from Ads</span>
+                            </div>
+                            <div className='info'>
+                                <span><span style={{ color: '#6EE6B8' }}>$450</span> on Ad Spend</span>
+                            </div>
+                        </div>
+                    </CardContent>
+                </Card>
+            </div>
+            <div className="left-div-chart">
+                {
+                    cardBarGraphData.map((data, index) => {
+                        return <CardGraph key={index} graphData={barGraphReachApi} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph>
+                    })
+                }
+            </div>
+        </>
+    }
+
+    const rightDivChildren = () => {
+        return <>
+
+            <div className='stats-observation'>
+                <Card className='stats-observation-card'>
+                    <CardContent className='stats-observation-card-content'>
+                        <div className='stats-observation-details'>
+                            <div className='stats-boost-profile'>
                                 <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
                                 <div className='details-text'>
-                                    <span> You have reached<span style={{ color: '#6EE6B8' }}> +70% </span> more than usual days</span>
-                                    <Typography align='left' sx={{ fontSize: 10, marginTop: '5px' }} color="#A3ADBD" gap={5}>
-                                        {`SINCE LAST ${dateRangeFilterValue} DAYS`}
+                                    <Typography align='left' sx={{ fontSize: 16, fontWeight: '600' }} color="white" gap={5}>
+                                        33% from Ads
+                                    </Typography>
+                                    <Typography align='left' sx={{ fontSize: 12 }} color="#A3ADBD" gap={5}>
+                                        {getWeekDatesFromNDaysAgo(dateRangeFilterValue)}
                                     </Typography>
                                 </div>
+                            </div>
 
+                            <div className='top-buttons'>
+                                <Button className='boost-profile-button' variant="contained">Boost Profile</Button>
                             </div>
-                            <div className='stats-observation-value'>
-                                <div className='info'>
-                                    <span><span style={{ color: '#6EE6B8' }}>+33%</span> from Ads</span>
-                                </div>
-                                <div className='info'>
-                                    <span><span style={{ color: '#6EE6B8' }}>$450</span> on Ad Spend</span>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
-                <div className="left-div-chart">
-                    {
-                        cardBarGraphData.map((data, index) => {
-                            return <CardGraph key={index} graphData={barGraphReachApi} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph>
-                        })
-                    }
-                </div>
+                        </div>
+                    </CardContent>
+                </Card>
             </div>
-            <div className='right-div' style={{ backgroundColor: '#22293A' }}>
-                <div className='stats-section-header'>
-                    <img src='https://images.unsplash.com/photo-1513721032312-6a18a42c8763?w=152&h=152&fit=crop&crop=faces' alt=''></img>
-                    <div>
-                        <span style={{ fontSize: '16px', fontWeight: '600' }}>Dr. Mendeta Videos</span>
-                        <div className='social-media-username'>@drmendetavideos</div>
-                    </div>
+
+            <div className=''>
+                <div className='right-div-chart'>
+                    <ResponsiveContainer height={400}>
+                        <AreaChart
+                            height={400}
+                            width={500}
+                            data={data}
+                            margin={{
+                                top: 10,
+                                right: 30,
+                                left: 0,
+                                bottom: 0,
+                            }}
+                        >
+                            <XAxis dataKey="name" />
+                            <Tooltip />
+                            <Area type="monotone" dataKey="uv" stackId="1" stroke="#956fe6" fill="#956fe6" />
+                            <Area type="monotone" dataKey="pv" stackId="1" stroke="#f4b25a" fill="#f4b25a" />
+                        </AreaChart>
+                    </ResponsiveContainer>
                 </div>
 
-                <div className='stats-observation'>
-                    <Card className='stats-observation-card'>
-                        <CardContent className='stats-observation-card-content'>
-                            <div className='stats-observation-details'>
-                                <div className='stats-boost-profile'>
-                                    <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
-                                    <div className='details-text'>
-                                        <Typography align='left' sx={{ fontSize: 16, fontWeight: '600' }} color="white" gap={5}>
-                                            33% from Ads
-                                        </Typography>
-                                        <Typography align='left' sx={{ fontSize: 12 }} color="#A3ADBD" gap={5}>
-                                            {getWeekDatesFromNDaysAgo(dateRangeFilterValue)}
-                                        </Typography>
-                                    </div>
-                                </div>
 
-                                <div className='top-buttons'>
-                                    <Button className='boost-profile-button' variant="contained">Boost Profile</Button>
-                                </div>
-                            </div>
-                        </CardContent>
-                    </Card>
-                </div>
+                <div className='divider' style={{ borderBottomColor: '#363D50', padding: '10px', marginLeft: '10px', marginRight: '10px' }}></div>
+                <div className='info-charts'>
+                    <div className='top-countries-cities-div'>
+                        <Card className='top-countries'>
+                            <CardContent className='top-data-content'>
+                                <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Countries</Typography>
+                                <img src={countriesImg} alt='countries'></img>
+                                <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                <Button onClick={() => showEntireGraph('country')}>See More</Button>
+                            </CardContent>
+                        </Card>
 
-                <div className=''>
-                    <div className='right-div-chart'>
-                        <ResponsiveContainer height={400}>
-                            <AreaChart
-                                height={400}
-                                data={data}
-                                margin={{
-                                    top: 10,
-                                    right: 30,
-                                    left: 0,
-                                    bottom: 0,
-                                }}
-                            >
-                                <XAxis dataKey="name" />
-                                <Tooltip />
-                                <Area type="monotone" dataKey="uv" stackId="1" stroke="#956fe6" fill="#956fe6" />
-                                <Area type="monotone" dataKey="pv" stackId="1" stroke="#f4b25a" fill="#f4b25a" />
-                            </AreaChart>
-                        </ResponsiveContainer>
+                        <Card className='top-cities'>
+                            <CardContent className='top-data-content'>
+                                <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
+                                <img src={cityImg} alt=''></img>
+                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                <Button onClick={() => showEntireGraph('city')}>See More</Button>
+                            </CardContent>
+                        </Card>
                     </div>
+                    <div className='divider' style={{ borderBottomColor: '#363D50' }}></div>
+                    <div className='top-gender-age-div'>
+                        <Card className='top-countries'>
+                            <CardContent className='top-data-content'>
+                                <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
+                                <img src={ageRangeImg} alt=''></img>
+                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                <Button onClick={() => showEntireGraph('age')}>See More</Button>
+                            </CardContent>
 
+                        </Card>
+                        <Card className='top-cities'>
+                            <CardContent className='top-data-content'>
+                                <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
+                                <img src={genderImg} alt=''></img>
+                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                            </CardContent>
 
-                    <div className='divider' style={{ borderBottomColor: '#363D50', padding: '10px', marginLeft: '10px', marginRight: '10px' }}></div>
-                    <div className='info-charts'>
-                        <div className='top-countries-cities-div'>
-                            <Card className='top-countries'>
-                                <CardContent className='top-data-content'>
-                                    <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Countries</Typography>
-                                    <img src={countriesImg} alt='countries'></img>
-                                    <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
-                                    <Button onClick={() => showEntireGraph('country')}>See More</Button>
-                                </CardContent>
-                            </Card>
-
-                            <Card className='top-cities'>
-                                <CardContent className='top-data-content'>
-                                    <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
-                                    <img src={cityImg} alt=''></img>
-                                    <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
-                                    <Button onClick={() => showEntireGraph('city')}>See More</Button>
-                                </CardContent>
-                            </Card>
-                        </div>
-                        <div className='divider' style={{ borderBottomColor: '#363D50' }}></div>
-                        <div className='top-gender-age-div'>
-                            <Card className='top-countries'>
-                                <CardContent className='top-data-content'>
-                                    <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
-                                    <img src={ageRangeImg} alt=''></img>
-                                    <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
-                                    <Button onClick={() => showEntireGraph('age')}>See More</Button>
-                                </CardContent>
-
-                            </Card>
-                            <Card className='top-cities'>
-                                <CardContent className='top-data-content'>
-                                    <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
-                                    <img src={genderImg} alt=''></img>
-                                    <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
-                                </CardContent>
-
-                            </Card>
-                        </div>
+                        </Card>
                     </div>
                 </div>
             </div>
-
-        </div>
-        <Dialog open={open} onClose={handleClose}>
-            <DialogTitle>{popupTitle}</DialogTitle>
-            <DialogContent>
-                <SimpleBarChart data={popupData} xKey="name" yKey="pv" height={500} fontFillColor={"#000"} showXAxis fontSize={10} />
-            </DialogContent>
-            <DialogActions>
-                <Button onClick={handleClose} color="primary">
-                    Close
-                </Button>
-            </DialogActions>
-        </Dialog>
-    </div>)
-
+        </>
+    }
+    return (
+        <>
+            <AppLayout layoutId={1} leftHeaderData={statsHeader} rightHeaderData={{ name: 'Dr. Mendeita Videos', socialMediaUsername: '@drmendetavideos' }} leftHeaderType={'navigation'} rightHeaderType={'username-display'} handleTabChange={handleTabChange} leftDivChildren={leftDivChildren()} rightDivChildren={ rightDivChildren()} activeHeaderOption={activeHeaderOption}></AppLayout>
+            <Dialog open={open} onClose={handleClose}>
+                <DialogTitle>{popupTitle}</DialogTitle>
+                <DialogContent>
+                    <SimpleBarChart data={popupData} xKey="name" yKey="pv" height={1100} fontFillColor={"#000"} showXAxis fontSize={10} />
+                </DialogContent>
+                <DialogActions>
+                    <Button onClick={handleClose} color="primary">
+                        Close
+                    </Button>
+                </DialogActions>
+            </Dialog>
+        </>)
 }
 
 export default StatsPage;

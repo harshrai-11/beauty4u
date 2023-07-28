@@ -37,7 +37,6 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
     transition: theme.transitions.create('width'),
     width: '100%',
     [theme.breakpoints.up('sm')]: {
-      width: '12ch',
       '&:focus': {
         width: '20ch',
       },
@@ -54,7 +53,7 @@ export const SearchBar = ({ searchBarPlaceholder }) => {
     </SearchIconWrapper>
     <StyledInputBase
       placeholder={searchBarPlaceholder}
-      inputProps={{ 'aria-label': 'search' }}
+      inputProps={{ 'aria-label': 'search', className: 'search-bar-area' }}
     />
   </Search>
 }

@@ -1,4 +1,8 @@
 import { getWeekDatesFromNDaysAgo } from "./helper";
+import FavoriteIcon from '@mui/icons-material/Favorite';
+import ModeCommentIcon from '@mui/icons-material/ModeComment';
+import ShareIcon from '@mui/icons-material/Share';
+import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 export const statsHeader = ['Post Insights', 'View DMs', 'Profile Insights'];
 export const dateFilter = [{
@@ -33,3 +37,33 @@ export const cardBarGraphData = [{
     legendLabel1: "Followers",
     legendLabel2: "Non Followers"
 }]
+
+export const InstaInsightsbuttons = [{
+    buttonLabel: 'View DMs',
+    variant: 'text'
+}, {
+    buttonLabel: 'Profile Stats',
+    variant: 'text'
+}]
+
+export const postStatsItems = [{
+    id: 1,
+    icon: <FavoriteIcon></FavoriteIcon>,
+    label: 'LIKES'
+}, {
+    id: 2,
+    icon: <ModeCommentIcon></ModeCommentIcon>,
+    label: 'COMMENTS'
+}, {
+
+    id: 3,
+    icon: <ShareIcon></ShareIcon>,
+    label: 'SHARE'
+}, {
+
+    id: 4,
+    icon: <BookmarkIcon></BookmarkIcon>,
+    label: 'SAVED'
+}]
+
+export const userPageHeader = ['Instagram', 'Facebook', 'TikTok'];

@@ -16,7 +16,7 @@ export const SimpleBarChart = ({ data, yKey, xKey, height, fontFillColor, showXA
             <BarChart layout="vertical" data={data}>
                 {showXAxis && <CartesianGrid opacity={0.5} />}
                 <XAxis hide type="number" />
-                <YAxis dataKey={xKey} type="category" tick={{ fill: fontFillColor, fontSize }} tickLine={false} axisLine={showXAxis} />
+                <YAxis interval={0} dataKey={xKey} type="category" tick={{ fill: fontFillColor, fontSize }} tickLine={false} axisLine={showXAxis} />
                 <Tooltip />
                 <Bar dataKey={yKey} fill="#f4b25a" label={{ position: "right", fill: fontFillColor, fontSize }} barSize={13} />
             </BarChart>

@@ -21,10 +21,12 @@ const SideBar = (props) => {
         path: '/'
     }, {
         icon: <PeopleOutlineOutlinedIcon/>,
-        label: 'Patients'
+        label: 'Feed',
+        path: '/insta-insights'
     }, {
         icon: <BarChartOutlinedIcon/>,
-        label: 'Dashboard'
+        label: 'Stats',
+        path: '/stats'
     }, {
         icon: <CalendarMonthOutlinedIcon/>,
         label: 'Schedule'
