@@ -13,9 +13,13 @@ import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 const InstagramInsightsPage = () => {
 
     const [feedResponse, setFeedResponse] = useState([]);
+    const [nextPagination, setNextPagination] = useState('');
+    const [previousPagination, setPreviousPagination] = useState('');
+
     const [activeImageIndex, setActiveImageIndex] = useState(0);
-    useEffect(() => {
-        axios(INSTAGRAM_FEED_DETAILS, {
+
+    const getInstagramFeedDetails = (url, isFirstPage = false) => {
+        axios(url, {
             method: 'GET',
             headers: {
                 "Access-Control-Allow-Origin": "*",
@@ -23,12 +27,18 @@ const InstagramInsightsPage = () => {
             },
         }).then(feedResponse => {
             if (feedResponse.data.data) {
-                const apiResponse = feedResponse.data.data.data
-                setFeedResponse(apiResponse)
+                const apiResponse = isFirstPage ? feedResponse.data.data.data : feedResponse.data.data
+                setFeedResponse(apiResponse);
+                setNextPagination(isFirstPage ? feedResponse.data.data.paging.next : feedResponse.data.paging.next);
+                setPreviousPagination(isFirstPage ? feedResponse.data.data.paging.previous : feedResponse.data.paging.previous);
             }
         }).catch(err => {
             console.log('ERROR', err);
         })
+    }
+
+    useEffect(() => {
+        getInstagramFeedDetails(INSTAGRAM_FEED_DETAILS, true)
     }, []);
 
     const handleActiveImageChange = (index) => {
@@ -45,6 +55,15 @@ const InstagramInsightsPage = () => {
                 return data.comments_count
         }
     }
+
+    const handlePagination = (paginationType) => {
+        if (paginationType === 'next') {
+            getInstagramFeedDetails(nextPagination)
+        } else {
+            getInstagramFeedDetails(previousPagination)
+        }
+    }
+
     const leftDivChildren = () => {
         return feedResponse && <div className='posts-grid'>
             {feedResponse.map((value, index) => {
@@ -60,6 +79,11 @@ const InstagramInsightsPage = () => {
                     </Link>
                 </div>
             })}
+
+            <div className='feed-next-back-button'>
+                {previousPagination && previousPagination !== '' && <Button className='feed-next-button' onClick={() => handlePagination('previous')} variant='contained'> Previous </Button>}
+                {nextPagination && nextPagination !== '' && <Button className='feed-next-button' onClick={() => handlePagination('next')} variant='contained'> Next </Button>}
+            </div>
         </div>
     }
 

@@ -534,6 +534,16 @@ code {
   gap: 4px;
 }
 
+.feed-next-back-button {
+  display: flex;
+    justify-content: space-evenly;
+    align-items: end;
+}
+
+.feed-next-button {
+  background-color: #8f5fe8 !important;
+}
+
 @media only screen and (min-width: 767px) {
   .single-page-layout {
     width: 100%;
@@ -588,5 +598,40 @@ code {
 
   .search-bar {
     margin-bottom: 10px;
+  }
+
+  .feed-next-back-button {
+    flex-direction: column-reverse;
+    align-items: inherit;
+  }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  .page-layout {
+    padding-left: 40px;
+  }
+
+  .image-details-text {
+    width: 70%;
+  }
+
+  .post-stats-amount {
+    grid-template-columns: repeat(2, 2fr);
+  }
+
+  .component-page-layout-header {
+    padding: 10px
+  }
+}
+
+@media only screen and (max-width: 1024px) {
+  .top-countries-cities-div {
+    flex-direction: column;
+  }
+  .top-gender-age-div {
+    flex-direction: column;
+  }
+  .native-select {
+    width: auto !important;
   }
 }

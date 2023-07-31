@@ -204,7 +204,7 @@ const StatsPage = () => {
     const leftDivChildren = () => {
         return <><div className='stats-select'>
             <div className='stats-select-div'>
-                <FormControl sx={{ m: 1, width: 300, mt: 3 }}>
+                <FormControl className='native-select' sx={{ m: 1, width: 300, mt: 3 }}>
                     <NativeSelect
                         defaultValue={7}
                         inputProps={{
