@@ -4,9 +4,8 @@ import FormControl from '@mui/material/FormControl';
 import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, NativeSelect, Typography } from '@mui/material';
 import Card from '@mui/material/Card';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
-import { XAxis, Tooltip, AreaChart, Area, ResponsiveContainer } from 'recharts';
 import { useEffect, useState } from 'react';
-import { CITY_GENDER_API, INSIGHTS } from '../routes';
+import { CITY_GENDER_API, GET_PROFILE_ACCOUNTS_ENGAGED, GET_PROFILE_VIEWS, INSIGHTS } from '../routes';
 import { pickHighest, countryCodesWithNames, calculateGenderDataTotal } from '../helper';
 import { SimpleBarChart } from './charts/barChart';
 import axios from 'axios';
@@ -15,43 +14,11 @@ import countriesImg from './images/countries.jpeg';
 import ageRangeImg from './images/ageRange.jpeg';
 import cityImg from './images/city.jpeg';
 import genderImg from './images/gender.webp';
-import { cardBarGraphData, dateFilter, statsHeader } from '../utils.js/constant';
+import { cardBarGraphData, dateFilter, reachTimePeriod, statsHeader } from '../utils.js/constant';
 import { CardGraph } from './charts/card-graph';
 import { getWeekDatesFromNDaysAgo } from '../utils.js/helper';
 import { AppLayout } from '../layout/app-layout';
-
-const data = [
-    {
-        name: 'Page A',
-        uv: 2000,
-        pv: 2400,
-        amt: 2400,
-    },
-    {
-        name: 'Page B',
-        uv: 3000,
-        pv: 3000,
-        amt: 2210,
-    },
-    {
-        name: 'Page C',
-        uv: 4000,
-        pv: 3000,
-        amt: 2290,
-    },
-    {
-        name: 'Page D',
-        uv: 5000,
-        pv: 3908,
-        amt: 2000,
-    },
-    {
-        name: 'Page E',
-        uv: 7000,
-        pv: 500,
-        amt: 2181,
-    }
-];
+import RadialPieChart from './charts/pieChart';
 
 const StatsPage = () => {
 
@@ -69,10 +36,50 @@ const StatsPage = () => {
     const [barGraphGenderData, setBarGraphGenderData] = useState([]);
     const [reachApiResponse, setReachApiResponse] = useState(undefined);
     const [barGraphReachApi, setBarGraphReachApi] = useState([]);
+    const [profileViewsResponse, setProfileViewsResponse] = useState([]);
+    const [barGraphProfileViewsApi, setBarGraphProfileViewsApi] = useState([]);
+    const [barGraphAccountsEngagedApi, setBarGraphAccountsEngagedApi] = useState([]);
+    const [accountsEngagedResponse, setAccountsEngagedResponse] = useState(null);
 
     const [activeHeaderOption, setActiveHeaderOption] = useState('Profile Insights');
-    const [dateRangeFilterValue, setDateRangeFilterValue] = useState(7);
+    const [dateRangeFilterValue, setDateRangeFilterValue] = useState("1");
     const [currentActiveChart, setCurrentActiveChart] = useState(1);
+
+    const getProfileViews = () => {
+        if (dateRangeFilterValue === "1") {
+            axios(GET_PROFILE_VIEWS, {
+                method: 'GET',
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type": "application/json"
+                }
+            }).then(profileViewResponse => {
+                if (profileViewResponse.data.data) {
+                    const profileViews = profileViewResponse.data.data.data.filter(val => val.name === 'profile_views')[0]
+                    setProfileViewsResponse(profileViews.values);
+                }
+            });
+            axios(GET_PROFILE_ACCOUNTS_ENGAGED, {
+                method: 'GET',
+                headers: {
+                    "Access-Control-Allow-Origin": "*",
+                    "Content-Type": "application/json"
+                }
+            }).then(profileViewResponse => {
+                if (profileViewResponse.data.data) {
+                    const accountsEngaged = profileViewResponse.data.data.data[0].total_value.value
+                    setAccountsEngagedResponse(accountsEngaged);
+                }
+            })
+        }
+    }
+
+    const setBarGraphReachResult = (dateRangeFilterValue) => {
+        const reachData = reachApiResponse.data.filter(val => val.name === 'reach' && val.period === reachTimePeriod[dateRangeFilterValue])[0];
+        let barGraphReachData = [{ uv: reachData.values[0].value, pv: reachData.values[1].value }];
+        console.log(barGraphReachData)
+        setBarGraphReachApi(barGraphReachData);
+    }
 
     useEffect(() => {
 
@@ -105,6 +112,7 @@ const StatsPage = () => {
         }).catch(err => {
             console.log('ERROR', err);
         })
+        getProfileViews();
     }, []);
 
     useEffect(() => {
@@ -169,11 +177,20 @@ const StatsPage = () => {
 
     useEffect(() => {
         if (reachApiResponse) {
-            const reachData = reachApiResponse.data.filter(val => val.name === 'reach')[0];
-            let barGraphReachData = [{ uv: reachData.values[0].value, pv: reachData.values[1].value }];
-            setBarGraphReachApi(barGraphReachData);
+            setBarGraphReachResult(dateRangeFilterValue);
         }
     }, [reachApiResponse])
+
+    useEffect(() => {
+        if (profileViewsResponse.length) {
+            let barGraphProfileViewData = [{ uv: profileViewsResponse[0].value, pv: profileViewsResponse[1].value }];
+            setBarGraphProfileViewsApi(barGraphProfileViewData);
+        }
+        if (accountsEngagedResponse) {
+            let barGraphAccountsEngaged = [{ uv: accountsEngagedResponse, pv: null }];
+            setBarGraphAccountsEngagedApi(barGraphAccountsEngaged)
+        }
+    }, [profileViewsResponse, accountsEngagedResponse])
 
     const handleClose = () => {
         setOpen(false);
@@ -199,6 +216,42 @@ const StatsPage = () => {
 
     const handleOptionChange = (e) => {
         setDateRangeFilterValue(e.target.value);
+        setBarGraphReachResult(e.target.value);
+    }
+
+    const getGraphData = (currentCard) => {
+        console.log('current card', currentCard)
+        switch (currentCard) {
+            case 1:
+                return barGraphReachApi;
+            case 2:
+                return barGraphAccountsEngagedApi;
+            case 3:
+                return barGraphProfileViewsApi;
+            default: 
+                return barGraphReachApi;
+        }
+    }
+
+    const getPieChartData = () => {
+        const pieChartFormat = [];
+        if (currentActiveChart === 3) {
+            profileViewsResponse.forEach((item, index) => {
+                item.name = index === 0 ? cardBarGraphData[currentActiveChart - 1].legendLabel1 : cardBarGraphData[currentActiveChart - 1].legendLabel2
+                pieChartFormat.push(item)
+            })
+        } else if (currentActiveChart === 2) {
+            pieChartFormat.push({ value: accountsEngagedResponse, name: cardBarGraphData[currentActiveChart - 1].legendLabel1 })
+        } else {
+            const reachData = reachApiResponse?.data.filter(val => val.name === 'reach' && val.period === reachTimePeriod[dateRangeFilterValue])[0];
+            reachData && reachData.values.forEach((item, index) => {
+                item.name = index === 0 ? cardBarGraphData[currentActiveChart - 1].legendLabel1 : cardBarGraphData[currentActiveChart - 1].legendLabel2
+                pieChartFormat.push(item)
+            })
+        }
+
+        console.log(pieChartFormat)
+        return pieChartFormat;
     }
 
     const leftDivChildren = () => {
@@ -206,7 +259,7 @@ const StatsPage = () => {
             <div className='stats-select-div'>
                 <FormControl className='native-select' sx={{ m: 1, width: 300, mt: 3 }}>
                     <NativeSelect
-                        defaultValue={7}
+                        defaultValue={"1"}
                         inputProps={{
                             name: 'date',
                             id: 'uncontrolled-native',
@@ -233,7 +286,7 @@ const StatsPage = () => {
                             <div className='details-text'>
                                 <span> You have reached<span style={{ color: '#6EE6B8' }}> +70% </span> more than usual days</span>
                                 <Typography align='left' sx={{ fontSize: 10, marginTop: '5px' }} color="#A3ADBD" gap={5}>
-                                    {`SINCE LAST ${dateRangeFilterValue} DAYS`}
+                                    {`SINCE LAST ${dateRangeFilterValue} DAY(S)`}
                                 </Typography>
                             </div>
 
@@ -252,7 +305,9 @@ const StatsPage = () => {
             <div className="left-div-chart">
                 {
                     cardBarGraphData.map((data, index) => {
-                        return <CardGraph key={index} graphData={barGraphReachApi} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph>
+                        return (
+                            dateRangeFilterValue !== "1" && data.value === 1 ? <CardGraph key={index} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph> : dateRangeFilterValue === "1" && <CardGraph key={index} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph>
+                        )
                     })
                 }
             </div>
@@ -288,7 +343,11 @@ const StatsPage = () => {
 
             <div className=''>
                 <div className='right-div-chart'>
-                    <ResponsiveContainer height={400}>
+                    <Typography align='left' marginTop={5} marginLeft={5} sx={{ fontSize: 16, fontWeight: '600' }} color="white" gap={5}>
+                        {cardBarGraphData[currentActiveChart - 1].label}
+                    </Typography>
+                    <RadialPieChart graphData={getPieChartData()}></RadialPieChart>
+                    {/* <ResponsiveContainer height={400}>
                         <AreaChart
                             height={400}
                             width={500}
@@ -305,7 +364,7 @@ const StatsPage = () => {
                             <Area type="monotone" dataKey="uv" stackId="1" stroke="#956fe6" fill="#956fe6" />
                             <Area type="monotone" dataKey="pv" stackId="1" stroke="#f4b25a" fill="#f4b25a" />
                         </AreaChart>
-                    </ResponsiveContainer>
+                    </ResponsiveContainer> */}
                 </div>
 
 
@@ -356,7 +415,7 @@ const StatsPage = () => {
     }
     return (
         <>
-            <AppLayout layoutId={1} leftHeaderData={statsHeader} rightHeaderData={{ name: 'Dr. Mendeita Videos', socialMediaUsername: '@drmendetavideos' }} leftHeaderType={'navigation'} rightHeaderType={'username-display'} handleTabChange={handleTabChange} leftDivChildren={leftDivChildren()} rightDivChildren={ rightDivChildren()} activeHeaderOption={activeHeaderOption}></AppLayout>
+            <AppLayout layoutId={1} leftHeaderData={statsHeader} rightHeaderData={{ name: 'Dr. Mendeita Videos', socialMediaUsername: '@drmendetavideos' }} leftHeaderType={'navigation'} rightHeaderType={'username-display'} handleTabChange={handleTabChange} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren()} activeHeaderOption={activeHeaderOption}></AppLayout>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{popupTitle}</DialogTitle>
                 <DialogContent>

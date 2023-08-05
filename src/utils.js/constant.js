@@ -6,18 +6,18 @@ import BookmarkIcon from '@mui/icons-material/Bookmark';
 
 export const statsHeader = ['Post Insights', 'View DMs', 'Profile Insights'];
 export const dateFilter = [{
-    labelFirst: 'Last 7 days',
-    labelSecond: `${getWeekDatesFromNDaysAgo(7)}`,
-    value: 7
+    labelFirst: 'Last 1 day',
+    labelSecond: `${getWeekDatesFromNDaysAgo(1)}`,
+    value: 1
 },
 {
-    labelFirst: 'Last 30 days',
-    labelSecond: `${getWeekDatesFromNDaysAgo(30)}`,
-    value: 30
+    labelFirst: 'Last 7 days',
+    labelSecond: `${getWeekDatesFromNDaysAgo(7)}`,
+    value: 2
 }, {
-    labelFirst: 'Last 60 days',
-    labelSecond: `${getWeekDatesFromNDaysAgo(60)}`,
-    value: 60
+    labelFirst: 'Last 28 days',
+    labelSecond: `${getWeekDatesFromNDaysAgo(28)}`,
+    value: 3
 }
 ]
 
@@ -29,11 +29,10 @@ export const cardBarGraphData = [{
 }, {
     value: 2,
     label: "ACCOUNTS ENGAGED",
-    legendLabel1: "Followers",
-    legendLabel2: "Non Followers"
+    legendLabel1: "Accounts",
 }, {
     value: 3,
-    label: "ACCOUNTS FOLLOWED",
+    label: "PROFILE VIEWS",
     legendLabel1: "Followers",
     legendLabel2: "Non Followers"
 }]
@@ -67,3 +66,9 @@ export const postStatsItems = [{
 }]
 
 export const userPageHeader = ['Instagram', 'Facebook', 'TikTok'];
+
+export const reachTimePeriod = {
+    1: 'day',
+    2: 'week',
+    3: 'days_28'
+}
