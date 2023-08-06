@@ -205,7 +205,7 @@ code {
 
 .stats-observation-details {
   display: flex;
-  justify-content: space-around;
+  gap: 10px;
 }
 
 .stats-observation-details .icon {
@@ -221,7 +221,7 @@ code {
   display: flex;
   flex-direction: column;
   color: #fff;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 600;
 }
 
@@ -544,6 +544,19 @@ code {
   background-color: #8f5fe8 !important;
 }
 
+.navigation-3 {
+  width: 100%;
+  justify-content: space-evenly;
+}
+
+.media-insight-section-div {
+
+  display: flex;
+  justify-content: space-around;
+  width: 100%;
+
+}
+
 @media only screen and (min-width: 767px) {
   .single-page-layout {
     width: 100%;
@@ -633,5 +646,8 @@ code {
   }
   .native-select {
     width: auto !important;
+  }
+  .media-insight-section-div {
+    flex-direction: column;
   }
 }

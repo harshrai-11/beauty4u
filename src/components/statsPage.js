@@ -14,7 +14,7 @@ import countriesImg from './images/countries.jpeg';
 import ageRangeImg from './images/ageRange.jpeg';
 import cityImg from './images/city.jpeg';
 import genderImg from './images/gender.webp';
-import { cardBarGraphData, dateFilter, reachTimePeriod, statsHeader } from '../utils.js/constant';
+import { cardBarGraphData, dateFilter, reachTimeNumberDays, reachTimePeriod, statsHeader } from '../utils.js/constant';
 import { CardGraph } from './charts/card-graph';
 import { getWeekDatesFromNDaysAgo } from '../utils.js/helper';
 import { AppLayout } from '../layout/app-layout';
@@ -44,6 +44,7 @@ const StatsPage = () => {
     const [activeHeaderOption, setActiveHeaderOption] = useState('Profile Insights');
     const [dateRangeFilterValue, setDateRangeFilterValue] = useState("1");
     const [currentActiveChart, setCurrentActiveChart] = useState(1);
+    const [impressions, setImpressions] = useState(0);
 
     const getProfileViews = () => {
         if (dateRangeFilterValue === "1") {
@@ -77,8 +78,17 @@ const StatsPage = () => {
     const setBarGraphReachResult = (dateRangeFilterValue) => {
         const reachData = reachApiResponse.data.filter(val => val.name === 'reach' && val.period === reachTimePeriod[dateRangeFilterValue])[0];
         let barGraphReachData = [{ uv: reachData.values[0].value, pv: reachData.values[1].value }];
-        console.log(barGraphReachData)
         setBarGraphReachApi(barGraphReachData);
+    }
+
+    const calculateAndSetImpression = (dateRangeFilterValue) => {
+        const impressionsData = reachApiResponse.data.filter(val => val.name === 'impressions' && val.period === reachTimePeriod[dateRangeFilterValue])[0];
+        let totalImpressions = 0;
+        impressionsData.values.forEach(item => {
+            totalImpressions = totalImpressions + item.value
+        })
+        console.log(totalImpressions)
+        setImpressions(totalImpressions)
     }
 
     useEffect(() => {
@@ -178,6 +188,7 @@ const StatsPage = () => {
     useEffect(() => {
         if (reachApiResponse) {
             setBarGraphReachResult(dateRangeFilterValue);
+            calculateAndSetImpression(dateRangeFilterValue);
         }
     }, [reachApiResponse])
 
@@ -215,12 +226,16 @@ const StatsPage = () => {
     }
 
     const handleOptionChange = (e) => {
-        setDateRangeFilterValue(e.target.value);
-        setBarGraphReachResult(e.target.value);
+        const dateRange = e.target.value
+        setDateRangeFilterValue(dateRange);
+        setBarGraphReachResult(dateRange);
+        calculateAndSetImpression(dateRange)
+        if (dateRange !== '1') {
+            setCurrentActiveChart(1);
+        }
     }
 
     const getGraphData = (currentCard) => {
-        console.log('current card', currentCard)
         switch (currentCard) {
             case 1:
                 return barGraphReachApi;
@@ -250,7 +265,6 @@ const StatsPage = () => {
             })
         }
 
-        console.log(pieChartFormat)
         return pieChartFormat;
     }
 
@@ -279,26 +293,26 @@ const StatsPage = () => {
                 <Card className='stats-observation-card'>
                     <CardContent>
                         <Typography align='left' sx={{ fontSize: 12, fontWeight: '600', marginBottom: '20px' }} color="white" gutterBottom>
-                            OBSERVATION
+                            IMPRESSIONS
                         </Typography>
                         <div className='stats-observation-details'>
                             <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
                             <div className='details-text'>
-                                <span> You have reached<span style={{ color: '#6EE6B8' }}> +70% </span> more than usual days</span>
+                                <span> You have <span style={{ color: '#6EE6B8' }}> {impressions} </span> impressions </span>
                                 <Typography align='left' sx={{ fontSize: 10, marginTop: '5px' }} color="#A3ADBD" gap={5}>
-                                    {`SINCE LAST ${dateRangeFilterValue} DAY(S)`}
+                                    {`SINCE LAST ${reachTimeNumberDays[dateRangeFilterValue]} DAY(S)`}
                                 </Typography>
                             </div>
 
                         </div>
-                        <div className='stats-observation-value'>
+                        {/* <div className='stats-observation-value'>
                             <div className='info'>
                                 <span><span style={{ color: '#6EE6B8' }}>+33%</span> from Ads</span>
                             </div>
                             <div className='info'>
                                 <span><span style={{ color: '#6EE6B8' }}>$450</span> on Ad Spend</span>
                             </div>
-                        </div>
+                        </div> */}
                     </CardContent>
                 </Card>
             </div>
@@ -328,7 +342,7 @@ const StatsPage = () => {
                                         33% from Ads
                                     </Typography>
                                     <Typography align='left' sx={{ fontSize: 12 }} color="#A3ADBD" gap={5}>
-                                        {getWeekDatesFromNDaysAgo(dateRangeFilterValue)}
+                                        {getWeekDatesFromNDaysAgo(reachTimeNumberDays[dateRangeFilterValue])}
                                     </Typography>
                                 </div>
                             </div>
@@ -347,24 +361,6 @@ const StatsPage = () => {
                         {cardBarGraphData[currentActiveChart - 1].label}
                     </Typography>
                     <RadialPieChart graphData={getPieChartData()}></RadialPieChart>
-                    {/* <ResponsiveContainer height={400}>
-                        <AreaChart
-                            height={400}
-                            width={500}
-                            data={data}
-                            margin={{
-                                top: 10,
-                                right: 30,
-                                left: 0,
-                                bottom: 0,
-                            }}
-                        >
-                            <XAxis dataKey="name" />
-                            <Tooltip />
-                            <Area type="monotone" dataKey="uv" stackId="1" stroke="#956fe6" fill="#956fe6" />
-                            <Area type="monotone" dataKey="pv" stackId="1" stroke="#f4b25a" fill="#f4b25a" />
-                        </AreaChart>
-                    </ResponsiveContainer> */}
                 </div>
 
 
@@ -375,7 +371,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Countries</Typography>
                                 <img src={countriesImg} alt='countries'></img>
-                                <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" />
                                 <Button onClick={() => showEntireGraph('country')}>See More</Button>
                             </CardContent>
                         </Card>
@@ -384,7 +380,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
                                 <img src={cityImg} alt=''></img>
-                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50"/>
                                 <Button onClick={() => showEntireGraph('city')}>See More</Button>
                             </CardContent>
                         </Card>
@@ -395,7 +391,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
                                 <img src={ageRangeImg} alt=''></img>
-                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50"/>
                                 <Button onClick={() => showEntireGraph('age')}>See More</Button>
                             </CardContent>
 
@@ -404,7 +400,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
                                 <img src={genderImg} alt=''></img>
-                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} />
+                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50"/>
                             </CardContent>
 
                         </Card>
@@ -419,7 +415,7 @@ const StatsPage = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{popupTitle}</DialogTitle>
                 <DialogContent>
-                    <SimpleBarChart data={popupData} xKey="name" yKey="pv" width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} />
+                    <SimpleBarChart data={popupData} xKey="name" yKey="pv" width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} labelPosition="right" />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">

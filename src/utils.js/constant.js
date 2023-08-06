@@ -72,3 +72,11 @@ export const reachTimePeriod = {
     2: 'week',
     3: 'days_28'
 }
+
+export const reachTimeNumberDays = {
+    1: 1,
+    2: 7,
+    3: 28
+}
+
+export const feedPageHeader = ['Post Stats', 'Comments', 'Demographic'];

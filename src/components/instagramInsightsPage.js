@@ -3,12 +3,14 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppLayout } from '../layout/app-layout';
 import { INSTAGRAM_FEED_DETAILS } from '../routes';
-import { InstaInsightsbuttons, postStatsItems } from '../utils.js/constant';
+import { feedPageHeader, InstaInsightsbuttons, postStatsItems } from '../utils.js/constant';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { formatDate } from '../utils.js/helper';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
+import { ComponentHeader } from '../layout/componentHeader';
+import { MediaInsights } from './charts/mediaInsights';
 
 const InstagramInsightsPage = () => {
 
@@ -17,6 +19,9 @@ const InstagramInsightsPage = () => {
     const [previousPagination, setPreviousPagination] = useState('');
 
     const [activeImageIndex, setActiveImageIndex] = useState(0);
+
+    const [currentActiveTab, setCurrentActiveTab] = useState('Post Stats');
+
 
     const getInstagramFeedDetails = (url, isFirstPage = false) => {
         axios(url, {
@@ -43,6 +48,10 @@ const InstagramInsightsPage = () => {
 
     const handleActiveImageChange = (index) => {
         setActiveImageIndex(index);
+    }
+
+    const handleTabChange = (e) => {
+        setCurrentActiveTab(e.target.innerText);
     }
 
     const getStatsNumber = (data, id) => {
@@ -136,6 +145,10 @@ const InstagramInsightsPage = () => {
                             </div>
                         </CardContent>
                     </Card>
+                    <div className={`component-page-layout-header  navigation-3`}>
+                        <ComponentHeader headerType="navigation" headerData={feedPageHeader} activeHeaderOption={currentActiveTab} handleTabChange={handleTabChange}></ComponentHeader>
+                    </div>
+                       {currentActiveTab === 'Post Stats' && <MediaInsights mediaId={data.id} mediaType={data.media_product_type }></MediaInsights>}
                 </div>
             </>
         }

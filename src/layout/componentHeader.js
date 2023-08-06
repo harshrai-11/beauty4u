@@ -11,7 +11,7 @@ export const ComponentHeader = ({ headerType, headerData, handleTabChange, activ
                 <div>
                     <span style={{ fontSize: '16px', fontWeight: '600' }}>{headerData.name}</span>
                     <div className='social-media-username'>{headerData.socialMediaUsername}</div>
-                </div></> : headerType === 'button-layout' ? 
+                </div></> : headerType === 'button-layout' ?
                 <div className='button-layout'>
                     <div className='button-layout-heading'>{headerData.heading}</div>
                     <div className='buttons-div'>{headerData.buttons.map((val, index) => {
