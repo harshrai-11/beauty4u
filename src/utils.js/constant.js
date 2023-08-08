@@ -1,8 +1,9 @@
 import { getWeekDatesFromNDaysAgo } from "./helper";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
-import ShareIcon from '@mui/icons-material/Share';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
+import ReplyIcon from '@mui/icons-material/Reply';
+import SendIcon from '@mui/icons-material/Send';
 
 export const statsHeader = ['Post Insights', 'View DMs', 'Profile Insights'];
 export const dateFilter = [{
@@ -56,7 +57,7 @@ export const postStatsItems = [{
 }, {
 
     id: 3,
-    icon: <ShareIcon></ShareIcon>,
+    icon: <SendIcon className="inverted"></SendIcon>,
     label: 'SHARE'
 }, {
 

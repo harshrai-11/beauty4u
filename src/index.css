@@ -552,9 +552,18 @@ code {
 .media-insight-section-div {
 
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   width: 100%;
+  padding-left: 20px;
+}
 
+.inverted {
+  transform: rotate(330deg)
+}
+
+.white-color {
+  fill: #fff !important;
+  color: #fff !important;
 }
 
 @media only screen and (min-width: 767px) {
@@ -649,5 +658,6 @@ code {
   }
   .media-insight-section-div {
     flex-direction: column;
+    padding-left: 50px;
   }
 }

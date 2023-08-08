@@ -371,7 +371,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Countries</Typography>
                                 <img src={countriesImg} alt='countries'></img>
-                                <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" />
+                                <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} />
                                 <Button onClick={() => showEntireGraph('country')}>See More</Button>
                             </CardContent>
                         </Card>
@@ -380,7 +380,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
                                 <img src={cityImg} alt=''></img>
-                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50"/>
+                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350}/>
                                 <Button onClick={() => showEntireGraph('city')}>See More</Button>
                             </CardContent>
                         </Card>
@@ -391,7 +391,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
                                 <img src={ageRangeImg} alt=''></img>
-                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50"/>
+                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350}/>
                                 <Button onClick={() => showEntireGraph('age')}>See More</Button>
                             </CardContent>
 
@@ -400,7 +400,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
                                 <img src={genderImg} alt=''></img>
-                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50"/>
+                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350}/>
                             </CardContent>
 
                         </Card>
@@ -415,7 +415,7 @@ const StatsPage = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{popupTitle}</DialogTitle>
                 <DialogContent>
-                    <SimpleBarChart data={popupData} xKey="name" yKey="pv" width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} labelPosition="right" />
+                    <SimpleBarChart data={popupData} xKey="name" yKey="pv" width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
