@@ -2,7 +2,6 @@ import { getWeekDatesFromNDaysAgo } from "./helper";
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
-import ReplyIcon from '@mui/icons-material/Reply';
 import SendIcon from '@mui/icons-material/Send';
 
 export const statsHeader = ['Post Insights', 'View DMs', 'Profile Insights'];

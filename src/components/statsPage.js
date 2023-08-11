@@ -87,7 +87,6 @@ const StatsPage = () => {
         impressionsData.values.forEach(item => {
             totalImpressions = totalImpressions + item.value
         })
-        console.log(totalImpressions)
         setImpressions(totalImpressions)
     }
 
@@ -415,7 +414,7 @@ const StatsPage = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{popupTitle}</DialogTitle>
                 <DialogContent>
-                    <SimpleBarChart data={popupData} xKey="name" yKey="pv" width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} />
+                    <SimpleBarChart data={popupData?.sort((a, b) => b.pv - a.pv)} xKey="name" yKey="pv" width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
