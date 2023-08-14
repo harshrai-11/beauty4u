@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import CardMedia from '@mui/material/CardMedia';
 import { SearchBar } from './searchBar';
 import { AppLayout } from '../layout/app-layout';
-import { userPageHeader } from '../utils.js/constant';
+import { ApiHeaders, userPageHeader } from '../utils.js/constant';
 import InstagramIcon from '@mui/icons-material/Instagram';
 import { INSTAGRAM_USER_INFO } from '../routes';
 import axios from 'axios';
@@ -20,13 +20,7 @@ export default function CardPage() {
     const [userInfo, setUserInfo] = React.useState({});
 
     React.useEffect(() => {
-        axios(INSTAGRAM_USER_INFO, {
-            method: 'GET',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-        }).then(userInfo => {
+        axios(INSTAGRAM_USER_INFO, ApiHeaders).then(userInfo => {
             if (userInfo.data.data) {
                 const apiResponse = userInfo.data.data
                 setUserInfo(apiResponse)

@@ -25,7 +25,7 @@ export const cardBarGraphData = [{
     value: 1,
     label: "ACCOUNTS REACHED",
     legendLabel1: "Followers",
-    legendLabel2: "Non Followers"
+    legendLabel2: "Non Followers",
 }, {
     value: 2,
     label: "ACCOUNTS ENGAGED",
@@ -35,6 +35,9 @@ export const cardBarGraphData = [{
     label: "PROFILE VIEWS",
     legendLabel1: "Followers",
     legendLabel2: "Non Followers"
+}, {
+    value: 4,
+    label: "FOLLOWERS DEMOGRAPHY"
 }]
 
 export const InstaInsightsbuttons = [{
@@ -80,3 +83,13 @@ export const reachTimeNumberDays = {
 }
 
 export const feedPageHeader = ['Post Stats', 'Comments', 'Demographic'];
+
+export const ApiHeaders = {
+    method: 'GET',
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+        "Content-Type": "application/json"
+    }
+}
+
+export const breakdownValues = ['age,gender', 'country', 'city']

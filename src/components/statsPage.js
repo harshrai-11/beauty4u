@@ -5,7 +5,7 @@ import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogTitle,
 import Card from '@mui/material/Card';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { useEffect, useState } from 'react';
-import { CITY_GENDER_API, GET_PROFILE_ACCOUNTS_ENGAGED, GET_PROFILE_VIEWS, INSIGHTS } from '../routes';
+import { ACCOUNTS_REACHED_AGE_GENDER_API, ACCOUNTS_REACHED_DEMOGRAPHY_API, CITY_GENDER_API, GET_PROFILE_ACCOUNTS_ENGAGED, GET_PROFILE_VIEWS, INSIGHTS } from '../routes';
 import { pickHighest, countryCodesWithNames, calculateGenderDataTotal } from '../helper';
 import { SimpleBarChart } from './charts/barChart';
 import axios from 'axios';
@@ -14,7 +14,7 @@ import countriesImg from './images/countries.jpeg';
 import ageRangeImg from './images/ageRange.jpeg';
 import cityImg from './images/city.jpeg';
 import genderImg from './images/gender.webp';
-import { cardBarGraphData, dateFilter, reachTimeNumberDays, reachTimePeriod, statsHeader } from '../utils.js/constant';
+import { ApiHeaders, breakdownValues, cardBarGraphData, dateFilter, reachTimeNumberDays, reachTimePeriod, statsHeader } from '../utils.js/constant';
 import { CardGraph } from './charts/card-graph';
 import { getWeekDatesFromNDaysAgo } from '../utils.js/helper';
 import { AppLayout } from '../layout/app-layout';
@@ -22,59 +22,124 @@ import RadialPieChart from './charts/pieChart';
 
 const StatsPage = () => {
 
+    // Overall country city data
     const [countryData, setCountryData] = useState([]);
+    const [cityData, setCityData] = useState([]);
+    const [ageData, setAgeData] = useState([]);
+
+    // Top 3 countyr, city, age, gender data
     const [barGraphCountryData, setBarGraphCountryData] = useState([]);
+    const [barGraphCityData, setBarGraphCityData] = useState([]);
+    const [barGraphAgeData, setBarGraphAgeData] = useState([]);
+    const [barGraphGenderData, setBarGraphGenderData] = useState([]);
+
+    // Overall API Response save followers demography
+    const [apiResponse, setApiResponse] = useState(undefined);
+
+    // Popup data and its state
     const [open, setOpen] = useState(false);
     const [popupTitle, setPopupTtile] = useState('');
-    const [cityData, setCityData] = useState([]);
-    const [barGraphCityData, setBarGraphCityData] = useState([]);
-    const [apiResponse, setApiResponse] = useState(undefined);
-    const [ageData, setAgeData] = useState([]);
-    const [barGraphAgeData, setBarGraphAgeData] = useState([]);
     const [popupData, setPopupData] = useState(undefined);
 
-    const [barGraphGenderData, setBarGraphGenderData] = useState([]);
+    // Overall Accounts Reached and its bar chart (left chart)
     const [reachApiResponse, setReachApiResponse] = useState(undefined);
     const [barGraphReachApi, setBarGraphReachApi] = useState([]);
+
+    // Overall Profile views and its bar chart (left chart)
     const [profileViewsResponse, setProfileViewsResponse] = useState([]);
     const [barGraphProfileViewsApi, setBarGraphProfileViewsApi] = useState([]);
-    const [barGraphAccountsEngagedApi, setBarGraphAccountsEngagedApi] = useState([]);
-    const [accountsEngagedResponse, setAccountsEngagedResponse] = useState(null);
 
+    // Overall Accounts engaged and its bar chart (left chart)
+    const [accountsEngagedResponse, setAccountsEngagedResponse] = useState(null);
+    const [barGraphAccountsEngagedApi, setBarGraphAccountsEngagedApi] = useState([]);
+
+    // Active Header Left Side
     const [activeHeaderOption, setActiveHeaderOption] = useState('Profile Insights');
     const [dateRangeFilterValue, setDateRangeFilterValue] = useState("1");
+
+    // Current active left chart card
     const [currentActiveChart, setCurrentActiveChart] = useState(1);
+
+    // Impressions
     const [impressions, setImpressions] = useState(0);
 
-    const getProfileViews = () => {
+    // Error state
+    const [error, setError] = useState('');
+
+
+    // Getting Left Card Data
+    // Accounts Reached (1) will be shown for all date ranges
+    // Accounts Engaged and Profile Views is for 1 day data only
+    const getLeftCardsStatData = () => {
         if (dateRangeFilterValue === "1") {
-            axios(GET_PROFILE_VIEWS, {
-                method: 'GET',
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json"
-                }
-            }).then(profileViewResponse => {
+            axios(GET_PROFILE_VIEWS, ApiHeaders).then(profileViewResponse => {
                 if (profileViewResponse.data.data) {
                     const profileViews = profileViewResponse.data.data.data.filter(val => val.name === 'profile_views')[0]
                     setProfileViewsResponse(profileViews.values);
                 }
             });
-            axios(GET_PROFILE_ACCOUNTS_ENGAGED, {
-                method: 'GET',
-                headers: {
-                    "Access-Control-Allow-Origin": "*",
-                    "Content-Type": "application/json"
-                }
-            }).then(profileViewResponse => {
+            axios(GET_PROFILE_ACCOUNTS_ENGAGED, ApiHeaders).then(profileViewResponse => {
                 if (profileViewResponse.data.data) {
                     const accountsEngaged = profileViewResponse.data.data.data[0].total_value.value
                     setAccountsEngagedResponse(accountsEngaged);
                 }
             })
         }
+
+        axios(INSIGHTS, ApiHeaders).then(insightResponse => {
+            if (insightResponse.data.data) {
+                const apiResponse = insightResponse.data.data
+                setReachApiResponse(apiResponse)
+            }
+        }).catch(err => {
+            console.log('ERROR', err);
+        })
     }
 
+    const getFollowersDemography = () => {
+        if (currentActiveChart === 4) {
+            axios(CITY_GENDER_API, ApiHeaders).then(ageCityGenderResponse => {
+                if (ageCityGenderResponse.data.data) {
+                    const apiResponse = ageCityGenderResponse.data.data
+                    setApiResponse(apiResponse)
+                }
+            }).catch(err => {
+                console.log('ERROR', err);
+            })
+        }
+        if (currentActiveChart === 1) {
+            breakdownValues.forEach(value => {
+                axios(ACCOUNTS_REACHED_DEMOGRAPHY_API(value), ApiHeaders).then(response => {
+                    if (response.data.data) {
+                        // const apiResponse = ageCityGenderResponse.data.data.data
+                        console.log('haaha', response.data)
+                        // setApiResponse(apiResponse)
+                    }
+                }).catch(err => {
+                    console.log('ERROR', err);
+                    setError(err?.response.data.errors.error.error_user_title);
+                })
+            })
+
+        }
+        if (currentActiveChart === 2) {
+            breakdownValues.forEach(value => {
+                axios(ACCOUNTS_REACHED_DEMOGRAPHY_API(value), ApiHeaders).then(response => {
+                    if (response.data.data) {
+                        // const apiResponse = ageCityGenderResponse.data.data.data
+                        console.log('haaha', response.data)
+                        // setApiResponse(apiResponse)
+                    }
+                }).catch(err => {
+                    console.log('ERROR', err);
+                    setError(err?.response.data.errors.error.error_user_title);
+                })
+            })
+
+        }
+    }
+
+    // Bar graph Accounts Reach Data Function
     const setBarGraphReachResult = (dateRangeFilterValue) => {
         const reachData = reachApiResponse.data.filter(val => val.name === 'reach' && val.period === reachTimePeriod[dateRangeFilterValue])[0];
         let barGraphReachData = [{ uv: reachData.values[0].value, pv: reachData.values[1].value }];
@@ -90,40 +155,13 @@ const StatsPage = () => {
         setImpressions(totalImpressions)
     }
 
+    // On Load
     useEffect(() => {
-
-        axios(CITY_GENDER_API, {
-            method: 'GET',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-        }).then(ageCityGenderResponse => {
-            if (ageCityGenderResponse.data.data) {
-                const apiResponse = ageCityGenderResponse.data.data
-                setApiResponse(apiResponse)
-            }
-        }).catch(err => {
-            console.log('ERROR', err);
-        })
-
-        axios(INSIGHTS, {
-            method: 'GET',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-        }).then(insightResponse => {
-            if (insightResponse.data.data) {
-                const apiResponse = insightResponse.data.data
-                setReachApiResponse(apiResponse)
-            }
-        }).catch(err => {
-            console.log('ERROR', err);
-        })
-        getProfileViews();
+        getLeftCardsStatData();
+        getFollowersDemography();
     }, []);
 
+    // Country, City, Age, Gender Data graph top 3
     useEffect(() => {
         if (apiResponse) {
             // Country Data
@@ -181,9 +219,9 @@ const StatsPage = () => {
             setBarGraphGenderData(barGraphGenderData)
         }
 
-
     }, [apiResponse])
 
+    // From reach API setting bar graph data 
     useEffect(() => {
         if (reachApiResponse) {
             setBarGraphReachResult(dateRangeFilterValue);
@@ -191,6 +229,7 @@ const StatsPage = () => {
         }
     }, [reachApiResponse])
 
+    // Profile views and accounts Engaged
     useEffect(() => {
         if (profileViewsResponse.length) {
             let barGraphProfileViewData = [{ uv: profileViewsResponse[0].value, pv: profileViewsResponse[1].value }];
@@ -202,9 +241,17 @@ const StatsPage = () => {
         }
     }, [profileViewsResponse, accountsEngagedResponse])
 
+    // getting user demography on the current chart
+    useEffect(() => {
+        getFollowersDemography();
+        setError('');
+    }, [currentActiveChart])
+
+
     const handleClose = () => {
         setOpen(false);
     };
+
     const showEntireGraph = (type) => {
         setOpen(true)
         if (type === 'country') {
@@ -234,6 +281,7 @@ const StatsPage = () => {
         }
     }
 
+    // Left card graph data
     const getGraphData = (currentCard) => {
         switch (currentCard) {
             case 1:
@@ -242,7 +290,7 @@ const StatsPage = () => {
                 return barGraphAccountsEngagedApi;
             case 3:
                 return barGraphProfileViewsApi;
-            default: 
+            default:
                 return barGraphReachApi;
         }
     }
@@ -319,7 +367,7 @@ const StatsPage = () => {
                 {
                     cardBarGraphData.map((data, index) => {
                         return (
-                            dateRangeFilterValue !== "1" && data.value === 1 ? <CardGraph key={index} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph> : dateRangeFilterValue === "1" && <CardGraph key={index} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph>
+                            (dateRangeFilterValue !== "1" && data.value === 1) || data.value === 4 ? <CardGraph key={index} cardIndex={data.value} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph> : dateRangeFilterValue === "1" && <CardGraph key={index} cardIndex={data.value} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph>
                         )
                     })
                 }
@@ -359,12 +407,12 @@ const StatsPage = () => {
                     <Typography align='left' marginTop={5} marginLeft={5} sx={{ fontSize: 16, fontWeight: '600' }} color="white" gap={5}>
                         {cardBarGraphData[currentActiveChart - 1].label}
                     </Typography>
-                    <RadialPieChart graphData={getPieChartData()}></RadialPieChart>
+                    {currentActiveChart !== 4 && <RadialPieChart graphData={getPieChartData()}></RadialPieChart>}
                 </div>
 
 
-                <div className='divider' style={{ borderBottomColor: '#363D50', padding: '10px', marginLeft: '10px', marginRight: '10px' }}></div>
-                <div className='info-charts'>
+                <div className='divider' style={{ borderBottom: '1px solid #363D50', padding: '10px', margin: '10px' }}></div>
+                {currentActiveChart !== 3 && error === '' && <div className='info-charts'>
                     <div className='top-countries-cities-div'>
                         <Card className='top-countries'>
                             <CardContent className='top-data-content'>
@@ -379,18 +427,19 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
                                 <img src={cityImg} alt=''></img>
-                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350}/>
+                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} />
                                 <Button onClick={() => showEntireGraph('city')}>See More</Button>
                             </CardContent>
                         </Card>
                     </div>
-                    <div className='divider' style={{ borderBottomColor: '#363D50' }}></div>
+                    <div className='divider' style={{ borderBottom: '1px solid #363D50', padding: '10px', margin: '10px' }}></div>
+
                     <div className='top-gender-age-div'>
                         <Card className='top-countries'>
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
                                 <img src={ageRangeImg} alt=''></img>
-                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350}/>
+                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} />
                                 <Button onClick={() => showEntireGraph('age')}>See More</Button>
                             </CardContent>
 
@@ -399,12 +448,13 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
                                 <img src={genderImg} alt=''></img>
-                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350}/>
+                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} />
                             </CardContent>
 
                         </Card>
                     </div>
-                </div>
+                </div>}
+                {error !== '' && <Typography fontSize={18} fontWeight="bold" color="white">Oops! {error}</Typography>}
             </div>
         </>
     }

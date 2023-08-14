@@ -1,6 +1,7 @@
 import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { GET_PER_MEDIA_INSIGHT } from '../../routes';
+import { ApiHeaders } from '../../utils.js/constant';
 import { isDesktop, isTablet } from '../../utils.js/helper';
 import { SimpleBarChart } from './barChart';
 
@@ -11,12 +12,7 @@ export const MediaInsights = ({ mediaId, mediaType }) => {
     const [graphData, setGraphData] = useState([]);
 
     useEffect(() => {
-        axios.get(GET_PER_MEDIA_INSIGHT(mediaTypeValue, mediaId), {
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            }
-        }).then((val => {
+        axios.get(GET_PER_MEDIA_INSIGHT(mediaTypeValue, mediaId), ApiHeaders).then((val => {
             if (val.data) {
                 const insightResponse = val.data.data.data;
                 let graphDataArr = [];

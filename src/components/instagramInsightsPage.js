@@ -3,7 +3,7 @@ import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppLayout } from '../layout/app-layout';
 import { INSTAGRAM_FEED_DETAILS } from '../routes';
-import { feedPageHeader, InstaInsightsbuttons, postStatsItems } from '../utils.js/constant';
+import { ApiHeaders, feedPageHeader, InstaInsightsbuttons, postStatsItems } from '../utils.js/constant';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { formatDate } from '../utils.js/helper';
@@ -24,13 +24,7 @@ const InstagramInsightsPage = () => {
 
 
     const getInstagramFeedDetails = (url, isFirstPage = false) => {
-        axios(url, {
-            method: 'GET',
-            headers: {
-                "Access-Control-Allow-Origin": "*",
-                "Content-Type": "application/json"
-            },
-        }).then(feedResponse => {
+        axios(url, ApiHeaders).then(feedResponse => {
             if (feedResponse.data.data) {
                 const apiResponse = isFirstPage ? feedResponse.data.data.data : feedResponse.data.data
                 setFeedResponse(apiResponse);

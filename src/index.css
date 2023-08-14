@@ -566,6 +566,12 @@ code {
   color: #fff !important;
 }
 
+
+.card-image-div svg {
+  height: 300px !important;
+  width: 300px !important;
+}
+
 @media only screen and (min-width: 767px) {
   .single-page-layout {
     width: 100%;
