@@ -92,4 +92,4 @@ export const ApiHeaders = {
     }
 }
 
-export const breakdownValues = ['age,gender', 'country', 'city']
+export const breakdownValues = [{'audience_gender_age': 'age,gender'}, {'audience_country': 'country'}, {'audience_city': 'city'}]

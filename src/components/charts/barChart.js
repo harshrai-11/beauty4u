@@ -33,7 +33,7 @@ const CustomLabel = props => {
     let value = props.payload.value
     if (value.includes(' ')) {
         let split = props.payload.value.split(' ');
-        value = <><tspan textAnchor="start" x="0">{split[0]}</tspan><tspan textAnchor="start" x="0" dy="20">{split[1]}</tspan></>
+        value = <><tspan textAnchor={props.textAnchor} x="0">{split[0]}</tspan><tspan textAnchor={props.textAnchor} x="0" dy="20">{split[1]}</tspan></>
     }
     return (
       <g>
@@ -44,7 +44,7 @@ const CustomLabel = props => {
     );
  }
 
-export const SimpleBarChart = ({ data, yKey, xKey, height, fontFillColor, xAxisLabelPosition, showXAxis = false, fontSize = 14, width = 400, backgroundFill = 'none', graphFill = '#f4b25a'}) => {
+export const SimpleBarChart = ({ data, yKey, xKey, height, fontFillColor, xAxisLabelPosition, showXAxis = false, fontSize = 14, width = 400, backgroundFill = 'none', graphFill = '#f4b25a', textAnchor = "start"}) => {
     return (
         <ResponsiveContainer width={width} height={height} debounce={1} >
             <BarChart layout="vertical" data={data} {...{
@@ -52,7 +52,7 @@ export const SimpleBarChart = ({ data, yKey, xKey, height, fontFillColor, xAxisL
             }} barGap={100}>
                 {showXAxis && <CartesianGrid opacity={0.5} />}
                 <XAxis hide type="number" />
-                <YAxis interval={0} dataKey={xKey} type="category" tick={<CategoryTick fontColor={fontFillColor} />} tickLine={false} axisLine={showXAxis} ></YAxis>
+                <YAxis interval={0} dataKey={xKey} type="category" tick={<CategoryTick fontColor={fontFillColor} textAnchor={textAnchor}/>} tickLine={false} axisLine={showXAxis} ></YAxis>
                 <Tooltip />
                 <Bar dataKey={yKey} fill={graphFill} label={xAxisLabelPosition ? <CustomLabel xAxisLabelPosition={xAxisLabelPosition} labelFontColor={fontFillColor}></CustomLabel> : {position: 'right', fill: fontFillColor, fontSize,  }} barSize={13} background={{ fill: backgroundFill }} />
             </BarChart>

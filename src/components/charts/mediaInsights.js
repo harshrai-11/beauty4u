@@ -22,10 +22,10 @@ export const MediaInsights = ({ mediaId, mediaType }) => {
                 setGraphData(graphDataArr)
             }
         }))
-    }, [mediaId, mediaType])
+    }, [mediaId, mediaType, mediaTypeValue])
 
     return <div className='media-insight-section-div'>
-        <SimpleBarChart data={graphData} backgroundFill='#363D50' height={500} width={isDesktop() ? 700 : isTablet() ? 350 : 250} xKey="name" yKey="pv" fontFillColor={"#fff"} xAxisLabelPosition={isDesktop() ? 750 : 200} graphFill="#6de6b5" fontSize={16}></SimpleBarChart>
+        <SimpleBarChart data={graphData} backgroundFill='#363D50' height={500} width={isDesktop() ? 700 : isTablet() ? 350 : 250} xKey="name" yKey="pv" fontFillColor={"#fff"} xAxisLabelPosition={isDesktop() ? 750 : 200} graphFill="#6de6b5" fontSize={16} textAnchor="middle"></SimpleBarChart>
     </div>
 
 }

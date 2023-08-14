@@ -5,7 +5,7 @@ import { Button, CardContent, Dialog, DialogActions, DialogContent, DialogTitle,
 import Card from '@mui/material/Card';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { useEffect, useState } from 'react';
-import { ACCOUNTS_REACHED_AGE_GENDER_API, ACCOUNTS_REACHED_DEMOGRAPHY_API, CITY_GENDER_API, GET_PROFILE_ACCOUNTS_ENGAGED, GET_PROFILE_VIEWS, INSIGHTS } from '../routes';
+import { ACCOUNTS_ENGAGED_DEMOGRAPHY_API, ACCOUNTS_REACHED_DEMOGRAPHY_API, FOLLOWERS_DEMOGRAPHY_API, GET_PROFILE_ACCOUNTS_ENGAGED, GET_PROFILE_VIEWS, GET_PROFILE_ACCOUNTS_REACHED } from '../routes';
 import { pickHighest, countryCodesWithNames, calculateGenderDataTotal } from '../helper';
 import { SimpleBarChart } from './charts/barChart';
 import axios from 'axios';
@@ -19,6 +19,7 @@ import { CardGraph } from './charts/card-graph';
 import { getWeekDatesFromNDaysAgo } from '../utils.js/helper';
 import { AppLayout } from '../layout/app-layout';
 import RadialPieChart from './charts/pieChart';
+import { Loader } from '../layout/loader';
 
 const StatsPage = () => {
 
@@ -34,7 +35,7 @@ const StatsPage = () => {
     const [barGraphGenderData, setBarGraphGenderData] = useState([]);
 
     // Overall API Response save followers demography
-    const [apiResponse, setApiResponse] = useState(undefined);
+    const [followersDemographyApiResponse, setFollowersDemographyApiResponse] = useState(undefined);
 
     // Popup data and its state
     const [open, setOpen] = useState(false);
@@ -66,11 +67,14 @@ const StatsPage = () => {
     // Error state
     const [error, setError] = useState('');
 
+    // Loader State 
+    const [showLoader, setShowLoader] = useState(false);
 
     // Getting Left Card Data
     // Accounts Reached (1) will be shown for all date ranges
     // Accounts Engaged and Profile Views is for 1 day data only
     const getLeftCardsStatData = () => {
+        setShowLoader(true);
         if (dateRangeFilterValue === "1") {
             axios(GET_PROFILE_VIEWS, ApiHeaders).then(profileViewResponse => {
                 if (profileViewResponse.data.data) {
@@ -86,10 +90,10 @@ const StatsPage = () => {
             })
         }
 
-        axios(INSIGHTS, ApiHeaders).then(insightResponse => {
+        axios(GET_PROFILE_ACCOUNTS_REACHED, ApiHeaders).then(insightResponse => {
             if (insightResponse.data.data) {
-                const apiResponse = insightResponse.data.data
-                setReachApiResponse(apiResponse)
+                const followersDemographyApiResponse = insightResponse.data.data
+                setReachApiResponse(followersDemographyApiResponse)
             }
         }).catch(err => {
             console.log('ERROR', err);
@@ -98,45 +102,142 @@ const StatsPage = () => {
 
     const getFollowersDemography = () => {
         if (currentActiveChart === 4) {
-            axios(CITY_GENDER_API, ApiHeaders).then(ageCityGenderResponse => {
+            axios(FOLLOWERS_DEMOGRAPHY_API, ApiHeaders).then(ageCityGenderResponse => {
                 if (ageCityGenderResponse.data.data) {
-                    const apiResponse = ageCityGenderResponse.data.data
-                    setApiResponse(apiResponse)
+                    const followersDemographyApiResponse = ageCityGenderResponse.data.data
+                    setFollowersDemographyApiResponse(followersDemographyApiResponse)
+                    setShowLoader(false)
                 }
             }).catch(err => {
                 console.log('ERROR', err);
+                setErrorMessage(err?.response.data.errors.error.error_user_title)
             })
         }
         if (currentActiveChart === 1) {
-            breakdownValues.forEach(value => {
-                axios(ACCOUNTS_REACHED_DEMOGRAPHY_API(value), ApiHeaders).then(response => {
+            let apiResponseArray = [];
+            breakdownValues.forEach(async (value, index) => {
+                axios(ACCOUNTS_REACHED_DEMOGRAPHY_API(Object.values(value)[0]), ApiHeaders).then(async response => {
                     if (response.data.data) {
-                        // const apiResponse = ageCityGenderResponse.data.data.data
-                        console.log('haaha', response.data)
-                        // setApiResponse(apiResponse)
+                        const data = response.data.data.data[0].total_value.breakdowns[0].results;
+                        let keyValuePairs = {}
+                        data.forEach(result => (
+                            keyValuePairs[`${result.dimension_values.reverse().join('.')}`] = result.value
+                        ))
+                        let name = Object.keys(value)[0];
+                        apiResponseArray.push({ name, values: [{ value: keyValuePairs }] })
+                        if (name === 'audience_gender_age') {
+                            updateAgeGenderDataState({data: apiResponseArray})
+                        } else if (name === 'audience_city') {
+                            updateCityDataState({data: apiResponseArray})
+                        } else {
+                            updateCountryDataState({data: apiResponseArray})
+                        }
+                        setShowLoader(false)
                     }
                 }).catch(err => {
                     console.log('ERROR', err);
-                    setError(err?.response.data.errors.error.error_user_title);
+                    setErrorMessage(err?.response.data.errors.error.error_user_title)
                 })
             })
-
+            setFollowersDemographyApiResponse({ data: apiResponseArray })
         }
         if (currentActiveChart === 2) {
-            breakdownValues.forEach(value => {
-                axios(ACCOUNTS_REACHED_DEMOGRAPHY_API(value), ApiHeaders).then(response => {
+            let apiResponseArray = [];
+            breakdownValues.forEach(async (value, index) => {
+                axios(ACCOUNTS_ENGAGED_DEMOGRAPHY_API(Object.values(value)[0]), ApiHeaders).then(async response => {
                     if (response.data.data) {
-                        // const apiResponse = ageCityGenderResponse.data.data.data
-                        console.log('haaha', response.data)
-                        // setApiResponse(apiResponse)
+                        const data = response.data.data.data[0].total_value.breakdowns[0].results;
+                        let keyValuePairs = {}
+                        data.forEach(result => (
+                            keyValuePairs[`${result.dimension_values.reverse().join('.')}`] = result.value
+                        ))
+                        let name = Object.keys(value)[0];
+                        apiResponseArray.push({ name, values: [{ value: keyValuePairs }] })
+                        if (name === 'audience_gender_age') {
+                            updateAgeGenderDataState({data: apiResponseArray})
+                        } else if (name === 'audience_city') {
+                            updateCityDataState({data: apiResponseArray})
+                        } else {
+                            updateCountryDataState({data: apiResponseArray})
+                        }
+                        setShowLoader(false)
                     }
                 }).catch(err => {
                     console.log('ERROR', err);
-                    setError(err?.response.data.errors.error.error_user_title);
+                    setErrorMessage(err?.response.data.errors.error.error_user_title)
                 })
             })
-
+            setFollowersDemographyApiResponse({ data: apiResponseArray })
         }
+        if (currentActiveChart === 3) {
+            setShowLoader(false)
+        }
+    }
+
+    const updateAgeGenderDataState = (arrayResponse) => {
+        // Age Range
+        let ageData = [];
+        const ageDataRes = arrayResponse.data.filter(val => val.name === 'audience_gender_age')[0];
+        const ageDataValues = ageDataRes.values[0].value;
+        Object.keys(ageDataValues).forEach(val => {
+            ageData.push({ name: val, pv: ageDataValues[val] })
+        })
+        setAgeData(ageData);
+        const ageDataTop3 = pickHighest(ageDataValues, 3)
+        let barGraphAgeData = [];
+        Object.keys(ageDataTop3).forEach(val => {
+            barGraphAgeData.push({ name: val, pv: ageDataTop3[val] })
+        });
+        setBarGraphAgeData(barGraphAgeData);
+
+        // Gender
+        let barGraphGenderData = [];
+        const genderTop3 = calculateGenderDataTotal(ageDataValues);
+        Object.keys(genderTop3).forEach(val => {
+            barGraphGenderData.push({ name: val, pv: genderTop3[val] })
+        });
+        setBarGraphGenderData(barGraphGenderData)
+    }
+
+    const updateCityDataState = (arrayResponse) => {
+        // City Data
+        let cityData = [];
+        const cityDatRes = arrayResponse.data.filter(val => val.name === 'audience_city')[0];
+        const cityDataValues = cityDatRes.values[0].value;
+        Object.keys(cityDataValues).forEach(val => {
+            cityData.push({ name: val.split(',')[0], pv: cityDataValues[val] })
+        })
+
+        setCityData(cityData);
+        const cityDataTop3 = pickHighest(cityDataValues, 3)
+        let barGraphCityData = [];
+        Object.keys(cityDataTop3).forEach(val => {
+            barGraphCityData.push({ name: val.split(',')[0], pv: cityDataTop3[val] })
+        });
+        setBarGraphCityData(barGraphCityData);
+    }
+
+    const updateCountryDataState = (arrayResponse) => {
+        // Country Data
+        let countryData = [];
+        const countryDataRes = arrayResponse.data.filter(val => val.name === 'audience_country')[0];
+        const countryDataValues = countryDataRes.values[0].value;
+        Object.keys(countryDataValues).forEach(val => {
+            countryData.push({ name: countryCodesWithNames[val], pv: countryDataValues[val] })
+        })
+        setCountryData(countryData);
+        const CountryDataTop3 = pickHighest(countryDataValues, 3)
+        let barGraphCountryData = [];
+        Object.keys(CountryDataTop3).forEach(val => {
+            barGraphCountryData.push({ name: countryCodesWithNames[val], pv: CountryDataTop3[val] })
+        });
+
+        setBarGraphCountryData(barGraphCountryData);
+    }
+
+    const setErrorMessage = (message) => {
+        setError(message)
+        setShowLoader(false)
     }
 
     // Bar graph Accounts Reach Data Function
@@ -154,98 +255,6 @@ const StatsPage = () => {
         })
         setImpressions(totalImpressions)
     }
-
-    // On Load
-    useEffect(() => {
-        getLeftCardsStatData();
-        getFollowersDemography();
-    }, []);
-
-    // Country, City, Age, Gender Data graph top 3
-    useEffect(() => {
-        if (apiResponse) {
-            // Country Data
-            let countryData = [];
-            const countryDataRes = apiResponse.data.filter(val => val.name === 'audience_country')[0];
-            const countryDataValues = countryDataRes.values[0].value;
-            Object.keys(countryDataValues).forEach(val => {
-                countryData.push({ name: countryCodesWithNames[val], pv: countryDataValues[val] })
-            })
-            setCountryData(countryData);
-            const CountryDataTop3 = pickHighest(countryDataValues, 3)
-            let barGraphCountryData = [];
-            Object.keys(CountryDataTop3).forEach(val => {
-                barGraphCountryData.push({ name: countryCodesWithNames[val], pv: CountryDataTop3[val] })
-            });
-
-            setBarGraphCountryData(barGraphCountryData);
-
-            // City Data
-            let cityData = [];
-            const cityDatRes = apiResponse.data.filter(val => val.name === 'audience_city')[0];
-            const cityDataValues = cityDatRes.values[0].value;
-            Object.keys(cityDataValues).forEach(val => {
-                cityData.push({ name: val.split(',')[0], pv: cityDataValues[val] })
-            })
-            setCityData(cityData);
-            const cityDataTop3 = pickHighest(cityDataValues, 3)
-            let barGraphCityData = [];
-            Object.keys(cityDataTop3).forEach(val => {
-                barGraphCityData.push({ name: val.split(',')[0], pv: cityDataTop3[val] })
-            });
-            setBarGraphCityData(barGraphCityData);
-
-            // Age Range
-            let ageData = [];
-            const ageDataRes = apiResponse.data.filter(val => val.name === 'audience_gender_age')[0];
-            const ageDataValues = ageDataRes.values[0].value;
-            Object.keys(ageDataValues).forEach(val => {
-                ageData.push({ name: val, pv: ageDataValues[val] })
-            })
-            setAgeData(ageData);
-            const ageDataTop3 = pickHighest(ageDataValues, 3)
-            let barGraphAgeData = [];
-            Object.keys(ageDataTop3).forEach(val => {
-                barGraphAgeData.push({ name: val, pv: ageDataTop3[val] })
-            });
-            setBarGraphAgeData(barGraphAgeData);
-
-            // Gender
-            let barGraphGenderData = [];
-            const genderTop3 = calculateGenderDataTotal(ageDataValues);
-            Object.keys(genderTop3).forEach(val => {
-                barGraphGenderData.push({ name: val, pv: genderTop3[val] })
-            });
-            setBarGraphGenderData(barGraphGenderData)
-        }
-
-    }, [apiResponse])
-
-    // From reach API setting bar graph data 
-    useEffect(() => {
-        if (reachApiResponse) {
-            setBarGraphReachResult(dateRangeFilterValue);
-            calculateAndSetImpression(dateRangeFilterValue);
-        }
-    }, [reachApiResponse])
-
-    // Profile views and accounts Engaged
-    useEffect(() => {
-        if (profileViewsResponse.length) {
-            let barGraphProfileViewData = [{ uv: profileViewsResponse[0].value, pv: profileViewsResponse[1].value }];
-            setBarGraphProfileViewsApi(barGraphProfileViewData);
-        }
-        if (accountsEngagedResponse) {
-            let barGraphAccountsEngaged = [{ uv: accountsEngagedResponse, pv: null }];
-            setBarGraphAccountsEngagedApi(barGraphAccountsEngaged)
-        }
-    }, [profileViewsResponse, accountsEngagedResponse])
-
-    // getting user demography on the current chart
-    useEffect(() => {
-        getFollowersDemography();
-        setError('');
-    }, [currentActiveChart])
 
 
     const handleClose = () => {
@@ -265,7 +274,6 @@ const StatsPage = () => {
             setPopupData(ageData)
         }
     }
-
 
     const handleTabChange = (e) => {
         setActiveHeaderOption(e.target.textContent)
@@ -458,8 +466,52 @@ const StatsPage = () => {
             </div>
         </>
     }
+
+    // On Load
+    useEffect(() => {
+        getLeftCardsStatData();
+        getFollowersDemography();
+    }, []);
+
+    // Country, City, Age, Gender Data graph top 3 for followers
+    useEffect(() => {
+        if (followersDemographyApiResponse && followersDemographyApiResponse.data && followersDemographyApiResponse.data.length) {
+            updateCountryDataState(followersDemographyApiResponse)
+            updateCityDataState(followersDemographyApiResponse)
+            updateAgeGenderDataState(followersDemographyApiResponse)
+        }
+    }, [followersDemographyApiResponse])
+
+    // From reach API setting bar graph data 
+    useEffect(() => {
+        if (reachApiResponse) {
+            setBarGraphReachResult(dateRangeFilterValue);
+            calculateAndSetImpression(dateRangeFilterValue);
+        }
+    }, [reachApiResponse])
+
+    // Profile views and accounts Engaged
+    useEffect(() => {
+        if (profileViewsResponse.length) {
+            let barGraphProfileViewData = [{ uv: profileViewsResponse[0].value, pv: profileViewsResponse[1].value }];
+            setBarGraphProfileViewsApi(barGraphProfileViewData);
+        }
+        if (accountsEngagedResponse) {
+            let barGraphAccountsEngaged = [{ uv: accountsEngagedResponse, pv: null }];
+            setBarGraphAccountsEngagedApi(barGraphAccountsEngaged)
+        }
+    }, [profileViewsResponse, accountsEngagedResponse])
+
+    // getting user demography on the current chart
+    useEffect(() => {
+        setShowLoader(true)
+        setError('');
+        getFollowersDemography();
+    }, [currentActiveChart])
+
     return (
         <>
+            {showLoader && <Loader></Loader>}
             <AppLayout layoutId={1} leftHeaderData={statsHeader} rightHeaderData={{ name: 'Dr. Mendeita Videos', socialMediaUsername: '@drmendetavideos' }} leftHeaderType={'navigation'} rightHeaderType={'username-display'} handleTabChange={handleTabChange} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren()} activeHeaderOption={activeHeaderOption}></AppLayout>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{popupTitle}</DialogTitle>

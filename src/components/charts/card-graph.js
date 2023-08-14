@@ -34,15 +34,15 @@ export const CardGraph = ({ graphData, cardIndex, barData, currentActiveChart, s
                 <div>
                     <Typography align='left' sx={{ fontSize: 12, fontWeight: 600 }} color="white" gap={5}>{barData.label}</Typography>
                     {isSingleValueGraph && graphData.length && <Typography align='left' style={{ fontWeight: 'bold' }} sx={{ fontSize: 16 }} color="#7cd985" gap={5}>
-                        {graphData[0]?.uv }  
-                        </Typography>}
+                        {graphData[0]?.uv}
+                    </Typography>}
                 </div>
                 <div className='right-arrow-icon'>
-                <ArrowForwardIosIcon color='#fff'></ArrowForwardIosIcon>
+                    <ArrowForwardIosIcon color='#fff'></ArrowForwardIosIcon>
                 </div>
             </div>
 
-            {cardIndex !== 4 &&<BarChart
+            {cardIndex !== 4 && <BarChart
                 width={isTablet() ? 150 : 300}
                 height={250}
                 data={graphData}
@@ -51,15 +51,15 @@ export const CardGraph = ({ graphData, cardIndex, barData, currentActiveChart, s
                 barSize={50}
             >
                 <Legend className='bar-chart-legend' wrapperStyle={{ position: 'relative' }} />
-                <Bar label={{position: 'insideStart', fill: '#000'}} name={barData.legendLabel1} dataKey="uv" fill="#956fe6" />
+                <Bar label={{ position: 'insideStart', fill: '#000' }} name={barData.legendLabel1} dataKey="uv" fill="#956fe6" />
                 <Tooltip></Tooltip>
 
-                {!isSingleValueGraph && <Bar label={{position: 'insideStart', fill: '#000'}} name={barData.legendLabel2} dataKey="pv" fill="#f4b25a" />}
+                {!isSingleValueGraph && <Bar label={{ position: 'insideStart', fill: '#000' }} name={barData.legendLabel2} dataKey="pv" fill="#f4b25a" />}
             </BarChart>}
             {cardIndex === 4 && <div className='card-image-div'>
                 <GroupIcon color='secondary'></GroupIcon>
                 <Typography color="#fff" fontWeight="bold" fontSize={16}>Total No. of Followers:<Typography fontWeight={"bold"} color="#7cd985">{followers}</Typography></Typography>
-                </div>}
+            </div>}
         </Card>
     </div>
 }

@@ -11,6 +11,7 @@ import { Card, CardContent, Typography, Button } from '@mui/material';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { ComponentHeader } from '../layout/componentHeader';
 import { MediaInsights } from './charts/mediaInsights';
+import { Loader } from '../layout/loader';
 
 const InstagramInsightsPage = () => {
 
@@ -22,6 +23,8 @@ const InstagramInsightsPage = () => {
 
     const [currentActiveTab, setCurrentActiveTab] = useState('Post Stats');
 
+    // Loader State 
+    const [showLoader, setShowLoader] = useState(false);
 
     const getInstagramFeedDetails = (url, isFirstPage = false) => {
         axios(url, ApiHeaders).then(feedResponse => {
@@ -30,15 +33,13 @@ const InstagramInsightsPage = () => {
                 setFeedResponse(apiResponse);
                 setNextPagination(isFirstPage ? feedResponse.data.data.paging.next : feedResponse.data.paging.next);
                 setPreviousPagination(isFirstPage ? feedResponse.data.data.paging.previous : feedResponse.data.paging.previous);
+                setShowLoader(false)
             }
         }).catch(err => {
             console.log('ERROR', err);
+            setShowLoader(false)
         })
     }
-
-    useEffect(() => {
-        getInstagramFeedDetails(INSTAGRAM_FEED_DETAILS, true)
-    }, []);
 
     const handleActiveImageChange = (index) => {
         setActiveImageIndex(index);
@@ -94,8 +95,8 @@ const InstagramInsightsPage = () => {
         if (data) {
             return <><div className='right-body'>
                 <div className='insta-active-picture-row'>
-                    {data.media_product_type === 'FEED' && <img className='img-fluid' style={{ borderRadius: '0.25rem' }} src={data.media_url} alt='feed-large'></img>}
-                    {data.media_product_type === 'REELS' && <video width='100%' height="242" controls >
+                    {data.media_product_type === 'FEED' && <img className='img-fluid' style={{ borderRadius: '0.25rem' }} src={data.media_url ?? '/Image_not_available.png'} alt='feed-large'></img>}
+                    {data.media_product_type === 'REELS' && <video width='100%' height="242" controls src={data.media_url ?? '/Image_not_available.png'} >
                         <source src={data.media_url} type="video/mp4" />
                     </video>}
                 </div>
@@ -142,14 +143,21 @@ const InstagramInsightsPage = () => {
                     <div className={`component-page-layout-header  navigation-3`}>
                         <ComponentHeader headerType="navigation" headerData={feedPageHeader} activeHeaderOption={currentActiveTab} handleTabChange={handleTabChange}></ComponentHeader>
                     </div>
-                       {currentActiveTab === 'Post Stats' && <MediaInsights mediaId={data.id} mediaType={data.media_product_type }></MediaInsights>}
+                    {currentActiveTab === 'Post Stats' && <MediaInsights mediaId={data.id} mediaType={data.media_product_type}></MediaInsights>}
                 </div>
             </>
         }
     }
 
+    useEffect(() => {
+        setShowLoader(true)
+        getInstagramFeedDetails(INSTAGRAM_FEED_DETAILS, true)
+    }, []);
+
     return (
-        <AppLayout layoutId={1} leftHeaderData={{ name: 'Dr. Mendeita Videos', socialMediaUsername: feedResponse ? feedResponse[0]?.username : '' }} leftHeaderType={'username-display'} rightHeaderType={'button-layout'} rightHeaderData={{ heading: 'Post Insights', buttons: InstaInsightsbuttons }} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren(feedResponse ? feedResponse[activeImageIndex] : undefined)}></AppLayout>
+        <> {showLoader && <Loader></Loader>}
+            <AppLayout layoutId={1} leftHeaderData={{ name: 'Dr. Mendeita Videos', socialMediaUsername: feedResponse ? feedResponse[0]?.username : '' }} leftHeaderType={'username-display'} rightHeaderType={'button-layout'} rightHeaderData={{ heading: 'Post Insights', buttons: InstaInsightsbuttons }} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren(feedResponse ? feedResponse[activeImageIndex] : undefined)}></AppLayout>
+        </>
     );
 };
 
