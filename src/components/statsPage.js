@@ -334,6 +334,9 @@ const StatsPage = () => {
         return pieChartFormat;
     }
 
+    const percentageToggleHandler = () => {
+        setShowPercentage(!showPercentage)
+    }
     const leftDivChildren = () => {
         return <><div className='stats-select'>
             <div className='stats-select-div'>
@@ -433,7 +436,7 @@ const StatsPage = () => {
                 <div className='divider' style={{ borderBottom: '1px solid #363D50', padding: '10px', margin: '10px' }}></div>
                 {currentActiveChart !== 3 && error === '' && <div className='info-charts'>
                     <FormGroup style={{ alignItems: 'end', color: '#fff' }}>
-                        <FormControlLabel control={<Switch value={showPercentage} color="warning" onChange={() => setShowPercentage(!showPercentage)} />} label="Show Percentage" labelPlacement="bottom" />
+                        <FormControlLabel control={<Switch checked={showPercentage} color="warning" onClick={() => percentageToggleHandler()} />} label="Show Percentage" labelPlacement="bottom" />
                     </FormGroup>
                     <div className='top-countries-cities-div'>
                         <Card className='top-countries'>
@@ -530,6 +533,9 @@ const StatsPage = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{popupTitle}</DialogTitle>
                 <DialogContent>
+                    <FormGroup>
+                        <FormControlLabel control={<Switch checked={showPercentage} color="warning" onClick={() => percentageToggleHandler()} />} label="Show Percentage" />
+                    </FormGroup>
                     <SimpleBarChart data={popupData?.sort((a, b) => b.pv - a.pv)} xKey="name" yKey={showPercentage ? "pv" : "uv"} width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} isPercentage={showPercentage} />
                 </DialogContent>
                 <DialogActions>
