@@ -179,14 +179,17 @@ const StatsPage = () => {
         let ageData = [];
         const ageDataRes = arrayResponse.data.filter(val => val.name === 'audience_gender_age')[0];
         const ageDataValues = ageDataRes.values[0].value;
+        let ageValueSum = Object.values(ageDataValues).reduce(function(a, b){
+            return a + b;
+        });
         Object.keys(ageDataValues).forEach(val => {
-            ageData.push({ name: val, pv: ageDataValues[val] })
+            ageData.push({ name: val, pv: (ageDataValues[val]/ageValueSum * 100).toFixed(2)})
         })
         setAgeData(ageData);
         const ageDataTop3 = pickHighest(ageDataValues, 3)
         let barGraphAgeData = [];
         Object.keys(ageDataTop3).forEach(val => {
-            barGraphAgeData.push({ name: val, pv: ageDataTop3[val] })
+            barGraphAgeData.push({ name: val, pv: (ageDataTop3[val]/ageValueSum * 100).toFixed(2) })
         });
         setBarGraphAgeData(barGraphAgeData);
 
@@ -194,7 +197,7 @@ const StatsPage = () => {
         let barGraphGenderData = [];
         const genderTop3 = calculateGenderDataTotal(ageDataValues);
         Object.keys(genderTop3).forEach(val => {
-            barGraphGenderData.push({ name: val, pv: genderTop3[val] })
+            barGraphGenderData.push({ name: val, pv: (genderTop3[val]/ageValueSum * 100).toFixed(2) })
         });
         setBarGraphGenderData(barGraphGenderData)
     }
@@ -204,15 +207,18 @@ const StatsPage = () => {
         let cityData = [];
         const cityDatRes = arrayResponse.data.filter(val => val.name === 'audience_city')[0];
         const cityDataValues = cityDatRes.values[0].value;
+        let cityValueSum = Object.values(cityDataValues).reduce(function(a, b){
+            return a + b;
+        });
         Object.keys(cityDataValues).forEach(val => {
-            cityData.push({ name: val.split(',')[0], pv: cityDataValues[val] })
+            cityData.push({ name: val.split(',')[0], pv: (cityDataValues[val]/cityValueSum * 100).toFixed(2) })
         })
 
         setCityData(cityData);
         const cityDataTop3 = pickHighest(cityDataValues, 3)
         let barGraphCityData = [];
         Object.keys(cityDataTop3).forEach(val => {
-            barGraphCityData.push({ name: val.split(',')[0], pv: cityDataTop3[val] })
+            barGraphCityData.push({ name: val.split(',')[0], pv: (cityDataTop3[val]/cityValueSum * 100).toFixed(2) })
         });
         setBarGraphCityData(barGraphCityData);
     }
@@ -222,14 +228,17 @@ const StatsPage = () => {
         let countryData = [];
         const countryDataRes = arrayResponse.data.filter(val => val.name === 'audience_country')[0];
         const countryDataValues = countryDataRes.values[0].value;
+        let countryValueSum = Object.values(countryDataValues).reduce(function(a, b){
+            return a + b;
+        });
         Object.keys(countryDataValues).forEach(val => {
-            countryData.push({ name: countryCodesWithNames[val], pv: countryDataValues[val] })
+            countryData.push({ name: countryCodesWithNames[val], pv: (countryDataValues[val]/countryValueSum * 100).toFixed(2) })
         })
         setCountryData(countryData);
         const CountryDataTop3 = pickHighest(countryDataValues, 3)
         let barGraphCountryData = [];
         Object.keys(CountryDataTop3).forEach(val => {
-            barGraphCountryData.push({ name: countryCodesWithNames[val], pv: CountryDataTop3[val] })
+            barGraphCountryData.push({ name: countryCodesWithNames[val], pv: (CountryDataTop3[val]/countryValueSum * 100).toFixed(2) })
         });
 
         setBarGraphCountryData(barGraphCountryData);
@@ -426,7 +435,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Countries</Typography>
                                 <img src={countriesImg} alt='countries'></img>
-                                <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} />
+                                <SimpleBarChart data={barGraphCountryData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} isPercentage />
                                 <Button onClick={() => showEntireGraph('country')}>See More</Button>
                             </CardContent>
                         </Card>
@@ -435,7 +444,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Cities</Typography>
                                 <img src={cityImg} alt=''></img>
-                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} />
+                                <SimpleBarChart data={barGraphCityData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} isPercentage />
                                 <Button onClick={() => showEntireGraph('city')}>See More</Button>
                             </CardContent>
                         </Card>
@@ -447,7 +456,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Age Range</Typography>
                                 <img src={ageRangeImg} alt=''></img>
-                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} />
+                                <SimpleBarChart data={barGraphAgeData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} isPercentage />
                                 <Button onClick={() => showEntireGraph('age')}>See More</Button>
                             </CardContent>
 
@@ -456,7 +465,7 @@ const StatsPage = () => {
                             <CardContent className='top-data-content'>
                                 <Typography color={'white'} align="left" sx={{ fontSize: '18px', paddingBottom: '10px' }} fontWeight={600}>Top Gender</Typography>
                                 <img src={genderImg} alt=''></img>
-                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} />
+                                <SimpleBarChart data={barGraphGenderData} xKey="name" yKey="pv" height={300} fontFillColor={"#fff"} backgroundFill="#363D50" xAxisLabelPosition={350} isPercentage />
                             </CardContent>
 
                         </Card>
@@ -516,7 +525,7 @@ const StatsPage = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{popupTitle}</DialogTitle>
                 <DialogContent>
-                    <SimpleBarChart data={popupData?.sort((a, b) => b.pv - a.pv)} xKey="name" yKey="pv" width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} />
+                    <SimpleBarChart data={popupData?.sort((a, b) => b.pv - a.pv)} xKey="name" yKey="pv" width={600} height={2400} fontFillColor={"#000"} showXAxis fontSize={14} isPercentage />
                 </DialogContent>
                 <DialogActions>
                     <Button onClick={handleClose} color="primary">
