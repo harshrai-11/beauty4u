@@ -71,7 +71,7 @@ const StatsPage = () => {
     const [showLoader, setShowLoader] = useState(false);
 
     const [showPercentage, setShowPercentage] = useState(false)
-
+    
     // Getting Left Card Data
     // Accounts Reached (1) will be shown for all date ranges
     // Accounts Engaged and Profile Views is for 1 day data only
@@ -120,19 +120,25 @@ const StatsPage = () => {
             breakdownValues.forEach(async (value, index) => {
                 axios(ACCOUNTS_REACHED_DEMOGRAPHY_API(Object.values(value)[0]), ApiHeaders).then(async response => {
                     if (response.data.data) {
+                        console.log('heree', response.data.data.data[0])
                         const data = response.data.data.data[0].total_value.breakdowns[0].results;
                         let keyValuePairs = {}
-                        data.forEach(result => (
-                            keyValuePairs[`${result.dimension_values.reverse().join('.')}`] = result.value
-                        ))
-                        let name = Object.keys(value)[0];
-                        apiResponseArray.push({ name, values: [{ value: keyValuePairs }] })
-                        if (name === 'audience_gender_age') {
-                            updateAgeGenderDataState({ data: apiResponseArray })
-                        } else if (name === 'audience_city') {
-                            updateCityDataState({ data: apiResponseArray })
+                        if (data) {
+                            data.forEach(result => (
+                                keyValuePairs[`${result.dimension_values.reverse().join('.')}`] = result.value
+                            ))
+                            let name = Object.keys(value)[0];
+                            apiResponseArray.push({ name, values: [{ value: keyValuePairs }] })
+                            if (name === 'audience_gender_age') {
+                                updateAgeGenderDataState({ data: apiResponseArray })
+                            } else if (name === 'audience_city') {
+                                updateCityDataState({ data: apiResponseArray })
+                            } else {
+                                updateCountryDataState({ data: apiResponseArray })
+                            }
                         } else {
-                            updateCountryDataState({ data: apiResponseArray })
+                            setErrorMessage('Demographic Data not available')
+
                         }
                         setShowLoader(false)
                     }
