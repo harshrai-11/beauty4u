@@ -28,7 +28,7 @@ export default function CardPage() {
         }).catch(err => {
             console.log('ERROR', err);
         })
-    })
+    }, [])
 
     const handleTabChange = (e) => {
         setActiveHeaderOption(e.target.textContent)
