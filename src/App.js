@@ -5,6 +5,7 @@ import CardPage from './components/cardPage';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import StatsPage from './components/statsPage';
 import InstagramInsightsPage from './components/instagramInsightsPage';
+import { ListPage } from './components/listPage';
 
 function App() {
   return (
@@ -24,6 +25,8 @@ function App() {
               <Route path="/stats" Component={StatsPage}>
               </Route>
               <Route path="/insta-insights" Component={InstagramInsightsPage}>
+              </Route>
+              <Route path="/post-list" Component={ListPage}>
               </Route>
               </Routes>
           </BrowserRouter>

@@ -6,7 +6,7 @@ import PeopleOutlineOutlinedIcon from '@mui/icons-material/PeopleOutlineOutlined
 import BarChartOutlinedIcon from '@mui/icons-material/BarChartOutlined';
 import CalendarMonthOutlinedIcon from '@mui/icons-material/CalendarMonthOutlined';
 import LocalPhoneOutlinedIcon from '@mui/icons-material/LocalPhoneOutlined';
-
+import FormatListBulletedIcon from '@mui/icons-material/FormatListBulleted';
 const SideBar = (props) => {
  
     const routeChange = (path) =>{  
@@ -27,6 +27,10 @@ const SideBar = (props) => {
         icon: <BarChartOutlinedIcon/>,
         label: 'Stats',
         path: '/stats'
+    }, {
+        icon: <FormatListBulletedIcon/>,
+        label: 'Posts List',
+        path: '/post-list'
     }, {
         icon: <CalendarMonthOutlinedIcon/>,
         label: 'Schedule'
