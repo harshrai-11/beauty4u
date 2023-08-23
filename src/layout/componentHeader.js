@@ -1,7 +1,7 @@
 import * as React from 'react';
 import Button from '@mui/material/Button';
 
-export const ComponentHeader = ({ headerType, headerData, handleTabChange, activeHeaderOption }) => {
+export const ComponentHeader = ({ headerType, headerData, handleTabChange, activeHeaderOption, className }) => {
     return (headerType === 'navigation' ?
         headerData.map((val, index) => {
             return <span key={index} className={`header-option ${activeHeaderOption === val ? 'active' : ''}`} onClick={(e) => handleTabChange(e)}>{val}</span>
@@ -12,8 +12,8 @@ export const ComponentHeader = ({ headerType, headerData, handleTabChange, activ
                     <span style={{ fontSize: '16px', fontWeight: '600' }}>{headerData.name}</span>
                     <div className='social-media-username'>{headerData.socialMediaUsername}</div>
                 </div></> : headerType === 'button-layout' ?
-                <div className='button-layout'>
-                    <div className='button-layout-heading'>{headerData.heading}</div>
+                <div className={`button-layout ${className}`}>
+                    <div className={`button-layout-heading`}>{headerData.heading}</div>
                     <div className='buttons-div'>{headerData.buttons.map((val, index) => {
                         return <Button key={index} variant={val.variant}>{val.buttonLabel}</Button>
                     })}</div>

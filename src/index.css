@@ -578,6 +578,31 @@ code {
   width: 300px !important;
 }
 
+.rdt_TableRow {
+  border-radius: 2px;
+  background: linear-gradient(180deg, #080c14, #2f374a);
+  color: #fff !important;
+  min-height: 70px !important;
+  font-size: 16px !important;
+}
+
+.rdt_TableRow svg {
+  fill: #fff;
+}
+
+.rdt_TableHeadRow,
+.rdt_Pagination {
+  background-color: #293346 !important;
+  color: #6c7293 !important;
+  font-size: 14px !important;
+}
+
+.list-class-buttons button {
+  background: linear-gradient(0deg, #161f30, #232c41);
+  border: none;
+  font-size: 12px;
+}
+
 @media only screen and (min-width: 767px) {
   .single-page-layout {
     width: 100%;
