@@ -92,4 +92,13 @@ export const ApiHeaders = {
     }
 }
 
+export const PostApiHeaders = {
+    method: 'POST',
+    headers: {
+        "Access-Control-Allow-Origin": "*",
+        'Access-Control-Request-Method': 'Access-Control-Request-Headers',
+        "Content-Type": "application/json"
+    }
+}
+
 export const breakdownValues = [{'audience_gender_age': 'age,gender'}, {'audience_country': 'country'}, {'audience_city': 'city'}]

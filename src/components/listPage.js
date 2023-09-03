@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { INSTAGRAM_FEED_DETAILS_LIST, UPDATE_TAG } from '../routes';
-import { ApiHeaders } from '../utils.js/constant';
+import { ApiHeaders, PostApiHeaders } from '../utils.js/constant';
 import { Loader } from '../layout/loader';
 import DataTable from 'react-data-table-component';
 import { AppLayout } from '../layout/app-layout';
@@ -20,14 +20,15 @@ const goToLink = (url) => {
 const ExpandedComponent = ({ data }) => {
 
   const [inputText, setInputText] = useState('');
+  const [error, setError] = useState('')
 
   const handleSubmit = () => {
     if (inputText !== '') {
-      axios.post(UPDATE_TAG, {[data.id]: inputText}, ApiHeaders).then(response => {
+      axios.post(UPDATE_TAG, {[data.id]: inputText}, PostApiHeaders).then(response => {
         console.log('hahaha', response)
       })
     } else {
-
+      setError('Please enter a value')
     }
   }
 
@@ -35,7 +36,7 @@ return <div style={{ display: 'flex', padding: '20px' }} className='expandable-r
   <div className='tag-input-div'>
     <form noValidate autoComplete="off">
       <FormControl className='tag-input-form' sx={{ width: '25ch' }}>
-        <TextField id="standard-basic" variant='standard' label="Enter Tag" onChange={(event) => setInputText(event.target.value)} />
+        <TextField helperText={error !== '' ? error : ''} error={error !== '' ? true: false} id="standard-basic" variant='standard' label="Enter Tag" onChange={(event) => setInputText(event.target.value)} />
         <Button variant='contained' onClick={handleSubmit}>Submit</Button>
       </FormControl>
     </form>  </div>
