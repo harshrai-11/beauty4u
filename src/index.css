@@ -578,7 +578,7 @@ code {
   width: 300px !important;
 }
 
-.rdt_TableRow {
+.rdt_TableRow, .rdt_ExpanderRow {
   border-radius: 2px;
   background: linear-gradient(180deg, #080c14, #2f374a);
   color: #fff !important;
@@ -603,6 +603,39 @@ code {
   font-size: 12px;
 }
 
+.expandable-row {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+}
+
+.tag-input-div {
+  padding: 20px;
+  display: flex;
+  justify-content: center;
+}
+
+#standard-basic {
+  width: 50%;
+  color: #fff;
+}
+
+.insta-active-row {
+  display: flex;
+  justify-content: center;
+}
+
+.css-aqpgxn-MuiFormLabel-root-MuiInputLabel-root {
+  color: #fff !important;
+}
+.css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
+  border-bottom: 1px solid #fff !important;
+}
+.tag-input-form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
 @media only screen and (min-width: 767px) {
   .single-page-layout {
     width: 100%;

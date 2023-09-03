@@ -29,10 +29,10 @@ const InstagramInsightsPage = () => {
     const getInstagramFeedDetails = (url, isFirstPage = false) => {
         axios(url, ApiHeaders).then(feedResponse => {
             if (feedResponse.data.data) {
-                const apiResponse = isFirstPage ? feedResponse.data.data.data : feedResponse.data.data
+                const apiResponse = isFirstPage ? feedResponse.data.data.data.data : feedResponse.data.data
                 setFeedResponse(apiResponse);
-                setNextPagination(isFirstPage ? feedResponse.data.data.paging.next : feedResponse.data.paging.next);
-                setPreviousPagination(isFirstPage ? feedResponse.data.data.paging.previous : feedResponse.data.paging.previous);
+                setNextPagination(isFirstPage ? feedResponse.data.data.data.paging.next : feedResponse.data.paging.next);
+                setPreviousPagination(isFirstPage ? feedResponse.data.data.data.paging.previous : feedResponse.data.paging.previous);
                 setShowLoader(false)
             }
         }).catch(err => {
@@ -70,7 +70,7 @@ const InstagramInsightsPage = () => {
 
     const leftDivChildren = () => {
         return feedResponse && <div className='posts-grid'>
-            {feedResponse.map((value, index) => {
+            {feedResponse.length && feedResponse.map((value, index) => {
                 return <div key={index} className='posts-grid-item' onClick={() => handleActiveImageChange(index)}>
                     <Link className={activeImageIndex === index ? 'active' : ''}>
                         <div className='posts-grid-image'>
