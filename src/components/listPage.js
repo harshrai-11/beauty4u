@@ -4,7 +4,7 @@ import axios from 'axios';
 import { useState } from 'react';
 import { useEffect } from 'react';
 import { INSTAGRAM_FEED_DETAILS_LIST, UPDATE_TAG } from '../routes';
-import { ApiHeaders, PostApiHeaders } from '../utils.js/constant';
+import { ApiHeaders, listReelsStatsItems, PostApiHeaders } from '../utils.js/constant';
 import { Loader } from '../layout/loader';
 import DataTable from 'react-data-table-component';
 import { AppLayout } from '../layout/app-layout';
@@ -12,6 +12,7 @@ import { FormControl } from '@mui/base';
 import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { Button, TextField } from '@mui/material';
+import { formatDate, getStatsNumberList } from '../utils.js/helper';
 
 const goToLink = (url) => {
   window.location.href = url;
@@ -24,7 +25,7 @@ const ExpandedComponent = ({ data }) => {
 
   const handleSubmit = () => {
     if (inputText !== '') {
-      axios.post(UPDATE_TAG, {[data.id]: inputText}, PostApiHeaders).then(response => {
+      axios.post(UPDATE_TAG, { [data.id]: inputText }, PostApiHeaders).then(response => {
         console.log('hahaha', response)
       })
     } else {
@@ -32,22 +33,47 @@ const ExpandedComponent = ({ data }) => {
     }
   }
 
-return <div style={{ display: 'flex', padding: '20px' }} className='expandable-row'>
-  <div className='tag-input-div'>
-    <form noValidate autoComplete="off">
-      <FormControl className='tag-input-form' sx={{ width: '25ch' }}>
-        <TextField helperText={error !== '' ? error : ''} error={error !== '' ? true: false} id="standard-basic" variant='standard' label="Enter Tag" onChange={(event) => setInputText(event.target.value)} />
-        <Button variant='contained' onClick={handleSubmit}>Submit</Button>
-      </FormControl>
-    </form>  </div>
-  <div className='divider' style={{ borderBottom: '1px solid #363D50', padding: '10px', margin: '10px' }}></div>
-  <div className='insta-active-row'>
-    {data.media_product_type === 'FEED' && <img onClick={() => goToLink(data.permalink)} className='img-fluid' style={{ borderRadius: '0.25rem', width: '25%' }} src={data.media_url ?? '/Image_not_available.png'} alt='feed-large'></img>}
-    {data.media_product_type === 'REELS' && <video width={'25%'} onClick={() => goToLink(data.permalink)} height="242" controls src={data.media_url ?? '/Image_not_available.png'} >
-      <source src={data.media_url} type="video/mp4" />
-    </video>}
+  return <div style={{ display: 'flex', padding: '20px' }} className='expandable-row'>
+    <div className='tag-input-div'>
+      <form noValidate autoComplete="off">
+        <FormControl className='tag-input-form' sx={{ width: '25ch' }}>
+          <TextField className='tag-input' helperText={error !== '' ? error : ''} error={error !== '' ? true : false} id="standard-basic" variant='standard' label="Enter Tag" onChange={(event) => setInputText(event.target.value)} />
+          <Button variant='contained' onClick={handleSubmit}>Submit</Button>
+        </FormControl>
+      </form>  </div>
+    <div className='divider' style={{ borderBottom: '1px solid #363D50', padding: '10px', margin: '10px' }}></div>
+    {/* <div className='insta-active-row'>
+      {data.media_product_type === 'FEED' && <img onClick={() => goToLink(data.permalink)} className='img-fluid' style={{ borderRadius: '0.25rem', width: '25%' }} src={data.media_url ?? '/Image_not_available.png'} alt='feed-large'></img>}
+      {data.media_product_type === 'REELS' && <video width={'25%'} onClick={() => goToLink(data.permalink)} height="242" controls src={data.media_url ?? '/Image_not_available.png'} >
+        <source src={data.media_url} type="video/mp4" />
+      </video>}
+    </div> */}
+    {data.media_product_type === 'REELS' && <div className='right-body'>
+      <div className='insta-active-picture-row'>
+        {data.media_product_type === 'FEED' && <img className='img-fluid' style={{ borderRadius: '0.25rem' }} src={data.media_url ?? '/Image_not_available.png'} alt='feed-large'></img>}
+        {data.media_product_type === 'REELS' && <video width='100%' height="242" controls src={data.media_url ?? '/Image_not_available.png'} >
+          <source src={data.media_url} type="video/mp4" />
+        </video>}
+      </div>
+      <div className='image-details-text'>
+        <div className='post-caption'>
+          <p style={{ color: '#fff', margin: 0, fontSize: '12px' }}>{data.caption}</p>
+          <h6 className='date-heading'>POSTED ON {formatDate(data.timestamp)}</h6>
+        </div>
+        <div className='post-stats-amount'>
+          {listReelsStatsItems.map((item, index) => {
+            return <div key={index} className='post-stats-amount-item'>
+              <div className='stats-icon'>{item.icon}</div>
+              <div className='stats-type'>
+                <p>{item.label}</p>
+                <h4>{getStatsNumberList(data, item.id)}</h4>
+              </div>
+            </div>
+          })}
+        </div>
+      </div>
+    </div>}
   </div>
-</div>
 }
 
 
@@ -152,7 +178,6 @@ export const ListPage = () => {
       name: 'Caption',
       selector: row => row.caption,
       sortable: false,
-      wrap: true
     },
     {
       name: 'Type',
@@ -170,11 +195,13 @@ export const ListPage = () => {
       name: 'Comments',
       selector: row => row.comments_count,
       sortable: true,
+      wrap: true
     },
     {
       name: 'Reach',
       selector: row => row.reach,
       sortable: true,
+      wrap: true
     },
     {
       name: 'Tag',

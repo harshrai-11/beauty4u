@@ -37,3 +37,27 @@ export const isTablet = () => {
   )
   return isTablet
 }
+
+export const getStatsNumber = (data, id) => {
+  switch (id) {
+      case 1:
+          return data.like_count
+      case 2:
+          return data.comments_count
+      default:
+          return data.comments_count
+  }
+}
+
+export const getStatsNumberList = (data, id) => {
+  switch (id) {
+      case 1:
+          return data.insights.data.filter(val => val.name === 'plays')[0].values[0].value
+      case 2:
+          return data.insights.data.filter(val => val.name === 'total_interactions')[0].values[0].value
+      case 3:
+          return data.insights.data.filter(val => val.name === 'shares')[0].values[0].value
+      default:
+          return data.insights.data.filter(val => val.name === 'saved')[0].values[0].value
+  }
+}

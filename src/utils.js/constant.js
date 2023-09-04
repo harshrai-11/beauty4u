@@ -3,6 +3,8 @@ import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import BookmarkIcon from '@mui/icons-material/Bookmark';
 import SendIcon from '@mui/icons-material/Send';
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import InterestsIcon from '@mui/icons-material/Interests';
 
 export const statsHeader = ['Post Insights', 'View DMs', 'Profile Insights'];
 export const dateFilter = [{
@@ -68,6 +70,27 @@ export const postStatsItems = [{
     label: 'SAVED'
 }]
 
+
+export const listReelsStatsItems = [{
+    id: 1,
+    icon: <PlayArrowIcon></PlayArrowIcon>,
+    label: 'PLAYS'
+}, {
+    id: 2,
+    icon: <InterestsIcon></InterestsIcon>,
+    label: 'TOTAL INTERACTIONS'
+}, {
+
+    id: 3,
+    icon: <SendIcon className="inverted"></SendIcon>,
+    label: 'SHARE'
+}, {
+
+    id: 4,
+    icon: <BookmarkIcon></BookmarkIcon>,
+    label: 'SAVED'
+}]
+
 export const userPageHeader = ['Instagram', 'Facebook', 'TikTok'];
 
 export const reachTimePeriod = {
@@ -95,9 +118,10 @@ export const ApiHeaders = {
 export const PostApiHeaders = {
     method: 'POST',
     headers: {
+        'Access-Control-Request-Method': "POST",
         "Access-Control-Allow-Origin": "*",
-        'Access-Control-Request-Method': 'Access-Control-Request-Headers',
-        "Content-Type": "application/json"
+        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Access-Control-Request-Method, Access-Control-Request-Headers"
+
     }
 }
 

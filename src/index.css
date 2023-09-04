@@ -625,10 +625,10 @@ code {
   justify-content: center;
 }
 
-.css-aqpgxn-MuiFormLabel-root-MuiInputLabel-root {
+#standard-basic-label {
   color: #fff !important;
 }
-.css-v4u5dn-MuiInputBase-root-MuiInput-root:before {
+.tag-input .MuiInput-underline {
   border-bottom: 1px solid #fff !important;
 }
 .tag-input-form {

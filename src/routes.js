@@ -10,4 +10,4 @@ export const GET_PROFILE_VIEWS = BASE_API_URL + '/ig-user/user-insights/?metric=
 export const GET_PER_MEDIA_INSIGHT = (mediaType, mediaId) => BASE_API_URL + `ig-user/media-insights/?media_id=${mediaId}&media_type=${mediaType}`;
 export const ACCOUNTS_REACHED_DEMOGRAPHY_API = (breakdown) => BASE_API_URL + `/ig-user/user-insights-reached-demo/?period=lifetime&breakdown=${breakdown}`;
 export const ACCOUNTS_ENGAGED_DEMOGRAPHY_API = (breakdown) => BASE_API_URL + `/ig-user/user-insights-engaged-demo/?period=lifetime&breakdown=${breakdown}`;
-export const UPDATE_TAG = BASE_API_URL + '/ig-user/tag/'
+export const UPDATE_TAG = BASE_API_URL + 'ig-user/tag/'

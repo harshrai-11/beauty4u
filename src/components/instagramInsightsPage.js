@@ -6,7 +6,7 @@ import { INSTAGRAM_FEED_DETAILS } from '../routes';
 import { ApiHeaders, feedPageHeader, InstaInsightsbuttons, postStatsItems } from '../utils.js/constant';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
-import { formatDate } from '../utils.js/helper';
+import { formatDate, getStatsNumber } from '../utils.js/helper';
 import { Card, CardContent, Typography, Button } from '@mui/material';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { ComponentHeader } from '../layout/componentHeader';
@@ -49,16 +49,6 @@ const InstagramInsightsPage = () => {
         setCurrentActiveTab(e.target.innerText);
     }
 
-    const getStatsNumber = (data, id) => {
-        switch (id) {
-            case 1:
-                return data.like_count
-            case 2:
-                return data.comments_count
-            default:
-                return data.comments_count
-        }
-    }
 
     const handlePagination = (paginationType) => {
         if (paginationType === 'next') {
