@@ -22,14 +22,20 @@ const ExpandedComponent = ({ data }) => {
 
   const [inputText, setInputText] = useState('');
   const [error, setError] = useState('')
+  const [message, setMessage] = useState('')
 
   const handleSubmit = () => {
     if (inputText !== '') {
       axios.post(UPDATE_TAG, { [data.id]: inputText }, PostApiHeaders).then(response => {
-        console.log('hahaha', response)
+        if (response.data.data) {
+          setMessage(response.data.data)
+          setError('')
+          
+        }
       })
     } else {
       setError('Please enter a value')
+      setMessage('')
     }
   }
 
@@ -37,7 +43,7 @@ const ExpandedComponent = ({ data }) => {
     <div className='tag-input-div'>
       <form noValidate autoComplete="off">
         <FormControl className='tag-input-form' sx={{ width: '25ch' }}>
-          <TextField className='tag-input' helperText={error !== '' ? error : ''} error={error !== '' ? true : false} id="standard-basic" variant='standard' label="Enter Tag" onChange={(event) => setInputText(event.target.value)} />
+          <TextField className='tag-input' helperText={error !== '' ? error : message !== '' ? message : ''} error={error !== '' ? true : false} id="standard-basic" variant='standard' label="Enter Tag" onChange={(event) => setInputText(event.target.value)} />
           <Button variant='contained' onClick={handleSubmit}>Submit</Button>
         </FormControl>
       </form>  </div>

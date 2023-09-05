@@ -636,6 +636,10 @@ code {
   flex-direction: column;
   gap: 20px;
 }
+
+.tag-input .MuiFormHelperText-root {
+  color: #6c7293;
+}
 @media only screen and (min-width: 767px) {
   .single-page-layout {
     width: 100%;

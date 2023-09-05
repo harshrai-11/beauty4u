@@ -118,10 +118,10 @@ export const ApiHeaders = {
 export const PostApiHeaders = {
     method: 'POST',
     headers: {
-        'Access-Control-Request-Method': "POST",
         "Access-Control-Allow-Origin": "*",
-        "Access-Control-Allow-Headers": "Access-Control-Allow-Headers, Origin,Accept, X-Requested-With, Access-Control-Request-Method, Access-Control-Request-Headers"
-
+        "Access-Control-Allow-Headers": "*",
+        'Access-Control-Allow-Methods': 'GET, POST, PUT, PATCH, OPTIONS',
+        "Content-Type": "application/json"
     }
 }
 
