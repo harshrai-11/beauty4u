@@ -19,35 +19,8 @@ const goToLink = (url) => {
 }
 
 const ExpandedComponent = ({ data }) => {
-
-  const [inputText, setInputText] = useState('');
-  const [error, setError] = useState('')
-  const [message, setMessage] = useState('')
-
-  const handleSubmit = () => {
-    if (inputText !== '') {
-      axios.post(UPDATE_TAG, { [data.id]: inputText }, PostApiHeaders).then(response => {
-        if (response.data.data) {
-          setMessage(response.data.data)
-          setError('')
-          
-        }
-      })
-    } else {
-      setError('Please enter a value')
-      setMessage('')
-    }
-  }
-
   return <div style={{ display: 'flex', padding: '20px' }} className='expandable-row'>
-    <div className='tag-input-div'>
-      <form noValidate autoComplete="off">
-        <FormControl className='tag-input-form' sx={{ width: '25ch' }}>
-          <TextField className='tag-input' helperText={error !== '' ? error : message !== '' ? message : ''} error={error !== '' ? true : false} id="standard-basic" variant='standard' label="Enter Tag" onChange={(event) => setInputText(event.target.value)} />
-          <Button variant='contained' onClick={handleSubmit}>Submit</Button>
-        </FormControl>
-      </form>  </div>
-    <div className='divider' style={{ borderBottom: '1px solid #363D50', padding: '10px', margin: '10px' }}></div>
+    {/* <div className='divider' style={{ borderBottom: '1px solid #363D50', padding: '10px', margin: '10px' }}></div> */}
     {/* <div className='insta-active-row'>
       {data.media_product_type === 'FEED' && <img onClick={() => goToLink(data.permalink)} className='img-fluid' style={{ borderRadius: '0.25rem', width: '25%' }} src={data.media_url ?? '/Image_not_available.png'} alt='feed-large'></img>}
       {data.media_product_type === 'REELS' && <video width={'25%'} onClick={() => goToLink(data.permalink)} height="242" controls src={data.media_url ?? '/Image_not_available.png'} >
@@ -56,8 +29,7 @@ const ExpandedComponent = ({ data }) => {
     </div> */}
     {data.media_product_type === 'REELS' && <div className='right-body'>
       <div className='insta-active-picture-row'>
-        {data.media_product_type === 'FEED' && <img className='img-fluid' style={{ borderRadius: '0.25rem' }} src={data.media_url ?? '/Image_not_available.png'} alt='feed-large'></img>}
-        {data.media_product_type === 'REELS' && <video width='100%' height="242" controls src={data.media_url ?? '/Image_not_available.png'} >
+        {<video width='100%' height="242" controls src={data.media_url ?? '/Image_not_available.png'} >
           <source src={data.media_url} type="video/mp4" />
         </video>}
       </div>

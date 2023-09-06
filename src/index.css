@@ -292,7 +292,7 @@ code {
 
 .right-div .stats-observation-card {
   background: #363D50;
-  height: 65px;
+  /* height: 65px; */
 }
 
 .right-div .stats-observation-details {
@@ -633,7 +633,7 @@ code {
 }
 .tag-input-form {
   display: flex;
-  flex-direction: column;
+  flex-direction: row !important;
   gap: 20px;
 }
 

@@ -2,16 +2,17 @@ import axios from 'axios';
 import React, { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
 import { AppLayout } from '../layout/app-layout';
-import { INSTAGRAM_FEED_DETAILS } from '../routes';
-import { ApiHeaders, feedPageHeader, InstaInsightsbuttons, postStatsItems } from '../utils.js/constant';
+import { INSTAGRAM_FEED_DETAILS, UPDATE_TAG } from '../routes';
+import { ApiHeaders, feedPageHeader, InstaInsightsbuttons, PostApiHeaders, postStatsItems } from '../utils.js/constant';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { formatDate, getStatsNumber } from '../utils.js/helper';
-import { Card, CardContent, Typography, Button } from '@mui/material';
+import { Card, CardContent, Typography, Button, FormControl, TextField } from '@mui/material';
 import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
 import { ComponentHeader } from '../layout/componentHeader';
 import { MediaInsights } from './charts/mediaInsights';
 import { Loader } from '../layout/loader';
+import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
 const InstagramInsightsPage = () => {
 
@@ -58,6 +59,11 @@ const InstagramInsightsPage = () => {
         }
     }
 
+    const [inputText, setInputText] = useState('');
+    const [error, setError] = useState('')
+    const [message, setMessage] = useState('')
+
+
     const leftDivChildren = () => {
         return feedResponse && <div className='posts-grid'>
             {feedResponse.length && feedResponse.map((value, index) => {
@@ -83,6 +89,22 @@ const InstagramInsightsPage = () => {
 
     const rightDivChildren = (data) => {
         if (data) {
+            const handleSubmit = () => {
+                if (inputText !== '') {
+                    axios.post(UPDATE_TAG, { [data.id]: inputText }, PostApiHeaders).then(response => {
+                        if (response.data.data) {
+                            setMessage(response.data.data)
+                            setError('')
+                            setInputText('')
+                            window.location.reload()
+                        }
+                    })
+                } else {
+                    setError('Please enter a value')
+                    setMessage('')
+                }
+            }
+
             return <><div className='right-body'>
                 <div className='insta-active-picture-row'>
                     {data.media_product_type === 'FEED' && <img className='img-fluid' style={{ borderRadius: '0.25rem' }} src={data.media_url ?? '/Image_not_available.png'} alt='feed-large'></img>}
@@ -111,7 +133,7 @@ const InstagramInsightsPage = () => {
                 <div className='right-body' style={{ paddingTop: '1.5rem', margin: 0 }}>
                     <Card className='stats-observation-card' sx={{ flex: '0 0 auto', width: '100%' }}>
                         <CardContent className='stats-observation-card-content'>
-                            <div className='stats-observation-details'>
+                            {/* <div className='stats-observation-details'>
                                 <div className='stats-boost-profile'>
                                     <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
                                     <div className='details-text'>
@@ -127,6 +149,14 @@ const InstagramInsightsPage = () => {
                                 <div className='top-buttons'>
                                     <Button className='dollar-spent-button' variant="contained">$40 Spent</Button>
                                 </div>
+                            </div> */}
+                            <div className='tag-input-div'>
+                                <form noValidate autoComplete="off">
+                                    <FormControl className='tag-input-form' sx={{ width: '25ch' }}>
+                                        <TextField className='tag-input' helperText={error !== '' ? error : message !== '' ? message : ''} error={error !== '' ? true : false} id="standard-basic" variant='standard' label="Enter Tag" onChange={(event) => setInputText(event.target.value)} />
+                                        <Button className='feed-next-button' variant='contained' onClick={handleSubmit}>Submit</Button>
+                                    </FormControl>
+                                </form>
                             </div>
                         </CardContent>
                     </Card>
