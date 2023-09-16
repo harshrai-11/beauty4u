@@ -25,8 +25,8 @@ export const UserCard = ({ user, setShowLoader }) => {
         })
     }, [user, setShowLoader])
 
-    const goToRoute = (path, userId, userName) => {
-        window.location.href = `/${path}${userId ? `?userId=${userId}&userName=${userName}` : ``}`
+    const goToRoute = (path) => {
+        window.location.href = `/${path}?userId=${user.instagram_user_id}&userName=${user.page_name}&profilename=${user.instagram_user_name}`
     }
 
     return <Grid item md={4} xs={12}>
@@ -75,9 +75,9 @@ export const UserCard = ({ user, setShowLoader }) => {
                 </Typography>
             </CardContent>
             <CardActions className='card-action'>
-                {user.instagram_user_id === '17841404972239663' && <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#bbaf97' }} onClick={() => goToRoute('stats', user.instagram_user_id, user.page_name)}>STATS</Button>}
-                <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#c5ae4e' }} onClick={() => goToRoute('insta-insights', user.instagram_user_id, user.page_name)}>FEED</Button>
-                {user.instagram_user_id === '17841404972239663' && <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#bbaf97' }} onClick={() => goToRoute('post-list', user.instagram_user_id, user.page_name)}>POSTS LIST</Button>}
+                {user.instagram_user_id === '17841404972239663' && <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#bbaf97' }} onClick={() => goToRoute('stats')}>STATS</Button>}
+                <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#c5ae4e' }} onClick={() => goToRoute('insta-insights')}>FEED</Button>
+                {user.instagram_user_id === '17841404972239663' && <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#bbaf97' }} onClick={() => goToRoute('post-list')}>POSTS LIST</Button>}
             </CardActions>
         </Card>
 

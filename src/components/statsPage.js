@@ -16,7 +16,7 @@ import cityImg from './images/city.jpeg';
 import genderImg from './images/gender.webp';
 import { ApiHeaders, breakdownValues, cardBarGraphData, dateFilter, reachTimeNumberDays, reachTimePeriod, statsHeader } from '../utils.js/constant';
 import { CardGraph } from './charts/card-graph';
-import { getWeekDatesFromNDaysAgo } from '../utils.js/helper';
+import { getSearchParam, getWeekDatesFromNDaysAgo } from '../utils.js/helper';
 import { AppLayout } from '../layout/app-layout';
 import RadialPieChart from './charts/pieChart';
 import { Loader } from '../layout/loader';
@@ -72,8 +72,11 @@ const StatsPage = () => {
 
     const [showPercentage, setShowPercentage] = useState(false)
 
+    // user info
     const [userId, setUserId] = useState('')
-    
+    const [userName, setUserName] = useState('')
+    const [profileName, setProfileName] = useState('')
+
     // Getting Left Card Data
     // Accounts Reached (1) will be shown for all date ranges
     // Accounts Engaged and Profile Views is for 1 day data only
@@ -494,9 +497,12 @@ const StatsPage = () => {
 
     // On Load
     useEffect(() => {
-        const urlParams = new URLSearchParams(window.location.search);
-        const userId = urlParams.get('userId')
+        const userId = getSearchParam('userId')
+        const userName = getSearchParam('userName')
+        const profileName = getSearchParam('profilename')
+        setUserName(userName)
         setUserId(userId)
+        setProfileName(profileName)
         getLeftCardsStatData();
         getFollowersDemography();
     }, []);
@@ -540,7 +546,7 @@ const StatsPage = () => {
     return (
         <>
             {showLoader && <Loader></Loader>}
-            <AppLayout layoutId={1} leftHeaderData={statsHeader} rightHeaderData={{ name: 'Dr. Mendeita Videos', socialMediaUsername: '@drmendetavideos' }} leftHeaderType={'navigation'} rightHeaderType={'username-display'} handleTabChange={handleTabChange} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren()} activeHeaderOption={activeHeaderOption}></AppLayout>
+            <AppLayout layoutId={1} leftHeaderData={statsHeader} rightHeaderData={{ name: userName, socialMediaUsername: profileName }} leftHeaderType={'navigation'} rightHeaderType={'username-display'} handleTabChange={handleTabChange} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren()} activeHeaderOption={activeHeaderOption}></AppLayout>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle>{popupTitle}</DialogTitle>
                 <DialogContent>

@@ -61,3 +61,10 @@ export const getStatsNumberList = (data, id) => {
           return data.insights.data.filter(val => val.name === 'saved')[0].values[0].value
   }
 }
+
+export const getSearchParam = (key) => {
+  if (typeof window !== 'undefined') {
+    const urlParams = new URLSearchParams(window.location.search);
+    return urlParams.get(key)
+  }
+}

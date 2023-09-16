@@ -6,7 +6,7 @@ import { INSTAGRAM_FEED_DETAILS, UPDATE_TAG } from '../routes';
 import { ApiHeaders, feedPageHeader, InstaInsightsbuttons, PostApiHeaders, postStatsItems } from '../utils.js/constant';
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
-import { formatDate, getStatsNumber } from '../utils.js/helper';
+import { formatDate, getSearchParam, getStatsNumber } from '../utils.js/helper';
 import { Card, CardContent, Button, FormControl, TextField } from '@mui/material';
 import { ComponentHeader } from '../layout/componentHeader';
 import { MediaInsights } from './charts/mediaInsights';
@@ -155,9 +155,8 @@ const InstagramInsightsPage = () => {
     useEffect(() => {
         if (typeof window !== 'undefined') {
             setShowLoader(true)
-            const urlParams = new URLSearchParams(window.location.search);
-            const userId = urlParams.get('userId')
-            const userName = urlParams.get('userName')
+            const userId = getSearchParam('userId')
+            const userName = getSearchParam('userName')
             setUserName(userName)
             getInstagramFeedDetails(INSTAGRAM_FEED_DETAILS(userId), true)
         }
