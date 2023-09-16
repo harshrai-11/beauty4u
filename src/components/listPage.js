@@ -13,6 +13,7 @@ import ArrowLeftIcon from '@mui/icons-material/ArrowLeft';
 import ArrowRightIcon from '@mui/icons-material/ArrowRight';
 import { Button, TextField } from '@mui/material';
 import { formatDate, getStatsNumberList } from '../utils.js/helper';
+import { AppLayoutWrapper } from '../layout/AppLayoutWrapper';
 
 const goToLink = (url) => {
   window.location.href = url;
@@ -194,36 +195,31 @@ export const ListPage = () => {
     },
   ];
 
-  const leftChild = () => {
-    return <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      {showLoader && <Loader></Loader>}
-      <DataTable
-        columns={columns}
-        data={feedResponse}
-        expandableRows
-        expandableRowsComponent={ExpandedComponent}
-        onSort={handleSort}
-        fixedHeader
-        responsive
-      />
-      <div className='table-footer' style={{ background: '#293346', padding: '20px' }}>
-        <div className='feed-next-back-button'>
-          {previousPagination !== '' && <Button className='feed-next-button-list' onClick={() => handlePageChange('previous')} variant='outlined' startIcon={<ArrowLeftIcon />}> Previous </Button>}
-          {nextPagination !== '' && <Button className='feed-next-button-list' onClick={() => handlePageChange('next')} variant='outlined' endIcon={<ArrowRightIcon></ArrowRightIcon>}> Next </Button>}
-        </div>
-      </div>
-    </Paper>
-  }
-
   const listPageButtons = [{
     buttonLabel: 'Instagram',
     variant: 'contained'
   }]
 
   return (
-    <AppLayout layoutId={2} leftDivChildren={leftChild()} leftHeaderType={'button-layout'} leftHeaderData={{ heading: '', buttons: listPageButtons }} className="list-class-buttons">
-
-    </AppLayout>
-
+    <AppLayoutWrapper layoutId={2} headerType="button-layout" headerData={{ heading: '', buttons: listPageButtons }} className="list-class-buttons">
+      <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+        {showLoader && <Loader></Loader>}
+        <DataTable
+          columns={columns}
+          data={feedResponse}
+          expandableRows
+          expandableRowsComponent={ExpandedComponent}
+          onSort={handleSort}
+          fixedHeader
+          responsive
+        />
+        <div className='table-footer' style={{ background: '#293346', padding: '20px' }}>
+          <div className='feed-next-back-button'>
+            {previousPagination !== '' && <Button className='feed-next-button-list' onClick={() => handlePageChange('previous')} variant='outlined' startIcon={<ArrowLeftIcon />}> Previous </Button>}
+            {nextPagination !== '' && <Button className='feed-next-button-list' onClick={() => handlePageChange('next')} variant='outlined' endIcon={<ArrowRightIcon></ArrowRightIcon>}> Next </Button>}
+          </div>
+        </div>
+      </Paper>
+    </AppLayoutWrapper>
   );
 }

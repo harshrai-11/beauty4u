@@ -1,7 +1,7 @@
 import './App.css';
 import Header from './layout/header';
 import SideBar from './layout/sidebar';
-import CardPage from './components/cardPage';
+import Users from './components/userInfo/users';
 import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import StatsPage from './components/statsPage';
 import InstagramInsightsPage from './components/instagramInsightsPage';
@@ -20,7 +20,7 @@ function App() {
         <div className='page-layout'>
           <BrowserRouter>
           <Routes>
-              <Route path="/" Component={CardPage}>
+              <Route path="/" Component={Users}>
               </Route>
               <Route path="/stats" Component={StatsPage}>
               </Route>

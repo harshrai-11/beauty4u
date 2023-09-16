@@ -8,7 +8,7 @@ import axios from 'axios';
 import { INSTAGRAM_USER_INFO } from '../../routes';
 import { ApiHeaders } from '../../utils.js/constant';
 
-export const CardGraph = ({ graphData, cardIndex, barData, currentActiveChart, setCurrentActiveChart }) => {
+export const CardGraph = ({ graphData, cardIndex, barData, currentActiveChart, setCurrentActiveChart, userId }) => {
 
     const [followers, setFollowers] = useState(0)
     const handleCurrentActiveCardChange = (value) => {
@@ -17,7 +17,7 @@ export const CardGraph = ({ graphData, cardIndex, barData, currentActiveChart, s
     const isSingleValueGraph = graphData[0]?.pv ? false : true
 
     useEffect(() => {
-        axios(INSTAGRAM_USER_INFO, ApiHeaders).then(userInfo => {
+        axios(INSTAGRAM_USER_INFO(userId), ApiHeaders).then(userInfo => {
             if (userInfo.data.data) {
                 const apiResponse = userInfo.data.data
                 setFollowers(apiResponse.followers_count)
@@ -25,7 +25,7 @@ export const CardGraph = ({ graphData, cardIndex, barData, currentActiveChart, s
         }).catch(err => {
             console.log('ERROR', err);
         })
-    }, [])
+    }, [userId])
 
 
     return <div value={barData.value} onClick={() => { handleCurrentActiveCardChange(barData.value) }}>

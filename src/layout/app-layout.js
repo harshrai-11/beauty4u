@@ -33,9 +33,5 @@ export const AppLayout = ({ layoutId, leftHeaderData, rightHeaderData, leftHeade
             </>
             }
         </div>
-        {layoutId === 2 && <div className='single-page-layout'>
-            <div className={`component-page-layout-header  ${leftHeaderType}-${layoutId}`}>
-                <ComponentHeader className={className} headerType={leftHeaderType} headerData={leftHeaderData} handleTabChange={handleTabChange} activeHeaderOption={activeHeaderOption}></ComponentHeader>
-            </div>{leftDivChildren}</div>}
     </div>
 }

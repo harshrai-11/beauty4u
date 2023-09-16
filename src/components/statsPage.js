@@ -71,6 +71,8 @@ const StatsPage = () => {
     const [showLoader, setShowLoader] = useState(false);
 
     const [showPercentage, setShowPercentage] = useState(false)
+
+    const [userId, setUserId] = useState('')
     
     // Getting Left Card Data
     // Accounts Reached (1) will be shown for all date ranges
@@ -395,7 +397,7 @@ const StatsPage = () => {
                 {
                     cardBarGraphData.map((data, index) => {
                         return (
-                            (dateRangeFilterValue !== "1" && data.value === 1) || data.value === 4 ? <CardGraph key={index} cardIndex={data.value} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph> : dateRangeFilterValue === "1" && <CardGraph key={index} cardIndex={data.value} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart}></CardGraph>
+                            (dateRangeFilterValue !== "1" && data.value === 1) || data.value === 4 ? <CardGraph key={index} cardIndex={data.value} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart} userId={userId}></CardGraph> : dateRangeFilterValue === "1" && <CardGraph key={index} cardIndex={data.value} graphData={getGraphData(data.value)} barData={data} currentActiveChart={currentActiveChart} setCurrentActiveChart={setCurrentActiveChart} userId={userId}></CardGraph>
                         )
                     })
                 }
@@ -492,6 +494,9 @@ const StatsPage = () => {
 
     // On Load
     useEffect(() => {
+        const urlParams = new URLSearchParams(window.location.search);
+        const userId = urlParams.get('userId')
+        setUserId(userId)
         getLeftCardsStatData();
         getFollowersDemography();
     }, []);

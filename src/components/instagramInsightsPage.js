@@ -7,12 +7,10 @@ import { ApiHeaders, feedPageHeader, InstaInsightsbuttons, PostApiHeaders, postS
 import FavoriteIcon from '@mui/icons-material/Favorite';
 import ModeCommentIcon from '@mui/icons-material/ModeComment';
 import { formatDate, getStatsNumber } from '../utils.js/helper';
-import { Card, CardContent, Typography, Button, FormControl, TextField } from '@mui/material';
-import TrendingUpRoundedIcon from '@mui/icons-material/TrendingUpRounded';
+import { Card, CardContent, Button, FormControl, TextField } from '@mui/material';
 import { ComponentHeader } from '../layout/componentHeader';
 import { MediaInsights } from './charts/mediaInsights';
 import { Loader } from '../layout/loader';
-import AssignmentIndIcon from '@mui/icons-material/AssignmentInd';
 
 const InstagramInsightsPage = () => {
 
@@ -23,6 +21,8 @@ const InstagramInsightsPage = () => {
     const [activeImageIndex, setActiveImageIndex] = useState(0);
 
     const [currentActiveTab, setCurrentActiveTab] = useState('Post Stats');
+
+    const [userName, setUserName] = useState('');
 
     // Loader State 
     const [showLoader, setShowLoader] = useState(false);
@@ -133,23 +133,6 @@ const InstagramInsightsPage = () => {
                 <div className='right-body' style={{ paddingTop: '1.5rem', margin: 0 }}>
                     <Card className='stats-observation-card' sx={{ flex: '0 0 auto', width: '100%' }}>
                         <CardContent className='stats-observation-card-content'>
-                            {/* <div className='stats-observation-details'>
-                                <div className='stats-boost-profile'>
-                                    <TrendingUpRoundedIcon className='icon'></TrendingUpRoundedIcon>
-                                    <div className='details-text'>
-                                        <Typography align='left' sx={{ fontSize: 14 }} color="white" gap={5}>
-                                            This post was boosted on may 4, 2023 at 6:45 AM and currently running.
-                                        </Typography>
-                                        <Typography align='left' sx={{ fontSize: 12 }} color="#6c7293" gap={5}>
-                                            Expires in 3 Days
-                                        </Typography>
-                                    </div>
-                                </div>
-
-                                <div className='top-buttons'>
-                                    <Button className='dollar-spent-button' variant="contained">$40 Spent</Button>
-                                </div>
-                            </div> */}
                             <div className='tag-input-div'>
                                 <form noValidate autoComplete="off">
                                     <FormControl className='tag-input-form' sx={{ width: '25ch' }}>
@@ -170,13 +153,19 @@ const InstagramInsightsPage = () => {
     }
 
     useEffect(() => {
-        setShowLoader(true)
-        getInstagramFeedDetails(INSTAGRAM_FEED_DETAILS, true)
+        if (typeof window !== 'undefined') {
+            setShowLoader(true)
+            const urlParams = new URLSearchParams(window.location.search);
+            const userId = urlParams.get('userId')
+            const userName = urlParams.get('userName')
+            setUserName(userName)
+            getInstagramFeedDetails(INSTAGRAM_FEED_DETAILS(userId), true)
+        }
     }, []);
 
     return (
         <> {showLoader && <Loader></Loader>}
-            <AppLayout layoutId={1} leftHeaderData={{ name: 'Dr. Mendeita Videos', socialMediaUsername: feedResponse ? feedResponse[0]?.username : '' }} leftHeaderType={'username-display'} rightHeaderType={'button-layout'} rightHeaderData={{ heading: 'Post Insights', buttons: InstaInsightsbuttons }} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren(feedResponse ? feedResponse[activeImageIndex] : undefined)}></AppLayout>
+            <AppLayout layoutId={1} leftHeaderData={{ name: userName, socialMediaUsername: feedResponse ? feedResponse[0]?.username : '' }} leftHeaderType={'username-display'} rightHeaderType={'button-layout'} rightHeaderData={{ heading: 'Post Insights', buttons: InstaInsightsbuttons }} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren(feedResponse ? feedResponse[activeImageIndex] : undefined)}></AppLayout>
         </>
     );
 };
