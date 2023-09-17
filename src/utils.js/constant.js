@@ -47,7 +47,8 @@ export const InstaInsightsbuttons = [{
     variant: 'text'
 }, {
     buttonLabel: 'Profile Stats',
-    variant: 'text'
+    variant: 'text',
+    path: 'stats'
 }]
 
 export const postStatsItems = [{

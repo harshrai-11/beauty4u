@@ -9,20 +9,24 @@ import axios from 'axios';
 import { INSTAGRAM_USER_INFO } from '../../routes';
 import { ApiHeaders } from '../../utils.js/constant';
 
-export const UserCard = ({ user, setShowLoader }) => {
+export const UserCard = ({ user, setShowLoader, isHomePage }) => {
 
     const [userInfo, setUserInfo] = React.useState({});
 
     React.useEffect(() => {
-        axios(INSTAGRAM_USER_INFO(user.instagram_user_id), ApiHeaders).then(userInfo => {
-            if (userInfo.data.data) {
-                const apiResponse = userInfo.data.data
-                setUserInfo(apiResponse)
-            }
-            setShowLoader(false)
-        }).catch(err => {
-            console.log('ERROR', err);
-        })
+        if (isHomePage) {
+            axios(INSTAGRAM_USER_INFO(user.instagram_user_id), ApiHeaders).then(userInfo => {
+                if (userInfo.data.data) {
+                    const apiResponse = userInfo.data.data
+                    setUserInfo(apiResponse)
+                }
+                setShowLoader(false)
+            }).catch(err => {
+                console.log('ERROR', err);
+            })
+        } else {
+            setUserInfo(user)
+        }
     }, [user, setShowLoader])
 
     const goToRoute = (path) => {
@@ -67,18 +71,18 @@ export const UserCard = ({ user, setShowLoader }) => {
                 <Typography sx={{ fontSize: 16 }} color="white" align='left'>
                     {user.page_name}
                 </Typography>
-                <Typography sx={{ fontSize: 14 }} color="#6c7293" align='left'>
+                {isHomePage && <> <Typography sx={{ fontSize: 14 }} color="#6c7293" align='left'>
                     Surgeon
                 </Typography>
-                <Typography sx={{ fontSize: 14 }} color="#6c7293" align='left'>
-                    DM for more information
-                </Typography>
+                    <Typography sx={{ fontSize: 14 }} color="#6c7293" align='left'>
+                        DM for more information
+                    </Typography></>}
             </CardContent>
-            <CardActions className='card-action'>
+            {isHomePage && <CardActions className='card-action'>
                 {user.instagram_user_id === '17841404972239663' && <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#bbaf97' }} onClick={() => goToRoute('stats')}>STATS</Button>}
                 <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#c5ae4e' }} onClick={() => goToRoute('insta-insights')}>FEED</Button>
                 {user.instagram_user_id === '17841404972239663' && <Button className='user-card-action-button' variant='contained' size="medium" style={{ backgroundColor: '#bbaf97' }} onClick={() => goToRoute('post-list')}>POSTS LIST</Button>}
-            </CardActions>
+            </CardActions>}
         </Card>
 
     </Grid>

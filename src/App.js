@@ -6,6 +6,7 @@ import { BrowserRouter, Route, Routes } from 'react-router-dom';
 import StatsPage from './components/statsPage';
 import InstagramInsightsPage from './components/instagramInsightsPage';
 import { ListPage } from './components/listPage';
+import { AdsPage } from './components/adsPage';
 
 function App() {
   return (
@@ -27,6 +28,8 @@ function App() {
               <Route path="/insta-insights" Component={InstagramInsightsPage}>
               </Route>
               <Route path="/post-list" Component={ListPage}>
+              </Route>
+              <Route path="/business" Component={AdsPage}>
               </Route>
               </Routes>
           </BrowserRouter>

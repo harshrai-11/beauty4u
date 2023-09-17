@@ -19,3 +19,6 @@ export const UPDATE_TAG = BASE_API_URL + 'ig-user/tag/'
 // User Info
 export const GET_USER_LIST = BASE_API_URL + '/ig-user/id-details/'
 export const INSTAGRAM_USER_INFO = (userId) => BASE_API_URL + `/ig-user/user-fields/?ig_user_id=${userId}`
+
+// Ads
+export const GET_ADS_INFO = BASE_API_URL + '/ad/advertisement/?endpoint=business'

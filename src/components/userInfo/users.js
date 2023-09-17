@@ -48,7 +48,7 @@ export default function Users() {
                 <div className='right-body'>
                     <Grid spacing={2} container>
                         {userList.length && userList.map((user, index) => {
-                            return <UserCard user={user} key={index} setShowLoader={setShowLoader}></UserCard>
+                            return <UserCard user={user} key={index} setShowLoader={setShowLoader} isHomePage></UserCard>
                         })}
                     </Grid>
                 </div>

@@ -349,26 +349,27 @@ const StatsPage = () => {
         setShowPercentage(!showPercentage)
     }
     const leftDivChildren = () => {
-        return <><div className='stats-select'>
-            <div className='stats-select-div'>
-                <FormControl className='native-select' sx={{ m: 1, width: 300, mt: 3 }}>
-                    <NativeSelect
-                        defaultValue={"1"}
-                        inputProps={{
-                            name: 'date',
-                            id: 'uncontrolled-native',
-                        }}
-                        className='select-input'
-                        onChange={(e) => handleOptionChange(e)}
-                    >
-                        {dateFilter.map(({ labelFirst, labelSecond, value }, index) => {
-                            return <option className='select-input-option' value={value} key={index}>{labelFirst}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{labelSecond}</option>
-                        })
-                        }
-                    </NativeSelect>
-                </FormControl>
+        return <>
+            <div className='stats-select'>
+                <div className='stats-select-div'>
+                    <FormControl className='native-select' sx={{ m: 1, width: 300, mt: 3 }}>
+                        <NativeSelect
+                            defaultValue={"1"}
+                            inputProps={{
+                                name: 'date',
+                                id: 'uncontrolled-native',
+                            }}
+                            className='select-input'
+                            onChange={(e) => handleOptionChange(e)}
+                        >
+                            {dateFilter.map(({ labelFirst, labelSecond, value }, index) => {
+                                return <option className='select-input-option' value={value} key={index}>{labelFirst}&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;{labelSecond}</option>
+                            })
+                            }
+                        </NativeSelect>
+                    </FormControl>
+                </div>
             </div>
-        </div>
             <div className='stats-observation'>
                 <Card className='stats-observation-card'>
                     <CardContent>
