@@ -7,6 +7,13 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import InterestsIcon from '@mui/icons-material/Interests';
 
 export const statsHeader = ['Post Insights', 'View DMs', 'Profile Insights'];
+
+export const feedPageHeader = ['Post Stats', 'Comments', 'Demographic'];
+
+export const userPageHeader = ['Instagram', 'Facebook', 'TikTok'];
+
+export const adPageHeader = ['Campaign', 'Ad Sets', 'Ads'];
+
 export const dateFilter = [{
     labelFirst: 'Last 1 day',
     labelSecond: `${getWeekDatesFromNDaysAgo(1)}`,
@@ -92,7 +99,6 @@ export const listReelsStatsItems = [{
     label: 'SAVED'
 }]
 
-export const userPageHeader = ['Instagram', 'Facebook', 'TikTok'];
 
 export const reachTimePeriod = {
     1: 'day',
@@ -106,7 +112,6 @@ export const reachTimeNumberDays = {
     3: 28
 }
 
-export const feedPageHeader = ['Post Stats', 'Comments', 'Demographic'];
 
 export const ApiHeaders = {
     method: 'GET',

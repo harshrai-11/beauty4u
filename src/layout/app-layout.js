@@ -26,7 +26,7 @@ export const AppLayout = ({ layoutId, leftHeaderData, rightHeaderData, leftHeade
             </div>
                 <div className='right-div'>
                     <div className={`component-page-layout-header  ${rightHeaderType}-${layoutId}`}>
-                        <ComponentHeader headerType={rightHeaderType} headerData={rightHeaderData}></ComponentHeader>
+                        <ComponentHeader headerType={rightHeaderType} headerData={rightHeaderData} handleTabChange={handleTabChange} activeHeaderOption={activeHeaderOption}></ComponentHeader>
                     </div>
                     {rightDivChildren}
                 </div>

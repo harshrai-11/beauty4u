@@ -1,16 +1,18 @@
-import { Card, CardContent, Typography } from '@material-ui/core';
+import { Card, CardContent, Checkbox, Paper, Typography } from '@material-ui/core';
 import axios from 'axios';
 import React, { useState, useEffect } from 'react';
+import DataTable from 'react-data-table-component';
 import { AppLayout } from '../layout/app-layout';
 import { GET_ADS_INFO } from '../routes';
-import { ApiHeaders } from '../utils.js/constant';
-import { UserCard } from './userInfo/userCard';
+import { adPageHeader, ApiHeaders } from '../utils.js/constant';
+import Switch from '@mui/material/Switch';
 
 export const AdsPage = () => {
 
     const [adsData, setAdsData] = useState({})
     const [businessData, setBusinessData] = useState([])
     const [instagramAccounts, setInstagramAccounts] = useState([])
+    const [activeHeaderOption, setActiveHeaderOption] = useState('Campaign')
 
     useEffect(() => {
         axios(GET_ADS_INFO, ApiHeaders).then(adsData => {
@@ -41,6 +43,21 @@ export const AdsPage = () => {
         </>
     }
 
+    const handleTabChange = (e) => {
+        setActiveHeaderOption(e.target.textContent)
+    }
+
+    const handleSort = (sortRow, sortType, rows) => {
+        return rows.sort((rowA, rowB) => {
+            if (sortType === 'desc') {
+                return rowB - rowA
+            } else {
+                return rowA - rowB
+            }
+        });
+
+    };
+
     const leftDivChildren = () => {
         return <div style={{ marginBottom: '20px' }}> <div className='stats-observation'>
             <Card className='stats-observation-card'>
@@ -54,21 +71,218 @@ export const AdsPage = () => {
         </div>
     }
 
+    const campaignAdRows = [
+        { id: 1, off: true, campaign: 'C0-1', delivery: 50, bidStrategy: 'test', budget: '450$', reach: 250, attributionSetting: 'Test', results: '400$', impressions: '150003', costPerResult: '192$', engagementRateRanking: 'Average', conversionRateRanking: 'Average'},
+        { id: 1, off: false, campaign: 'C0-2', delivery: 150, bidStrategy: 'test-1', budget: '4590$', reach: 25002, attributionSetting: 'Test-1', results: '4000$', impressions: '290008', costPerResult: '200$', engagementRateRanking: 'Good', conversionRateRanking: 'Average'},
+
+      ];
+
+
+    const campaignAdTableColumns = [
+        {
+          name: 'Off/on',
+          selector: row => row.off,
+          sortable: false,
+          wrap: true,
+          cell: (row, index, column, id) => <Switch size="medium" checked={row.off} color="secondary"></Switch>
+        },
+        {
+          name: 'Campaign',
+          selector: row => row.campaign,
+          sortable: false,
+        },
+        {
+          name: 'Delivery',
+          selector: row => row.delivery,
+          sortable: true,
+          wrap: true
+        },
+        {
+          name: 'Bid Strategy',
+          selector: row => row.bidStrategy,
+          sortable: false,
+          wrap: true
+        },
+        {
+          name: 'Budget',
+          selector: row => row.budget,
+          sortable: true,
+          wrap: true
+        },
+        {
+          name: 'Reach',
+          selector: row => row.reach,
+          sortable: true,
+          wrap: true
+        },
+        {
+          name: 'Attribution Setting',
+          selector: row => row.attributionSetting,
+          wrap: true
+        },
+        {
+          name: 'Results',
+          selector: row => row.results,
+          sortable: true,
+          wrap: true
+        },
+      ];
+
+      const adSetsTableColumns = [
+        {
+          name: 'Off/on',
+          selector: row => row.off,
+          sortable: false,
+          wrap: true,
+          cell: (row, index, column, id) => <Switch size="medium" checked={row.off} color="secondary"></Switch>
+        },
+        {
+          name: 'Ad Sets',
+          selector: row => row.campaign,
+          sortable: false,
+        },
+        {
+          name: 'Delivery',
+          selector: row => row.delivery,
+          sortable: true,
+          wrap: true
+        },
+        {
+          name: 'Bid Strategy',
+          selector: row => row.bidStrategy,
+          sortable: false,
+          wrap: true
+        },
+        {
+          name: 'Budget',
+          selector: row => row.budget,
+          sortable: true,
+          wrap: true
+        },
+        {
+            name: 'Impressions',
+            selector: row => row.impressions,
+            sortable: true,
+            wrap: true
+          },
+          {
+            name: 'Cost per result',
+            selector: row => row.costPerResult,
+            sortable: true,
+            wrap: true
+          },
+        {
+          name: 'Reach',
+          selector: row => row.reach,
+          sortable: true,
+          wrap: true
+        },
+        {
+          name: 'Attribution Setting',
+          selector: row => row.attributionSetting,
+          wrap: true
+        },
+        {
+          name: 'Results',
+          selector: row => row.results,
+          sortable: true,
+          wrap: true
+        },
+      ];
+
+      const adTableColumns = [
+        {
+          name: 'Off/on',
+          selector: row => row.off,
+          sortable: false,
+          wrap: true,
+          cell: (row, index, column, id) => <Switch size="medium" checked={row.off} color="secondary"></Switch>
+        },
+        {
+          name: 'Ad Sets',
+          selector: row => row.campaign,
+          sortable: false,
+        },
+        {
+          name: 'Delivery',
+          selector: row => row.delivery,
+          sortable: true,
+          wrap: true
+        },
+        {
+          name: 'Bid Strategy',
+          selector: row => row.bidStrategy,
+          sortable: false,
+          wrap: true
+        },
+        {
+          name: 'Budget',
+          selector: row => row.budget,
+          sortable: true,
+          wrap: true
+        },
+        {
+            name: 'Enagement Rate Ranking',
+            selector: row => row.engagementRateRanking,
+            sortable: false,
+            wrap: true
+          },
+        {
+            name: 'Conversion Rate Ranking',
+            selector: row => row.conversionRateRanking,
+            sortable: false,
+            wrap: true
+          },
+          {
+            name: 'Cost per result',
+            selector: row => row.costPerResult,
+            sortable: true,
+            wrap: true
+          },
+        {
+          name: 'Reach',
+          selector: row => row.reach,
+          sortable: true,
+          wrap: true
+        },
+        {
+          name: 'Attribution Setting',
+          selector: row => row.attributionSetting,
+          wrap: true
+        },
+        {
+          name: 'Results',
+          selector: row => row.results,
+          sortable: true,
+          wrap: true
+        },
+      ];
+
     const rightDivChildren = () => {
-        return <div className='insta-account-details' style={{padding: '30px'}}> {instagramAccounts.map((account, index) => {
-            const userInfo = {
-                followers_count: account.followed_by_count,
-                follows_count: account.follow_count,
-                id: account.id,
-                media_count: account.media_count,
-                profile_picture_url: account.profile_pic,
-                page_name: account.username
-            }
-            return <UserCard user={userInfo} key={index}></UserCard>
-        })}
-        </div>
+        let columns = campaignAdTableColumns
+        let rows = campaignAdRows
+
+        if (activeHeaderOption === 'Ads') {
+            columns = adTableColumns
+            rows = campaignAdRows
+        } else if (activeHeaderOption === 'Ad Sets') {
+            columns = adSetsTableColumns
+            rows = campaignAdRows
+        }
+        
+        return <Paper sx={{ width: '100%', overflow: 'hidden' }}>
+            <DataTable
+            columns={columns}
+            data={rows}
+            onSort={handleSort}
+            fixedHeader
+            responsive
+            selectableRows
+            selectableRowsComponent={Checkbox}
+        />
+        </Paper>
     }
 
-    return <AppLayout layoutId={1} leftHeaderData={{ name: 'Business Data', socialMediaUsername: adsData?.business?.name || '' }} leftHeaderType={'username-display'} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren()}></AppLayout>
+    return <AppLayout layoutId={1} activeHeaderOption={activeHeaderOption} leftHeaderData={{ name: 'Business Data', socialMediaUsername: adsData?.business?.name || '' }} leftHeaderType={'username-display'} rightHeaderData={adPageHeader} rightHeaderType="navigation" handleTabChange={handleTabChange} leftDivChildren={leftDivChildren()} rightDivChildren={rightDivChildren()}></AppLayout>
 
 }
