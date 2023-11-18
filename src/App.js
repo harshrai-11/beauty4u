@@ -15,7 +15,7 @@ let path = window.location.href.split("/");
 path = path[path.length - 1];
 
 let showSidebar = true;
-let test;
+let testing;
 if ((path === "signup") | (path === "login")) {
   showSidebar = false;
 }
