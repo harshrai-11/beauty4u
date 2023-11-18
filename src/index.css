@@ -715,6 +715,11 @@ code {
   }
 }
 
+.signup {
+  width: 1000px;
+  margin: 0 auto;
+}
+
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .page-layout {
     padding-left: 40px;
