@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   TextField,
   Button,
@@ -11,6 +11,7 @@ import {
 import { Link, useNavigate } from "react-router-dom";
 import { SIGNUP, GET_OTP, VERIFY_CONTACT_NO } from "../routes";
 import { Loader } from "../layout/loader";
+import { isAuthenticated } from "../utils.js/helper";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -20,6 +21,13 @@ const Signup = () => {
   const [gender, setGender] = useState("male");
   const [otp, setOtp] = useState("");
   const [isLoading, setIsloading] = useState(false);
+
+  useEffect(() => {
+    const isLoggedIn = isAuthenticated();
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  });
 
   const verfiyContact = async () => {
     let body = JSON.stringify({

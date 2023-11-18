@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { TextField, Button, Stack } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { LOGIN, GET_OTP } from "../routes";
 import { Loader } from "../layout/loader";
+import { isAuthenticated } from "../utils.js/helper";
 
 const Login = () => {
   const navigate = useNavigate();
   const [contactNo, setContactNo] = useState("");
   const [otp, setOtp] = useState("");
   const [isLoading, setIsloading] = useState(false);
+
+  useEffect(() => {
+    const isLoggedIn = isAuthenticated();
+    if (isLoggedIn) {
+      navigate("/");
+    }
+  });
 
   const getOtp = async () => {
     var requestOptions = {

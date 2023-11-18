@@ -9,6 +9,7 @@ import { ListPage } from "./components/listPage";
 import { AdsPage } from "./components/adsPage";
 import SignUp from "./components/signup";
 import Login from "./components/login";
+import ProtectedRoute from "./utils.js/protectedRoute";
 
 function App() {
   //get current path
@@ -36,16 +37,19 @@ function App() {
 
         <div className="page-layout">
           <Routes>
-            <Route path="/signup" Component={SignUp}></Route>
-            <Route path="/login" Component={Login}></Route>
-            <Route path="/" Component={Users}></Route>
-            <Route path="/stats" Component={StatsPage}></Route>
-            <Route
-              path="/insta-insights"
-              Component={InstagramInsightsPage}
-            ></Route>
-            <Route path="/post-list" Component={ListPage}></Route>
-            <Route path="/business" Component={AdsPage}></Route>
+            <Route path="/signup" element={<SignUp />}></Route>
+            <Route path="/login" element={<Login />}></Route>
+
+            <Route element={<ProtectedRoute />}>
+              <Route path="/" element={<Users />} />
+              <Route path="/stats" element={<StatsPage />} />
+              <Route
+                path="/insta-insights"
+                element={<InstagramInsightsPage />}
+              />
+              <Route path="/post-list" element={<ListPage />} />
+              <Route path="/business" element={<AdsPage />} />
+            </Route>
           </Routes>
         </div>
       </div>
