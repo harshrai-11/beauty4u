@@ -51,3 +51,6 @@ export const SIGNUP = BASE_API_URL + "/users/signup/";
 export const GET_OTP = BASE_API_URL + "/users/otp/";
 export const VERIFY_CONTACT_NO = BASE_API_URL + "/users/otp/";
 export const LOGIN = BASE_API_URL + "/users/token/";
+
+//business
+export const ADS = BASE_API_URL + "ad/advertisement-ed/?endpoint=ads";

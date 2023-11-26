@@ -6,10 +6,11 @@ import { Route, Routes, useLocation } from "react-router-dom";
 import StatsPage from "./components/statsPage";
 import InstagramInsightsPage from "./components/instagramInsightsPage";
 import { ListPage } from "./components/listPage";
-import { AdsPage } from "./components/adsPage";
 import SignUp from "./components/signup";
 import Login from "./components/login";
 import ProtectedRoute from "./utils.js/protectedRoute";
+import { Ads } from "./components/ads";
+import { SimpleBarChart } from "./components/charts/barChart";
 
 function App() {
   //get current path
@@ -48,7 +49,9 @@ function App() {
                 element={<InstagramInsightsPage />}
               />
               <Route path="/post-list" element={<ListPage />} />
-              <Route path="/business" element={<AdsPage />} />
+              <Route path="/business" element={<Ads />} />
+              {/* <Route path="/business2" element={<Ads />} /> */}
+              <Route path="/charts" element={<SimpleBarChart />} />
             </Route>
           </Routes>
         </div>

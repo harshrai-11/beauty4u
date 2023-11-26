@@ -12,6 +12,8 @@ export const feedPageHeader = ["Post Stats", "Comments", "Demographic"];
 
 export const userPageHeader = ["Instagram", "Facebook", "TikTok"];
 
+export const businessHeader = ["Running Ads", "Inactive Ads", "Rejected Ads"];
+
 export const adPageHeader = ["Campaign", "Ad Sets", "Ads"];
 
 export const dateFilter = [
