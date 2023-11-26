@@ -753,23 +753,35 @@ code {
     align-items: center;
 }
 
-.ads-tab .css-h0q0iv-MuiButtonBase-root-MuiTab-root.Mui-selected {
+.ads-tab button {
+  color: white;
+}
+.ads-tab button.Mui-selected  {
+  color: #6de6b5;
+}
+
+.ads-tab .MuiTabs-indicator {
+  background-color: #6de6b5;
+}
+
+/* .ads-tab .css-h0q0iv-MuiButtonBase-root-MuiTab-root.Mui-selected {
   color: #6de6b5;
 }
 
 .ads-tab .css-h0q0iv-MuiButtonBase-root-MuiTab-root {
   color: white
-}
+} */
 
-.ads-tab .css-10d9dml-MuiTabs-indicator {
+
+/* .ads-tab .css-10d9dml-MuiTabs-indicator {
   background-color: #6de6b5;
-}
+} */
 
-.ads-page-layout .jiAnER {
+.ads-page-layout .sc-jrAGKZ {
   flex-direction: row-reverse;
 }
 
-.ads-page-layout .cfvlby {
+.ads-page-layout .sc-dlfmHC {
   flex-direction: row-reverse;
 }
 
