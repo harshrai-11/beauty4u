@@ -12,7 +12,12 @@ export const feedPageHeader = ["Post Stats", "Comments", "Demographic"];
 
 export const userPageHeader = ["Instagram", "Facebook", "TikTok"];
 
-export const businessHeader = ["Running Ads", "Inactive Ads", "Rejected Ads"];
+export const adsHeader = ["Running Ads", "Inactive Ads", "Rejected Ads"];
+export const adsetsHeader = [
+  "Running Ad Set",
+  "Inactive Ad Set",
+  "Rejected Ad Set",
+];
 
 export const adPageHeader = ["Campaign", "Ad Sets", "Ads"];
 
@@ -133,7 +138,7 @@ export const ApiHeaders = {
   headers: {
     "Access-Control-Allow-Origin": "*",
     "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
   },
 };
 
@@ -144,7 +149,7 @@ export const PostApiHeaders = {
     "Access-Control-Allow-Headers": "*",
     "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, OPTIONS",
     "Content-Type": "application/json",
-    Authorization: `Bearer ${localStorage.getItem("token")}`,
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
   },
 };
 

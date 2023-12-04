@@ -50,7 +50,9 @@ export const GET_ADS_INFO =
 export const SIGNUP = BASE_API_URL + "/users/signup/";
 export const GET_OTP = BASE_API_URL + "/users/otp/";
 export const VERIFY_CONTACT_NO = BASE_API_URL + "/users/otp/";
-export const LOGIN = BASE_API_URL + "/users/token/";
+// export const LOGIN = BASE_API_URL + "/users/token/";
+export const LOGIN = BASE_API_URL + "/users/token-login/";
 
 //business
 export const ADS = BASE_API_URL + "ad/advertisement-ed/?endpoint=ads";
+export const ADS_SETS = BASE_API_URL + "ad/advertisement-ed/?endpoint=adsets";

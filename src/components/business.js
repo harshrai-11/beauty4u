@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { SearchBar } from "./searchBar";
-import { businessHeader } from "../utils.js/constant";
-import { ADS } from "../routes";
+import { adsHeader, adsetsHeader } from "../utils.js/constant";
+import { ADS, ADS_SETS } from "../routes";
 import { Grid, Button } from "@mui/material";
 import { AppLayoutWrapper } from "../layout/AppLayoutWrapper";
 import { Loader } from "../layout/loader";
@@ -14,12 +14,13 @@ import CloudUploadIcon from "@mui/icons-material/CloudUpload";
 import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import HomeIcon from "@mui/icons-material/Home";
+import { useParams, useNavigate } from "react-router-dom";
 
-export const Ads = () => {
+export const Business = () => {
   const [activeHeaderOption, setActiveHeaderOption] = useState("Running Ads");
   // Loader State
   const [showLoader, setShowLoader] = useState(false);
-  const [adsData, setAdsData] = useState([]);
+  const [userData, setUserData] = useState([]);
   const [value, setValue] = React.useState(0);
   const [prevUrl, setPrevUrl] = useState("");
   const [nextUrl, setNextUrl] = useState("");
@@ -28,15 +29,43 @@ export const Ads = () => {
   const [rejectedAds, setRejectedAds] = useState([]);
   const [showNext, setShowNext] = useState(true);
   const [showPrev, setShowPrev] = useState(false);
+  const [currentHeader, setCurrentHeader] = useState(adsetsHeader);
+
+  const { type } = useParams();
+  const navigate = useNavigate();
 
   const running = [];
   const inactive = [];
   const rejected = [];
 
+  useEffect(() => {
+    setShowLoader(true);
+    if (type === "ads") {
+      setCurrentHeader(adsHeader);
+      setActiveHeaderOption(adsHeader[0]);
+      getAds().catch((error) => {
+        console.log("error", error);
+      });
+    } else if (type === "adsets") {
+      setValue(1);
+      setCurrentHeader(adsetsHeader);
+      setActiveHeaderOption(adsetsHeader[0]);
+      getAdsets().catch((error) => {
+        console.log("error in adsets", error);
+      });
+    } else if (type === "campaign") {
+      setValue(2);
+    }
+  }, [value]);
+
   const handleChange = (event, newValue) => {
     setValue(newValue);
+
     if (newValue === 0) {
-      window.location.reload();
+      navigate("/business/ads");
+    }
+    if (newValue === 1) {
+      navigate("/business/adsets");
     }
   };
 
@@ -44,20 +73,19 @@ export const Ads = () => {
     method: "GET",
   };
 
-  useEffect(() => {
-    setShowLoader(true);
-
-    getAds().catch((error) => {
-      console.log("error", error);
-    });
-  }, []);
-
   const getAds = async () => {
     const resp = await fetch(`${ADS}`, requestOptions);
     setShowLoader(false);
     const result = await resp.json();
     setNextUrl(result?.data?.data?.paging?.next);
-    createRows(result?.data?.data);
+    createAdsRows(result?.data?.data);
+  };
+
+  const getAdsets = async () => {
+    const resp = await fetch(`${ADS_SETS}`, requestOptions);
+    setShowLoader(false);
+    const result = await resp.json();
+    createAdsRows(result?.data?.data);
   };
 
   const handlePageChange = async (value) => {
@@ -92,7 +120,7 @@ export const Ads = () => {
         setShowPrev(false);
       }
 
-      createRows(result);
+      createAdsRows(result);
     }
 
     setShowLoader(false);
@@ -104,18 +132,23 @@ export const Ads = () => {
     setTableData(activeHeader);
   };
 
+  const handleLinkClick = (e, data) => {
+    e.preventDefault();
+    navigate("/performance", { state: data });
+  };
+
   const setTableData = (activeHeader) => {
-    if (activeHeader === "Running Ads") {
-      setAdsData(runningAds);
+    if (activeHeader === "Running Ads" || activeHeader === "Running Ad Set") {
+      setUserData(runningAds);
       return;
     }
 
-    if (activeHeader === "Inactive Ads") {
-      setAdsData(inactiveAds);
+    if (activeHeader === "Inactive Ads" || activeHeader === "Inactive Ad Set") {
+      setUserData(inactiveAds);
     }
 
-    if (activeHeader === "Rejected Ads") {
-      setAdsData(rejectedAds);
+    if (activeHeader === "Rejected Ads" || activeHeader === "Rejected Ad Set") {
+      setUserData(rejectedAds);
       return;
     }
   };
@@ -153,7 +186,9 @@ export const Ads = () => {
         >
           {data.name}
           <div className="campaign-analysis-links" id="adname">
-            <a href="/charts">View charts</a>
+            <Button href="/" onClick={(e) => handleLinkClick(e, data)}>
+              View charts
+            </Button>
           </div>
         </div>
       ),
@@ -171,7 +206,7 @@ export const Ads = () => {
     return obj;
   };
 
-  const createRows = (rowsData) => {
+  const createAdsRows = (rowsData) => {
     rowsData?.data?.forEach((data, index) => {
       let obj = {};
 
@@ -195,18 +230,27 @@ export const Ads = () => {
     setRejectedAds(rejected);
     setInactiveAds(inactive);
 
-    if (activeHeaderOption === "Running Ads") {
-      setAdsData(running);
+    if (
+      activeHeaderOption === "Running Ads" ||
+      activeHeaderOption === "Running Ad Set"
+    ) {
+      setUserData(running);
       return;
     }
 
-    if (activeHeaderOption === "Inactive Ads") {
-      setAdsData(inactive);
+    if (
+      activeHeaderOption === "Inactive Ads" ||
+      activeHeaderOption === "Inactive Ad Set"
+    ) {
+      setUserData(inactive);
       return;
     }
 
-    if (activeHeaderOption === "Rejected Ads") {
-      setAdsData(rejected);
+    if (
+      activeHeaderOption === "Rejected Ads" ||
+      activeHeaderOption === "Rejected Ad Set"
+    ) {
+      setUserData(rejected);
       return;
     }
   };
@@ -270,7 +314,7 @@ export const Ads = () => {
   return (
     <AppLayoutWrapper
       layoutId={2}
-      headerData={businessHeader}
+      headerData={currentHeader}
       headerType="navigation"
       activeHeaderOption={activeHeaderOption}
       handleTabChange={handleTabChange}
@@ -292,19 +336,19 @@ export const Ads = () => {
             aria-label="icon label tabs example"
           >
             <Tab icon={<CloudUploadIcon />} iconPosition="start" label="Ads" />
+            <Tab icon={<GridViewIcon />} iconPosition="start" label="Ad sets" />
             <Tab
               icon={<FolderOutlinedIcon />}
               iconPosition="start"
               label="Campaign"
             />
-            <Tab icon={<GridViewIcon />} iconPosition="start" label="Ad sets" />
           </Tabs>
         </div>
 
         <Grid spacing={2} container>
           <DataTable
             columns={columns}
-            data={adsData}
+            data={userData}
             fixedHeader
             responsive
             expandableRows
@@ -312,45 +356,48 @@ export const Ads = () => {
           />
         </Grid>
       </div>
-      <div
-        className="table-footer"
-        style={{ background: "#293346", padding: "20px" }}
-      >
-        <div className="feed-next-back-button">
-          <Button
-            className="feed-next-button-list"
-            onClick={() => handlePageChange("home")}
-            variant="outlined"
-            startIcon={<HomeIcon />}
-          >
-            {" "}
-            Go To Home
-          </Button>
 
-          {showPrev && (
+      {type === "ads" && (
+        <div
+          className="table-footer"
+          style={{ background: "#293346", padding: "20px" }}
+        >
+          <div className="feed-next-back-button">
             <Button
               className="feed-next-button-list"
-              onClick={() => handlePageChange("previous")}
+              onClick={() => handlePageChange("home")}
               variant="outlined"
-              startIcon={<ArrowLeftIcon />}
+              startIcon={<HomeIcon />}
             >
               {" "}
-              Previous{" "}
+              Go To Home
             </Button>
-          )}
-          {showNext && (
-            <Button
-              className="feed-next-button-list"
-              onClick={() => handlePageChange("next")}
-              variant="outlined"
-              endIcon={<ArrowRightIcon></ArrowRightIcon>}
-            >
-              {" "}
-              Next{" "}
-            </Button>
-          )}
+
+            {showPrev && (
+              <Button
+                className="feed-next-button-list"
+                onClick={() => handlePageChange("previous")}
+                variant="outlined"
+                startIcon={<ArrowLeftIcon />}
+              >
+                {" "}
+                Previous{" "}
+              </Button>
+            )}
+            {showNext && (
+              <Button
+                className="feed-next-button-list"
+                onClick={() => handlePageChange("next")}
+                variant="outlined"
+                endIcon={<ArrowRightIcon></ArrowRightIcon>}
+              >
+                {" "}
+                Next{" "}
+              </Button>
+            )}
+          </div>
         </div>
-      </div>
+      )}
     </AppLayoutWrapper>
   );
 };

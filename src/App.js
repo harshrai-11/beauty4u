@@ -9,8 +9,8 @@ import { ListPage } from "./components/listPage";
 import SignUp from "./components/signup";
 import Login from "./components/login";
 import ProtectedRoute from "./utils.js/protectedRoute";
-import { Ads } from "./components/ads";
-import { SimpleBarChart } from "./components/charts/barChart";
+import { Business } from "./components/business";
+import Performance from "./components/performance";
 
 function App() {
   //get current path
@@ -49,9 +49,9 @@ function App() {
                 element={<InstagramInsightsPage />}
               />
               <Route path="/post-list" element={<ListPage />} />
-              <Route path="/business" element={<Ads />} />
+              <Route path="/business/:type" element={<Business />} />
               {/* <Route path="/business2" element={<Ads />} /> */}
-              <Route path="/charts" element={<SimpleBarChart />} />
+              <Route path="/performance" element={<Performance />} />
             </Route>
           </Routes>
         </div>

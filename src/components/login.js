@@ -43,12 +43,29 @@ const Login = () => {
       otp: otp,
     });
 
+    // var requestOptions = {
+    //   method: "POST",
+    //   body: body,
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    // };
+
+    // const resp = await fetch(`${LOGIN}`, requestOptions);
+    // const result = await resp.json();
+
+    var myHeaders = new Headers();
+    myHeaders.append("Content-Type", "application/x-www-form-urlencoded");
+
+    var urlencoded = new URLSearchParams();
+    urlencoded.append("mobile", contactNo);
+    urlencoded.append("otp", otp);
+
     var requestOptions = {
       method: "POST",
-      body: body,
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: myHeaders,
+      body: urlencoded,
+      redirect: "follow",
     };
 
     const resp = await fetch(`${LOGIN}`, requestOptions);
@@ -56,8 +73,8 @@ const Login = () => {
 
     setIsloading(false);
     if (result.success) {
-      const token = result.success.access_token;
-      localStorage.setItem("token", token);
+      const token = result.access_token;
+      localStorage.setItem("access_token", token);
       navigate("/");
     } else {
       alert(result.message);

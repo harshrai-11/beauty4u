@@ -785,6 +785,33 @@ code {
   flex-direction: row-reverse;
 }
 
+.performance .MuiPaper-root {
+  background-color: #1b2235;
+  height:550px;
+  margin: 20px;
+}
+
+.MuiPaper-root .MuiCardContent-root .performance-data { 
+  display: flex;
+  justify-content: space-between;
+  margin: 30px;
+  padding: 20px;
+}
+
+.performance-item {
+  flex: 1;
+    padding: 20px;
+    border-radius: 5px;
+    display: flex;
+    flex-direction: column;
+    cursor: pointer;
+    
+}
+
+.active-item {
+  border: 1px solid #6de6b5;
+}
+
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .page-layout {
     padding-left: 40px;
