@@ -156,9 +156,11 @@ export const Business = () => {
   let node;
 
   const handleMouseEnter = (e) => {
-    node = e.target.children[0];
-    if (node) {
-      node.style.display = "flex";
+    if (type === "adsets") {
+      node = e.target.children[0];
+      if (node) {
+        node.style.display = "flex";
+      }
     }
   };
 

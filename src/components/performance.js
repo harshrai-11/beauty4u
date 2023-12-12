@@ -28,6 +28,7 @@ const Performance = () => {
   const [key2, setKey2] = useState("max");
 
   const leadData = state?.insights?.data?.[0].cost_per_action_type;
+  const webLeadData = state?.insights?.data?.[0].actions;
   const spent = state?.insights?.data[0].spend;
   let leads = 0;
   let webLead = 0;
@@ -61,11 +62,13 @@ const Performance = () => {
     });
   }, []);
 
-  leadData.forEach((key) => {
-    if (key.action_type === "onsite_web_lead") {
+  webLeadData.forEach((key) => {
+    if (key.action_type === "lead") {
       webLead = key.value;
     }
+  });
 
+  leadData.forEach((key) => {
     if (key.action_type === "lead") {
       // eslint-disable-next-line no-unused-vars
       leads = key.value;
@@ -165,7 +168,7 @@ const Performance = () => {
                 sx={{ fontSize: "16px", color: "#6de6b5" }}
                 align="left"
               >
-                {leads}
+                ${leads}
               </Typography>
             </div>
             <div
