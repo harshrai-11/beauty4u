@@ -785,7 +785,7 @@ code {
   flex-direction: row-reverse;
 }
 
-.performance .MuiPaper-root {
+.performance .MuiPaper-root, .adsPerformance .MuiPaper-root {
   background-color: #1b2235;
   height:550px;
   margin: 20px;
@@ -811,6 +811,118 @@ code {
 .active-item {
   border: 1px solid #6de6b5;
 }
+
+.adsperformance .MuiPaper-root {
+  background-color: #1b2235;
+  height:550px;
+  margin: 20px;
+}
+
+.adsPerformance .ad-video {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  width: 40%;
+}
+
+.ad-views {
+  display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 0px auto;
+}
+
+.adsPerformance .views {
+  display: flex;
+    flex-direction: column;
+    padding: 10px;
+}
+
+.adsPerformance .views .view-keys {
+  display: flex;
+   background: #D9D9D9;
+    color: #000000;
+    width: 400px;
+    justify-content: center; 
+    margin:20px;
+    padding: 10px; 
+}
+
+.adsPerformance .results {
+  display: flex;
+}
+
+.adsPerformance .conversion {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 30%;
+}
+
+.border {
+  border-right: 1px solid #746D6D;
+}
+
+.adsPerformance .conv-data {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  min-height: 55px;
+  flex-shrink: 0;
+  border-radius: 50px;
+  background: #D9D9D9;
+  margin: 15px;
+  padding: 10px;
+}
+
+.metric-data {
+  display: flex;
+  /* flex-direction: column; */
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  min-height: 55px;
+  flex-shrink: 0;
+  border-radius: 50px;
+  background: #D9D9D9;
+  margin: 15px;
+  padding: 10px;
+}
+
+.cost-action-sum {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 300px;
+  height: 55px;
+  flex-shrink: 0;
+  border-radius: 50px;
+  background: #D9D9D9;
+  margin: 15px;
+  padding: 10px;
+}
+
+.adsPerformance .metric-values {
+  display: flex;
+  flex-direction: column;
+  width: 70%;
+}
+
+.adsPerformance .metric-values .metric-col {
+  display: flex;
+  align-items: flex-start;
+  justify-content: start;
+  flex-wrap: wrap;
+  overflow-y: scroll;
+    height: 400px;
+}
+
+.adsPerformance .cost-break-down {
+  width: 40%;
+}
+
 
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .page-layout {

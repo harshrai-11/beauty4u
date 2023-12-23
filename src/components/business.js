@@ -134,7 +134,12 @@ export const Business = () => {
 
   const handleLinkClick = (e, data) => {
     e.preventDefault();
-    navigate("/performance", { state: data });
+    if (type === "adsets") {
+      navigate("/business/adsets/adsets-performance", { state: data });
+    }
+    if (type === "ads") {
+      navigate("/business/ads/ads-performance", { state: data });
+    }
   };
 
   const setTableData = (activeHeader) => {
@@ -156,11 +161,9 @@ export const Business = () => {
   let node;
 
   const handleMouseEnter = (e) => {
-    if (type === "adsets") {
-      node = e.target.children[0];
-      if (node) {
-        node.style.display = "flex";
-      }
+    node = e.target.children[0];
+    if (node) {
+      node.style.display = "flex";
     }
   };
 

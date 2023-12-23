@@ -10,7 +10,8 @@ import SignUp from "./components/signup";
 import Login from "./components/login";
 import ProtectedRoute from "./utils.js/protectedRoute";
 import { Business } from "./components/business";
-import Performance from "./components/performance";
+import AdsetsPerformance from "./components/adsetsPerformance";
+import AdsPerformance from "./components/adsPerformance";
 
 function App() {
   //get current path
@@ -50,8 +51,14 @@ function App() {
               />
               <Route path="/post-list" element={<ListPage />} />
               <Route path="/business/:type" element={<Business />} />
-              {/* <Route path="/business2" element={<Ads />} /> */}
-              <Route path="/performance" element={<Performance />} />
+              <Route
+                path="/business/:type/adsets-performance"
+                element={<AdsetsPerformance />}
+              />
+              <Route
+                path="/business/:type/ads-performance"
+                element={<AdsPerformance />}
+              />
             </Route>
           </Routes>
         </div>
