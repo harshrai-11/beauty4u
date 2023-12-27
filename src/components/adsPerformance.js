@@ -162,7 +162,7 @@ const AdsPerformance = () => {
                 sx={{ fontSize: "30px", fontWeight: "bold", color: "white" }}
                 align="left"
               >
-                Advertisement
+                Ad
               </Typography>
               <img
                 src={ads_insta}
@@ -258,13 +258,13 @@ const AdsPerformance = () => {
               onClick={() => handleItemClick(1)}
             >
               <Typography
-                sx={{ fontSize: "16px", color: "#d9d9d9" }}
+                sx={{ fontSize: "26px", color: "#d9d9d9" }}
                 align="left"
               >
                 Website Leads
               </Typography>
               <Typography
-                sx={{ fontSize: "16px", color: "#6de6b5" }}
+                sx={{ fontSize: "26px", color: "#6de6b5" }}
                 align="left"
               >
                 {webLead}
@@ -280,13 +280,13 @@ const AdsPerformance = () => {
               onClick={() => handleItemClick(2)}
             >
               <Typography
-                sx={{ fontSize: "16px", color: "#d9d9d9" }}
+                sx={{ fontSize: "26px", color: "#d9d9d9" }}
                 align="left"
               >
                 Per Leads
               </Typography>
               <Typography
-                sx={{ fontSize: "16px", color: "#6de6b5" }}
+                sx={{ fontSize: "26px", color: "#6de6b5" }}
                 align="left"
               >
                 ${leads}
@@ -302,13 +302,13 @@ const AdsPerformance = () => {
               onClick={() => handleItemClick(3)}
             >
               <Typography
-                sx={{ fontSize: "16px", color: "#d9d9d9" }}
+                sx={{ fontSize: "26px", color: "#d9d9d9" }}
                 align="left"
               >
                 Amount Spent
               </Typography>
               <Typography
-                sx={{ fontSize: "16px", color: "#6de6b5" }}
+                sx={{ fontSize: "26px", color: "#6de6b5" }}
                 align="left"
               >
                 ${spent}

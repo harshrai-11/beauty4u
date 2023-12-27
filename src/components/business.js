@@ -197,8 +197,8 @@ export const Business = () => {
           </div>
         </div>
       ),
-      budget: data?.insights?.data[0].spend,
-      amountSpent: data?.insights?.data[0].spend,
+      budget: `$${data?.insights?.data[0].spend}`,
+      amountSpent: `$${data?.insights?.data[0].spend}`,
       costPerResult: data?.insights?.data[0].cpc,
       results: data?.insights?.data[0].ctr,
       delivery: data?.insights?.data[0].objective,
