@@ -22,20 +22,25 @@ export const ACCOUNTS_ENGAGED_DEMOGRAPHY_API = (breakdown) =>
 // Instagram Feed Data
 export const INSTAGRAM_FEED_DETAILS = (userId) =>
   BASE_API_URL + `/ig-user/media-fields/?ig_user_id=${userId}`;
+
 export const INSTAGRAM_FEED_DETAILS_LIST = (
   isFirstPage,
   cursorToken,
   beforeOrAfter
 ) =>
   BASE_API_URL +
-  "/ig-user/media-fields-insights?limit=30" +
+  "/ig-user/media-fields-insights-v2?limit=30" +
   (isFirstPage ? "" : `&${beforeOrAfter}=${cursorToken}`);
+
 export const GET_PER_MEDIA_INSIGHT = (mediaType, mediaId) =>
   BASE_API_URL +
   `ig-user/media-insights/?media_id=${mediaId}&media_type=${mediaType}`;
 
 // Tag
-export const UPDATE_TAG = BASE_API_URL + "ig-user/tag/";
+// export const UPDATE_TAG = BASE_API_URL + "ig-user/tag/";
+export const UPDATE_MEDIA_TAG = BASE_API_URL + "ig-user/media-insights-update/";
+export const GET_TAG_LIST = BASE_API_URL + "ig-user/tag-list";
+export const ADD_TAGS = BASE_API_URL + "ig-user/tag-list/";
 
 // User Info
 export const GET_USER_LIST = BASE_API_URL + "/ig-user/id-details/";
@@ -52,6 +57,7 @@ export const GET_OTP = BASE_API_URL + "/users/otp/";
 export const VERIFY_CONTACT_NO = BASE_API_URL + "/users/otp/";
 // export const LOGIN = BASE_API_URL + "/users/token/";
 export const LOGIN = BASE_API_URL + "/users/token-login/";
+export const LOGOUT = BASE_API_URL + "/users/token-logout/";
 
 //business
 export const ADS = BASE_API_URL + "ad/advertisement-ed/?endpoint=ads";

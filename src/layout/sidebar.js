@@ -5,6 +5,7 @@ import HomeOutlinedIcon from "@mui/icons-material/HomeOutlined";
 import CalendarMonthOutlinedIcon from "@mui/icons-material/CalendarMonthOutlined";
 import LocalPhoneOutlinedIcon from "@mui/icons-material/LocalPhoneOutlined";
 import StoreIcon from "@mui/icons-material/Store";
+import SettingsIcon from "@mui/icons-material/Settings";
 
 const SideBar = (props) => {
   const routeChange = (path) => {
@@ -30,6 +31,11 @@ const SideBar = (props) => {
     {
       icon: <LocalPhoneOutlinedIcon />,
       label: "Leads",
+    },
+    {
+      icon: <SettingsIcon />,
+      label: "Settings",
+      path: "/settings",
     },
   ];
   return (

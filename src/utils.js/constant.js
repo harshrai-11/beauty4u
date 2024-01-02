@@ -153,6 +153,17 @@ export const PostApiHeaders = {
   },
 };
 
+export const PatchApiHeaders = {
+  method: "PATCH",
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT, PATCH, OPTIONS",
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  },
+};
+
 export const breakdownValues = [
   { audience_gender_age: "age,gender" },
   { audience_country: "country" },

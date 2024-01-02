@@ -53,18 +53,13 @@ export const getStatsNumber = (data, id) => {
 export const getStatsNumberList = (data, id) => {
   switch (id) {
     case 1:
-      return data.insights.data.filter((val) => val.name === "plays")[0]
-        .values[0].value;
+      return data?.insights?.plays;
     case 2:
-      return data.insights.data.filter(
-        (val) => val.name === "total_interactions"
-      )[0].values[0].value;
+      return data?.insights?.total_interactions;
     case 3:
-      return data.insights.data.filter((val) => val.name === "shares")[0]
-        .values[0].value;
+      return data?.insights?.shares;
     default:
-      return data.insights.data.filter((val) => val.name === "saved")[0]
-        .values[0].value;
+      return data?.insights?.saved;
   }
 };
 

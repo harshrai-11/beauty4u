@@ -12,6 +12,7 @@ import ProtectedRoute from "./utils.js/protectedRoute";
 import { Business } from "./components/business";
 import AdsetsPerformance from "./components/adsetsPerformance";
 import AdsPerformance from "./components/adsPerformance";
+import Settings from "./components/settings";
 
 function App() {
   //get current path
@@ -59,6 +60,7 @@ function App() {
                 path="/business/:type/ads-performance"
                 element={<AdsPerformance />}
               />
+              <Route path="/settings" element={<Settings />}></Route>
             </Route>
           </Routes>
         </div>

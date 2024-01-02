@@ -733,6 +733,15 @@ code {
   margin: 0 auto;
 }
 
+.settings {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height:500px;
+  width: 1000px;
+  margin: 0 auto;
+}
+
 .campaign-analysis-links {
   justify-content: flex-start;
   flex-wrap: wrap;
@@ -917,6 +926,11 @@ code {
   flex-wrap: wrap;
   overflow-y: scroll;
     height: 400px;
+}
+
+.tag-input-div .MuiSelect-select {
+  min-width: 200px;
+  color: #7cd985;
 }
 
 .adsPerformance .cost-break-down {
