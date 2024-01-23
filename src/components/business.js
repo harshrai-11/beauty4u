@@ -15,6 +15,7 @@ import ArrowLeftIcon from "@mui/icons-material/ArrowLeft";
 import ArrowRightIcon from "@mui/icons-material/ArrowRight";
 import HomeIcon from "@mui/icons-material/Home";
 import { useParams, useNavigate } from "react-router-dom";
+import { formatNumber } from "../utils.js/helper";
 
 export const Business = () => {
   const [activeHeaderOption, setActiveHeaderOption] = useState("Running Ads");
@@ -174,6 +175,21 @@ export const Business = () => {
   };
 
   const createDataObj = (data, index) => {
+    let cpr = 0;
+    let results = 0;
+
+    data?.insights?.data[0]?.cost_per_action_type?.forEach((key) => {
+      if (key.action_type === "lead") {
+        cpr = formatNumber(key.value);
+      }
+    });
+
+    data?.insights?.data[0]?.actions?.forEach((key) => {
+      if (key.action_type === "onsite_web_lead") {
+        results = formatNumber(key.value);
+      }
+    });
+
     let obj = {};
 
     obj = {
@@ -187,6 +203,7 @@ export const Business = () => {
             justifyContent: "center",
             flexDirection: "column",
             height: "100px",
+            whiteSpace: "break-spaces",
           }}
         >
           {data.name}
@@ -197,15 +214,15 @@ export const Business = () => {
           </div>
         </div>
       ),
-      budget: `$${data?.insights?.data[0].spend}`,
-      amountSpent: `$${data?.insights?.data[0].spend}`,
-      costPerResult: data?.insights?.data[0].cpc,
-      results: data?.insights?.data[0].ctr,
+      amountSpent: `$${formatNumber(data?.insights?.data[0]?.spend)}`,
+      costPerResult: `$${cpr}`,
+      results: results,
       delivery: data?.insights?.data[0].objective,
       ends: data?.insights?.data[0].quality_ranking,
       status: data.effective_status,
       reach: data?.insights?.data[0].reach,
       impressions: data?.insights?.data[0].impressions,
+      adsetName: data?.insights?.data[0].adset_name,
     };
 
     return obj;
@@ -215,17 +232,17 @@ export const Business = () => {
     rowsData?.data?.forEach((data, index) => {
       let obj = {};
 
-      if (data.effective_status === "ACTIVE") {
+      if (data.status === "ACTIVE") {
         obj = createDataObj(data, index);
         running.push(obj);
       }
 
-      if (data.effective_status === "PAUSED") {
+      if (data.status === "PAUSED") {
         obj = createDataObj(data, index);
         inactive.push(obj);
       }
 
-      if (data.effective_status === "DISAPPROVED") {
+      if (data.status === "DISAPPROVED") {
         obj = createDataObj(data, index);
         rejected.push(obj);
       }
@@ -272,18 +289,13 @@ export const Business = () => {
       wrap: true,
     },
     {
-      name: "Results",
+      name: "Results(Web Lead)",
       selector: (row) => row.results,
       wrap: true,
     },
     {
       name: "Amount Spent",
       selector: (row) => row.amountSpent,
-      wrap: true,
-    },
-    {
-      name: "Budget",
-      selector: (row) => row.budget,
       wrap: true,
     },
     {
@@ -302,7 +314,7 @@ export const Business = () => {
       <div className="expand-list">
         <span>
           <strong style={{ color: "#6de6b5" }}>Ad Set Name:</strong>
-          {data.adName.props.children[0]}
+          {data.adsetName}
         </span>
         <span>
           <strong style={{ color: "#6de6b5" }}>Reach:</strong>
@@ -328,7 +340,8 @@ export const Business = () => {
 
       <div className="search-layout-ads">
         <div className="search-bar">
-          <SearchBar searchBarPlaceholder="Search and filter"></SearchBar>
+          {/* <SearchBar searchBarPlaceholder="Search and filter"></SearchBar> */}
+          {/* <Button>Previous Month Spend</Button> */}
         </div>
       </div>
 

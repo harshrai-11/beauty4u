@@ -16,6 +16,7 @@ import {
   CartesianGrid,
   Legend,
 } from "recharts";
+import { formatNumber } from "../utils.js/helper";
 
 const Performance = () => {
   const { state } = useLocation();
@@ -29,7 +30,7 @@ const Performance = () => {
 
   const leadData = state?.insights?.data?.[0].cost_per_action_type;
   const webLeadData = state?.insights?.data?.[0].actions;
-  const spent = state?.insights?.data[0].spend;
+  const spent = formatNumber(state?.insights?.data[0].spend, 2);
   let leads = 0;
   let webLead = 0;
   let ageData = [];
@@ -71,7 +72,7 @@ const Performance = () => {
   leadData.forEach((key) => {
     if (key.action_type === "lead") {
       // eslint-disable-next-line no-unused-vars
-      leads = key.value;
+      leads = formatNumber(key.value, 2);
     }
   });
 

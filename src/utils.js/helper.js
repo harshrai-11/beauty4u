@@ -77,3 +77,8 @@ export const isAuthenticated = () => {
   }
   return false;
 };
+
+export const formatNumber = (value, length = 2) => {
+  let val = +value;
+  return val ? val.toFixed(length) : 0;
+};

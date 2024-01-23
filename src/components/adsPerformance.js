@@ -14,6 +14,7 @@ import desktop from "./images/desktop_view.png";
 import mobile from "./images/mobile_view.png";
 import summation from "./images/summation.png";
 import ads_insta from "./images/ads_insta.jpeg";
+import { formatNumber } from "../utils.js/helper";
 
 const AdsPerformance = () => {
   const { state } = useLocation();
@@ -22,14 +23,15 @@ const AdsPerformance = () => {
   const adVideoUrl = state?.adcreatives?.data[0]?.thumbnail_url;
   const actionType = state?.insights?.data?.[0].cost_per_action_type;
   const actions = state?.insights?.data?.[0].actions;
-  const spent = state?.insights?.data[0].spend;
+  const spent = formatNumber(state?.insights?.data[0].spend, 2);
 
   const videoInfo = state?.insights?.data[0];
 
   let obj = {};
   for (let key in videoInfo) {
     if (key === "video_play_curve_actions") {
-      obj["Video Play Curve Actions"] = Math.max(...videoInfo[key][0].value);
+      if (videoInfo[key][0]?.value)
+        obj["Video Play Curve Actions"] = Math.max(...videoInfo[key][0].value);
     }
 
     if (key === "video_avg_time_watched_actions") {
@@ -131,7 +133,7 @@ const AdsPerformance = () => {
 
     if (key.action_type === "lead") {
       // eslint-disable-next-line no-unused-vars
-      leads = key.value;
+      leads = formatNumber(key.value, 2);
     }
 
     if (key.action_type.includes("onsite_conversion")) {
@@ -477,7 +479,8 @@ const AdsPerformance = () => {
                 {actionTypeUpdated?.map((type) => (
                   <div className="view-keys">
                     <Typography sx={{ fontSize: "18px" }} align="left">
-                      {type.action_type}: <strong>${type.value}</strong>
+                      {type.action_type}:{" "}
+                      <strong>${formatNumber(type.value, 2)}</strong>
                     </Typography>
                   </div>
                 ))}
@@ -516,7 +519,7 @@ const AdsPerformance = () => {
                   >
                     Total Cost Per Action
                   </Typography>
-                  <strong>${sum.toFixed(2)}</strong>
+                  <strong>${formatNumber(sum, 2)}</strong>
                 </div>
               </div>
             </div>
