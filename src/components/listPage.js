@@ -174,6 +174,11 @@ export const ListPage = () => {
       wrap: true,
     },
     {
+      name: "Category",
+      selector: (row) => row?.insights?.tag,
+      wrap: true,
+    },
+    {
       name: "Likes",
       selector: (row) => row?.like_count,
       sortable: true,
@@ -189,11 +194,6 @@ export const ListPage = () => {
       name: "Reach",
       selector: (row) => row?.reach,
       sortable: true,
-      wrap: true,
-    },
-    {
-      name: "Tag",
-      selector: (row) => row?.insights?.tag,
       wrap: true,
     },
     {

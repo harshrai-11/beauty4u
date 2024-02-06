@@ -62,3 +62,5 @@ export const LOGOUT = BASE_API_URL + "/users/token-logout/";
 //business
 export const ADS = BASE_API_URL + "ad/advertisement-ed/?endpoint=ads";
 export const ADS_SETS = BASE_API_URL + "ad/advertisement-ed/?endpoint=adsets";
+
+export const REVENUE = BASE_API_URL + "ad/advertisement-ads/";

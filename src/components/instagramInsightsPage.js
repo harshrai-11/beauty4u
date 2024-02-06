@@ -100,6 +100,7 @@ const InstagramInsightsPage = () => {
           setShowLoader(false);
         })
         .catch((error) => {
+          console.log("error", error);
           setShowLoader(false);
           alert("api failed");
         });
@@ -240,13 +241,13 @@ const InstagramInsightsPage = () => {
                     sx={{ minWidth: 200 }}
                   >
                     <InputLabel id="demo-simple-select-helper-label">
-                      Tags
+                      Category
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-helper-label"
                       id="demo-simple-select-helper"
                       value={currentTag}
-                      label="Tags"
+                      label="Category"
                       onChange={handleTagChange}
                       classes="tag-select"
                     >

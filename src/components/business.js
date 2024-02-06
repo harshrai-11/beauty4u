@@ -309,6 +309,10 @@ export const Business = () => {
     },
   ];
 
+  const handleSpend = () => {
+    navigate("/ads/revenue");
+  };
+
   const expandedComponent = ({ data }) => {
     return (
       <div className="expand-list">
@@ -341,7 +345,9 @@ export const Business = () => {
       <div className="search-layout-ads">
         <div className="search-bar">
           {/* <SearchBar searchBarPlaceholder="Search and filter"></SearchBar> */}
-          {/* <Button>Previous Month Spend</Button> */}
+          {activeHeaderOption === "Running Ads" && (
+            <Button onClick={handleSpend}>Previous Month Spend</Button>
+          )}
         </div>
       </div>
 

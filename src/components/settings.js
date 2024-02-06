@@ -35,12 +35,12 @@ const Signup = () => {
     <React.Fragment>
       <div className="settings">
         {isLoading && <Loader />}
-        <h1 style={{ color: "white" }}>Add Tags</h1>
+        <h1 style={{ color: "white" }}>Add Category For Post</h1>
         <form onSubmit={handleSubmit} action={<Link to="/" />}>
           <Stack spacing={2} sx={{ marginBottom: 4 }}>
             <TextField
               variant="outlined"
-              label="Tags"
+              label="Category"
               onChange={(e) => setTags(e.target.value)}
               value={tags}
               fullWidth
@@ -48,7 +48,7 @@ const Signup = () => {
             />
           </Stack>
           <Button variant="contained" type="submit">
-            Add Tags
+            Add Category
           </Button>
         </form>
       </div>

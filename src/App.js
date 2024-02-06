@@ -13,6 +13,7 @@ import { Business } from "./components/business";
 import AdsetsPerformance from "./components/adsetsPerformance";
 import AdsPerformance from "./components/adsPerformance";
 import Settings from "./components/settings";
+import { Revenue } from "./components/revenue";
 
 function App() {
   //get current path
@@ -61,6 +62,7 @@ function App() {
                 element={<AdsPerformance />}
               />
               <Route path="/settings" element={<Settings />}></Route>
+              <Route path="/ads/revenue" element={<Revenue />}></Route>
             </Route>
           </Routes>
         </div>
