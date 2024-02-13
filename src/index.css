@@ -736,7 +736,7 @@ code {
 .settings {
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  /* justify-content: center; */
   height:500px;
   width: 1000px;
   margin: 0 auto;
