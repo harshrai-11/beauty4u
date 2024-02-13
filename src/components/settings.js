@@ -18,6 +18,7 @@ const Signup = () => {
   const [tagList, setTagList] = useState([]);
 
   useEffect(() => {
+    setIsloading(true);
     getTags().catch((error) => {
       console.log("get tags error", error);
     });
@@ -27,6 +28,7 @@ const Signup = () => {
     const resp = await fetch(GET_TAG_LIST, ApiHeaders);
     const result = await resp.json();
     setTagList(result);
+    setIsloading(false);
   };
 
   function createData(adName, spend) {
