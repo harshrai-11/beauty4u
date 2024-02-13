@@ -742,6 +742,14 @@ code {
   margin: 0 auto;
 }
 
+.settings .MuiTextField-root label, .settings .MuiTextField-root div{
+  color: white
+}
+
+.settings .MuiTextField-root fieldset {
+  border-color:white;
+}
+
 .campaign-analysis-links {
   justify-content: flex-start;
   flex-wrap: wrap;
