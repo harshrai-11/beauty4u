@@ -19,8 +19,9 @@ import Paper from "@mui/material/Paper";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogContent from "@mui/material/DialogContent";
-import DialogContentText from "@mui/material/DialogContentText";
 import DialogTitle from "@mui/material/DialogTitle";
+import DeleteIcon from "@mui/icons-material/Delete";
+import EditIcon from "@mui/icons-material/Edit";
 
 const Settings = () => {
   const [tags, setTags] = useState("");
@@ -242,6 +243,7 @@ const Settings = () => {
                         variant="outlined"
                         color="secondary"
                         onClick={() => handleEditClick(row)}
+                        startIcon={<EditIcon />}
                       >
                         Edit
                       </Button>
@@ -251,6 +253,7 @@ const Settings = () => {
                         variant="outlined"
                         color="error"
                         onClick={() => handleDeleteClick(row)}
+                        startIcon={<DeleteIcon />}
                       >
                         Delete
                       </Button>
