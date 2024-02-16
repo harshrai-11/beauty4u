@@ -41,6 +41,8 @@ export const GET_PER_MEDIA_INSIGHT = (mediaType, mediaId) =>
 export const UPDATE_MEDIA_TAG = BASE_API_URL + "ig-user/media-insights-update/";
 export const GET_TAG_LIST = BASE_API_URL + "ig-user/tag-list";
 export const ADD_TAGS = BASE_API_URL + "ig-user/tag-list/";
+export const UPDATE_TAG = BASE_API_URL + "ig-user/tag-update/";
+export const DELETE_TAG = BASE_API_URL + "ig-user/tag-delete/";
 
 // User Info
 export const GET_USER_LIST = BASE_API_URL + "/ig-user/id-details/";

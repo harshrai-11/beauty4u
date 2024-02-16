@@ -164,6 +164,16 @@ export const PatchApiHeaders = {
   },
 };
 
+export const DeleteApiHeaders = {
+  method: "DELETE",
+  headers: {
+    "Access-Control-Allow-Origin": "*",
+    "Access-Control-Allow-Headers": "*",
+    "Access-Control-Allow-Methods": "GET, POST, PUT,DELETE, OPTIONS",
+    Authorization: `Bearer ${localStorage.getItem("access_token")}`,
+  },
+};
+
 export const breakdownValues = [
   { audience_gender_age: "age,gender" },
   { audience_country: "country" },
