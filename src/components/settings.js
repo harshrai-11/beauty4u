@@ -59,6 +59,7 @@ const Settings = () => {
     if (resp.status === 201) {
       alert("tag added successfully");
       setTags("");
+      window.location.reload();
     } else {
       alert("api failed");
     }
