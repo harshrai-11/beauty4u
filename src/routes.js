@@ -3,18 +3,18 @@ const BASE_API_URL = "https://shikhardubey85.pythonanywhere.com/";
 // Stats APIs
 export const FOLLOWERS_DEMOGRAPHY_API =
   BASE_API_URL + "/ig-user/user-insights-city-age-gender/";
-export const GET_PROFILE_ACCOUNTS_REACHED =
+export const GET_PROFILE_ACCOUNTS_REACHED = (userId) =>
   BASE_API_URL +
-  "/ig-user/user-insights/?metric=reach,impressions&period=days_28,week,day";
-export const GET_PROFILE_ACCOUNTS_ENGAGED =
+  `/ig-user/user-insights/?metric=reach,impressions&period=days_28,week,day&ig_user_id=${userId}`;
+export const GET_PROFILE_ACCOUNTS_ENGAGED = (userId) =>
   BASE_API_URL +
-  "/ig-user/user-insights/?metric=accounts_engaged&period=day&metric_type=total_value";
-export const GET_PROFILE_VIEWS =
+  `/ig-user/user-insights/?metric=accounts_engaged&period=day&metric_type=total_value&ig_user_id=${userId}`;
+export const GET_PROFILE_VIEWS = (userId) =>
   BASE_API_URL +
-  "/ig-user/user-insights/?metric=impressions,reach,profile_views&period=day";
-export const ACCOUNTS_REACHED_DEMOGRAPHY_API = (breakdown) =>
+  `/ig-user/user-insights/?metric=impressions,reach,profile_views&period=day&ig_user_id=${userId}`;
+export const ACCOUNTS_REACHED_DEMOGRAPHY_API = (breakdown, userId) =>
   BASE_API_URL +
-  `/ig-user/user-insights-reached-demo/?period=lifetime&breakdown=${breakdown}`;
+  `/ig-user/user-insights-reached-demo/?period=lifetime&breakdown=${breakdown}&ig_user_id=${userId}`;
 export const ACCOUNTS_ENGAGED_DEMOGRAPHY_API = (breakdown) =>
   BASE_API_URL +
   `/ig-user/user-insights-engaged-demo/?period=lifetime&breakdown=${breakdown}`;

@@ -120,7 +120,7 @@ export const UserCard = ({ user, setShowLoader, isHomePage }) => {
         </CardContent>
         {isHomePage && (
           <CardActions className="card-action">
-            {user.instagram_user_id === "17841404972239663" && (
+            {
               <Button
                 className="user-card-action-button"
                 variant="contained"
@@ -130,7 +130,7 @@ export const UserCard = ({ user, setShowLoader, isHomePage }) => {
               >
                 STATS
               </Button>
-            )}
+            }
             <Button
               className="user-card-action-button"
               variant="contained"
