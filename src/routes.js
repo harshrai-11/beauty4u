@@ -1,8 +1,9 @@
 const BASE_API_URL = "https://shikhardubey85.pythonanywhere.com/";
 
 // Stats APIs
-export const FOLLOWERS_DEMOGRAPHY_API =
-  BASE_API_URL + "/ig-user/user-insights-city-age-gender/";
+export const FOLLOWERS_DEMOGRAPHY_API = (breakdown, userId) =>
+  BASE_API_URL +
+  `/ig-user/user-insights-follower-demo/?period=lifetime&breakdown=${breakdown}&ig_user_id=${userId}`;
 export const GET_PROFILE_ACCOUNTS_REACHED = (userId) =>
   BASE_API_URL +
   `/ig-user/user-insights/?metric=reach,impressions&period=days_28,week,day&ig_user_id=${userId}`;
@@ -12,9 +13,13 @@ export const GET_PROFILE_ACCOUNTS_ENGAGED = (userId) =>
 export const GET_PROFILE_VIEWS = (userId) =>
   BASE_API_URL +
   `/ig-user/user-insights/?metric=impressions,reach,profile_views&period=day&ig_user_id=${userId}`;
-export const ACCOUNTS_REACHED_DEMOGRAPHY_API = (breakdown, userId) =>
-  BASE_API_URL +
-  `/ig-user/user-insights-reached-demo/?period=lifetime&breakdown=${breakdown}&ig_user_id=${userId}`;
+export const ACCOUNTS_REACHED_DEMOGRAPHY_API = (breakdown, userId) => {
+  return (
+    BASE_API_URL +
+    `/ig-user/user-insights-reached-demo/?period=lifetime&breakdown=${breakdown}&ig_user_id=${userId}`
+  );
+};
+
 export const ACCOUNTS_ENGAGED_DEMOGRAPHY_API = (breakdown) =>
   BASE_API_URL +
   `/ig-user/user-insights-engaged-demo/?period=lifetime&breakdown=${breakdown}`;

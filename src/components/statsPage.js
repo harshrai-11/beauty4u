@@ -150,21 +150,49 @@ const StatsPage = () => {
   };
 
   const getFollowersDemography = (userId) => {
-    console.log("userid--", userId);
     if (currentActiveChart === 4) {
-      axios(FOLLOWERS_DEMOGRAPHY_API, ApiHeaders)
-        .then((ageCityGenderResponse) => {
-          if (ageCityGenderResponse.data.data) {
-            const followersDemographyApiResponse =
-              ageCityGenderResponse.data.data;
-            setFollowersDemographyApiResponse(followersDemographyApiResponse);
-            setShowLoader(false);
-          }
-        })
-        .catch((err) => {
-          console.log("ERROR", err);
-          setErrorMessage(err?.response.data.errors.error.error_user_title);
-        });
+      let apiResponseArray = [];
+      breakdownValues.forEach(async (value, index) => {
+        axios(
+          FOLLOWERS_DEMOGRAPHY_API(Object.values(value)[0], userId),
+          ApiHeaders
+        )
+          .then((ageCityGenderResponse) => {
+            if (ageCityGenderResponse.data.data) {
+              const data =
+                ageCityGenderResponse.data.data.data[0].total_value
+                  .breakdowns[0].results;
+              let keyValuePairs = {};
+              if (data) {
+                data.forEach(
+                  (result) =>
+                    (keyValuePairs[
+                      `${result.dimension_values.reverse().join(".")}`
+                    ] = result.value)
+                );
+                let name = Object.keys(value)[0];
+                apiResponseArray.push({
+                  name,
+                  values: [{ value: keyValuePairs }],
+                });
+                if (name === "audience_gender_age") {
+                  updateAgeGenderDataState({ data: apiResponseArray });
+                } else if (name === "audience_city") {
+                  updateCityDataState({ data: apiResponseArray });
+                } else {
+                  updateCountryDataState({ data: apiResponseArray });
+                }
+              } else {
+                setErrorMessage("Demographic Data not available");
+              }
+              setShowLoader(false);
+            }
+          })
+          .catch((err) => {
+            console.log("ERROR", err);
+            setErrorMessage(err?.response.data.errors.error.error_user_title);
+          });
+      });
     }
     if (currentActiveChart === 1) {
       let apiResponseArray = [];
@@ -175,7 +203,6 @@ const StatsPage = () => {
         )
           .then(async (response) => {
             if (response.data.data) {
-              console.log("heree", response.data.data.data[0]);
               const data =
                 response.data.data.data[0].total_value.breakdowns[0].results;
               let keyValuePairs = {};
@@ -849,6 +876,7 @@ const StatsPage = () => {
   // getting user demography on the current chart
   useEffect(() => {
     setShowLoader(true);
+    const userId = getSearchParam("userId");
     setError("");
     getFollowersDemography(userId);
   }, [currentActiveChart]);
